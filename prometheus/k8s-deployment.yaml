@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mattermost-prometheus
+  labels:
+    app: mattermost
+spec:
+  ports:
+    - port: 9090
+  selector:
+    app: mattermost
+    tier: metrics
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-pv-claim
+  labels:
+    app: mattermost
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mattermost-prometheus
+  labels:
+    app: mattermost
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mattermost
+        tier: metrics
+    spec:
+      containers:
+      - image: mattermost-prometheus:v1
+        name: prometheus
+        ports:
+        - containerPort: 9090
+          name: prometheus
+        volumeMounts:
+        - name: prometheus-persistent-storage
+          mountPath: /var/lib/prometheus/data
+      volumes:
+      - name: prometheus-persistent-storage
+      #   persistentVolumeClaim:
+      #    claimName: prometheus-pv-claim
