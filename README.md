@@ -42,3 +42,15 @@ When in doubt you can run the nuke command to cleanup your local environment and
 ```bash
 ./nuke.sh
 ```
+
+If you wish to run the load test then execute the following commands
+```bash
+cd load-test
+./run-setup.sh
+```
+
+If you want to stop the load tests then run the following commands
+```bash
+cd load-test
+./run-cleanup.sh nuke
+```

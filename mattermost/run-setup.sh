@@ -33,7 +33,8 @@ echo "Configuring cluster settings"
 jq -r '.ClusterSettings.Enable=true' config.json > configz.json && mv configz.json config.json
 
 echo "Configuring miscellaneous settings"
-jq -r '.TeamSettings.MaxUsersPerTeam=20000' config.json > configz.json && mv configz.json config.json
+jq -r '.TeamSettings.MaxUsersPerTeam=50000' config.json > configz.json && mv configz.json config.json
+jq -r '.TeamSettings.EnableOpenServer=true' config.json > configz.json && mv configz.json config.json
 jq -r '.MetricsSettings.Enable=true' config.json > configz.json && mv configz.json config.json
 
 echo "Creating the docker image"
