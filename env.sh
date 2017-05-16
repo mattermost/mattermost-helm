@@ -4,7 +4,12 @@
 
 export USING_MINIKUBE=false
 export MINIKUBE_STATUS=false
+
+# Uncomment this line to use the offical build from mattermost master branch
 export MM_BUILD=master
+
+# Uncomment this line to use a local build from "make dist"
+export MM_BUILD=local
 
 echo "Initializing enviroment"
 

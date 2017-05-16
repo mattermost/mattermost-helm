@@ -7,7 +7,13 @@ echo "Setting up mattermost"
 
 if [ ! -f mattermost-enterprise-linux-amd64.tar.gz ]; then
     echo "Downloading Mattermost files for linux"
-    curl -OL# https://releases.mattermost.com/mattermost-platform/$MM_BUILD/mattermost-enterprise-linux-amd64.tar.gz
+
+    if [ "$MM_BUILD" = "local" ]; then
+        echo "    Using local build"
+        cp ../../platform/dist/mattermost-enterprise-linux-amd64.tar.gz .
+    else
+        curl -OL# https://releases.mattermost.com/mattermost-platform/$MM_BUILD/mattermost-enterprise-linux-amd64.tar.gz
+    fi
 fi
 
 tar --strip=2 -zxvf mattermost-enterprise-linux-amd64.tar.gz mattermost/config/config.json
@@ -26,16 +32,28 @@ PASSWORD_RESET_SALT=$(openssl rand -base64 32 | tr -dc _A-Z-a-z-0-9)
 jq -r --arg v "$PASSWORD_RESET_SALT" '.EmailSettings.PasswordResetSalt=$v' config.json > configz.json && mv configz.json config.json
 
 echo "Configuring log settings"
+jq -r '.LogSettings.EnableDiagnostics=false' config.json > configz.json && mv configz.json config.json
 jq -r '.LogSettings.EnableConsole=true' config.json > configz.json && mv configz.json config.json
-jq -r '.LogSettings.ConsoleLevel="INFO"' config.json > configz.json && mv configz.json config.json
+jq -r '.LogSettings.ConsoleLevel="DEBUG"' config.json > configz.json && mv configz.json config.json
 
 echo "Configuring cluster settings"
 jq -r '.ClusterSettings.Enable=true' config.json > configz.json && mv configz.json config.json
+jq -r '.ClusterSettings.ClusterName="a-zone"' config.json > configz.json && mv configz.json config.json
+jq -r '.ClusterSettings.UseIpAddress=true' config.json > configz.json && mv configz.json config.json
+jq -r '.ClusterSettings.UseExperimentalGossip=true' config.json > configz.json && mv configz.json config.json
 
 echo "Configuring miscellaneous settings"
 jq -r '.TeamSettings.MaxUsersPerTeam=50000' config.json > configz.json && mv configz.json config.json
 jq -r '.TeamSettings.EnableOpenServer=true' config.json > configz.json && mv configz.json config.json
 jq -r '.MetricsSettings.Enable=true' config.json > configz.json && mv configz.json config.json
+jq -r '.ServiceSettings.EnableSecurityFixAlert=false' config.json > configz.json && mv configz.json config.json
+
+
+if [ -f ~/.mattermost/mattermost.mattermost-license ]; then
+    echo "Configuring enterprise license settings"
+    cp ~/.mattermost/mattermost.mattermost-license .
+    jq -r '.ServiceSettings.LicenseFileLocation="/mattermost/mattermost.mattermost-license"' config.json > configz.json && mv configz.json config.json
+fi
 
 echo "Creating the docker image"
 docker build -q -t mattermost-app:v1 .

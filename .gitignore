@@ -2,6 +2,7 @@
 config.json
 db-password.txt
 db-root-password.txt
+mattermost.mattermost-license
 
 logs
 .DS_Store
