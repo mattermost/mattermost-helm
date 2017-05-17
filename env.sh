@@ -9,7 +9,7 @@ export MINIKUBE_STATUS=false
 export MM_BUILD=master
 
 # Uncomment this line to use a local build from "make dist"
-export MM_BUILD=local
+#export MM_BUILD=local
 
 echo "Initializing enviroment"
 
