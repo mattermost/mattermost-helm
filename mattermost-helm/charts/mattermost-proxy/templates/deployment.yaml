@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.internalPort }}
+        # livenessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: {{ .Values.service.internalPort }}
+        # readinessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: {{ .Values.service.internalPort }}
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: default-conf
+        - mountPath: /etc/nginx/nginx.conf
+          name: nginx-conf
+          subPath: nginx.conf
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+      volumes:
+        - name: default-conf
+          configMap:
+            name: {{template "fullname" .}}-default-conf
+            items:
+            - key: default.conf
+              path: default.conf
+        - name: nginx-conf
+          configMap:
+            name: {{template "fullname" .}}-nginx-conf
+            items:
+            - key: nginx.conf
+              path: nginx.conf

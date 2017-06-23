@@ -1,0 +1,3 @@
+engine: gotpl
+name: mattermost-db
+version: 0.2.6
