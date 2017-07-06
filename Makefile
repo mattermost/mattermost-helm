@@ -13,8 +13,12 @@ endif
 ifndef HELM_INSTALL
     $(error "helm is not available please install from https://github.com/kubernetes/helm")
 endif
+
+.init:
+	helm init --client-only
+	touch $@
 	
-package: check
+package: check .init
 	mkdir -p dist
 	helm package mattermost-helm -d $(DIST_ROOT)
 
