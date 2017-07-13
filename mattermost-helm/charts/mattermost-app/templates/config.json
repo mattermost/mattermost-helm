@@ -76,7 +76,7 @@
         "RestrictPrivateChannelDeletion": "all",
         "RestrictPrivateChannelManageMembers": "all",
         "UserStatusAwayTimeout": 300,
-        "MaxChannelsPerTeam": 2000,
+        "MaxChannelsPerTeam": 50000,
         "MaxNotificationsPerChannel": 1000
     },
     "SqlSettings": {

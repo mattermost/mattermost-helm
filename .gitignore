@@ -91,3 +91,5 @@ tags
 .idea
 
 .init
+
+mattermost-helm/charts/*.tgz

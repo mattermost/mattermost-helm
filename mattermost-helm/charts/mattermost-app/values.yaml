@@ -14,6 +14,7 @@ service:
   metricsPort: 8067
   clusterPort: 8075
   gossipPort: 8074
+  metricsName: mattermost-app-metrics
 ingress:
   enabled: false
   # Used to create Ingress record (should used with service.type: ClusterIP).

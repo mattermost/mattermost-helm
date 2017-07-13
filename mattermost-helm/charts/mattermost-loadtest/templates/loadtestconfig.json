@@ -1,0 +1,67 @@
+{{- define "loadtestconfig.json" -}}
+{
+    "ConnectionConfiguration": {
+        "ServerURL": "http://{{ .Release.Name }}-mattermost-proxy",
+        "WebsocketURL": "ws://{{ .Release.Name }}-mattermost-proxy",
+        "PProfUrl": "http://{{ .Release.Name }}-mattermost-app:8067/debug/pprof",
+        "LocalCommands": true,
+        "SSHHostnamePort": "",
+        "SSHUsername": "",
+        "SSHPassword": "",
+        "SSHKey": "",
+        "MattermostInstallDir": "/mattermost",
+        "ConfigFileLoc": "",
+        "AdminEmail": "success+ltadmin@simulator.amazonses.com",
+        "AdminPassword": "ltpassword",
+        "SkipBulkload": false,
+        "WaitForServerStart": true
+    },
+    "LoadtestEnviromentConfig": {
+        "NumTeams": {{ .Values.numTeams }},
+        "NumChannelsPerTeam": {{ .Values.numChannelsPerTeam }},
+        "NumUsers": {{ .Values.numUsers }},
+        "PercentHighVolumeTeams": 0.2,
+        "PercentMidVolumeTeams": 0.5,
+        "PercentLowVolumeTeams": 0.3,
+        "PercentUsersHighVolumeTeams": 0.9,
+        "PercentUsersMidVolumeTeams": 0.5,
+        "PercentUsersLowVolumeTeams": 0.1,
+        "PercentHighVolumeChannels": 0.2,
+        "PercentMidVolumeChannels": 0.5,
+        "PercentLowVolumeChannels": 0.3,
+        "PercentUsersHighVolumeChannel": 0.1,
+        "PercentUsersMidVolumeChannel": 0.003,
+        "PercentUsersLowVolumeChannel": 0.0002,
+        "HighVolumeTeamSelectionWeight": 3,
+        "MidVolumeTeamSelectionWeight": 2,
+        "LowVolumeTeamSelectionWeight": 1,
+        "HighVolumeChannelSelectionWeight": 1,
+        "MidVolumeChannelSelectionWeight": 3,
+        "LowVolumeChannelSelectionWeight": 1
+    },
+    "UserEntitiesConfiguration": {
+        "TestLengthMinutes": {{ .Values.testLengthMinutes }},
+        "NumActiveEntities": {{ .Values.numActiveEntities }},
+        "EntityStartNum": 0,
+        "ActionRateMilliseconds": {{ .Values.actionRateMilliseconds }},
+        "ActionRateMaxVarianceMilliseconds": {{ .Values.actionRateMaxVarianceMilliseconds }},
+        "EnableRequestTiming": true,
+        "UploadImageChance": 0.01,
+        "DoStatusPolling": true
+    },
+    "DisplayConfiguration": {
+        "ShowUI": false,
+        "LogToConsole": true
+    },
+    "ResultsConfiguration": {
+        "CustomReportText": "Results for #{{ .Release.Name }}",
+        "SendReportToMMServer": {{ .Values.sendReportToMMServer }},
+        "ResultsServerURL": "{{ .Values.resultsServerUrl }}",
+        "ResultsChannelId": "{{ .Values.resultsChannelId }}",
+        "ResultsUsername": "{{ .Values.resultsUsername }}",
+        "ResultsPassword": "{{ .Values.resultsPassword }}",
+        "PProfDelayMinutes": {{ .Values.pprofDelayMinutes }},
+        "PProfLength": {{ .Values.pprofLengthSeconds }}
+    }
+}
+{{- end -}}
