@@ -48,12 +48,12 @@
         "EnableUserStatuses": true,
         "ClusterLogTimeoutMilliseconds": 2000
     },
-    "ElasticSearchSettings": {
-        "ConnectionUrl": "",
-        "Username": "elastic",
-        "Password": "changeme",
-        "EnableIndexing": false,
-        "EnableSearching": false,
+    "ElasticsearchSettings": {
+        "ConnectionUrl": "http://{{ .Release.Name }}-mattermost-elasticsearch:9200",
+        "Username": "",
+        "Password": "",
+        "EnableIndexing": true,
+        "EnableSearching": true,
         "Sniff": true
     },
     "TeamSettings": {

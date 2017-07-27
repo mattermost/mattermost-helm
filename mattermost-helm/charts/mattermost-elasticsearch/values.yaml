@@ -1,0 +1,26 @@
+common:
+  image:
+    repository: quay.io/pires/docker-elasticsearch-kubernetes
+    tag: 5.5.0
+    pullPolicy: Always
+  clusterName: mmes
+  plugins: analysis-icu
+
+client:
+  replicas: 2
+  heapSize: 128m
+
+data:
+  replicas: 2
+  heapSize: 256m
+
+master:
+  replicas: 3
+  heapSize: 128m
+  requiredMasters: "\"2\""
+
+service:
+  name: mattermost-elasticsearch
+  type: LoadBalancer
+  httpPort: 9200
+  transportPort: 9300

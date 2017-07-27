@@ -18,6 +18,14 @@ mattermost-app:
 mattermost-proxy:
   replicaCount: 2
 
+mattermost-elasticsearch:
+  client:
+    replicaCount: 2
+  master:
+    replicaCount: 3
+  data:
+    replicaCount: 2
+
 mattermost-loadtest:
   numTeams: 1
   numChannelsPerTeam: 4000

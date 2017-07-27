@@ -1,0 +1,73 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{template "fullname" .}}-master
+  labels:
+    component: {{template "fullname" .}}
+    role: master
+spec:
+  replicas: {{ .Values.master.replicas }}
+  template:
+    metadata:
+      labels:
+        component: {{template "fullname" .}}
+        role: master
+      annotations:
+        pod.beta.kubernetes.io/init-containers: '[
+          {
+          "name": "sysctl",
+            "image": "busybox",
+            "imagePullPolicy": "IfNotPresent",
+            "command": ["sysctl", "-w", "vm.max_map_count=262144"],
+            "securityContext": {
+              "privileged": true
+            }
+          }
+        ]'
+    spec:
+      containers:
+      - name: master
+        securityContext:
+          privileged: false
+          capabilities:
+            add:
+              - IPC_LOCK
+              - SYS_RESOURCE
+        image: "{{ .Values.common.image.repository }}:{{ .Values.common.image.tag }}"
+        imagePullPolicy: {{ .Values.common.image.pullPolicy }}
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: DISCOVERY_SERVICE
+          value: {{template "fullname" .}}-discovery
+        - name: NODE_DATA
+          value: "false"
+        - name: NODE_MASTER
+          value: "true"
+        - name: NODE_INGEST
+          value: "false"
+        - name: HTTP_ENABLE
+          value: "false"
+        - name: ES_JAVA_OPTS
+          value: "-Xms{{ .Values.master.heapSize }} -Xmx{{ .Values.master.heapSize }}"
+        - name: ES_PLUGINS_INSTALL
+          value: {{ .Values.common.plugins }}
+        - name: NUMBER_OF_MASTERS
+          value: {{ .Values.master.requiredMasters }}
+        ports:
+        - containerPort: 9300
+          name: transport
+          protocol: TCP
+        volumeMounts:
+        - name: storage
+          mountPath: /data
+      volumes:
+        - emptyDir:
+            medium: ""
+          name: "storage"
