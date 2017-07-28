@@ -4,6 +4,8 @@ DIST_ROOT=dist
 KUBE_INSTALL := $(shell command -v kubectl 2> /dev/null)
 HELM_INSTALL := $(shell command -v helm 2> /dev/null)
 
+SUB_CHARTS := $(shell ls mattermost-helm/charts)
+
 all: package
 
 check:
@@ -20,10 +22,13 @@ endif
 	
 package: check .init
 	mkdir -p dist
+	rm -f mattermost-helm/charts/*.tgz
+	helm package mattermost-helm/charts/* -d mattermost-helm/charts
 	helm package mattermost-helm -d $(DIST_ROOT)
 
 clean:
 	rm -rf $(DIST_ROOT)
+	rm -f mattermost-helm/charts/*.tgz
 
 install: check
 	helm install dist/mattermost-helm*.*

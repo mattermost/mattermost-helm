@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{template "fullname" .}}-mattermost-license
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: {{ template "fullname" . }}
+data:
+  mattermost.mattermost-license: {{ .Values.global.mattermostLicense | quote }}

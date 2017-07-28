@@ -29,7 +29,7 @@ spec:
         - containerPort: {{ .Values.service.gossipPort }}
           name: gossip
         livenessProbe:
-          initialDelaySeconds: 30
+          initialDelaySeconds: 90
           timeoutSeconds: 5
           periodSeconds: 15
           httpGet:

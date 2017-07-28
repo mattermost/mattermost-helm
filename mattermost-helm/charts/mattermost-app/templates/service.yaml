@@ -12,5 +12,9 @@ spec:
     targetPort: {{ .Values.service.internalPort }}
     protocol: TCP
     name: {{ .Values.service.name }}
+  - port: {{ .Values.service.metricsPort }}
+    targetPort: {{ .Values.service.metricsPort }}
+    protocol: TCP
+    name: {{ .Values.service.metricsName }}
   selector:
     app: {{ template "fullname" . }}
