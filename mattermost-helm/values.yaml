@@ -1,8 +1,4 @@
 global:
-  dbRootPassword: "rootpasswd"
-  dbUser: "mmuser"
-  dbPassword: "passwd"
-  dbName: "mattermost"
   filesAccessKey: "AKIAIOSFODNN7EXAMPMM"
   filesSecretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKMM"
   mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
@@ -46,3 +42,10 @@ mattermost-loadtest:
   resultsUsername: ""
   resultsPassword: ""
 
+
+mysqlha:
+  mysqlha:
+    mysqlRootPassword: "rootpasswd"
+    mysqlUser: "mmuser"
+    mysqlPassword: "passwd"
+    mysqlDatabase: "mattermost"
