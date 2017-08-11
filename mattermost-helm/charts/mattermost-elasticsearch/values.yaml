@@ -21,6 +21,6 @@ master:
 
 service:
   name: mattermost-elasticsearch
-  type: LoadBalancer
+  type: ClusterIP
   httpPort: 9200
   transportPort: 9300
