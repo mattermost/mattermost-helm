@@ -52,8 +52,8 @@
         "ConnectionUrl": "http://{{ .Release.Name }}-mattermost-elasticsearch:9200",
         "Username": "",
         "Password": "",
-        "EnableIndexing": true,
-        "EnableSearching": true,
+        "EnableIndexing": {{ .Values.global.features.elasticsearch }},
+        "EnableSearching": {{ .Values.global.features.elasticsearch }},
         "Sniff": true
     },
     "TeamSettings": {
