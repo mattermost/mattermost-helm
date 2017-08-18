@@ -71,7 +71,15 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /var/lib/mysql
+        - name: mysqlmmconfig
+          mountPath: /etc/mysql/conf.d/mysqlmm.cnf
       volumes:
+      - name: mysqlmmconfig
+        configMap:
+          name: {{template "fullname" .}}-mysqlmm-cnf
+          items:
+          - key: mysqlmm.cnf
+            path: mysqlmm.cnf
       - name: data
       {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:

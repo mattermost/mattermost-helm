@@ -1,4 +1,4 @@
-.PHONY: install clean package
+.PHONY: install clean package ltvalues
 
 DIST_ROOT=dist
 KUBE_INSTALL := $(shell command -v kubectl 2> /dev/null)
@@ -32,3 +32,6 @@ clean:
 
 install: check
 	helm install dist/mattermost-helm*.*
+
+ltvalues:
+	cp ../platform-private/kubernetes/values_loadtest.yaml mattermost-helm/values.yaml
