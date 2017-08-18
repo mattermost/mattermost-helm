@@ -19,7 +19,7 @@
         "EnableIncomingWebhooks": true,
         "EnableOutgoingWebhooks": true,
         "EnableCommands": true,
-        "EnableOnlyAdminIntegrations": true,
+        "EnableOnlyAdminIntegrations": false,
         "EnablePostUsernameOverride": false,
         "EnablePostIconOverride": false,
         "EnableLinkPreviews": false,
@@ -85,9 +85,9 @@
         "DataSourceReplicas": [],
         "DataSourceSearchReplicas": [],
         "MaxIdleConns": 20,
-        "MaxOpenConns": 300,
+        "MaxOpenConns": 100,
         "Trace": false,
-        "AtRestEncryptKey": "",
+        "AtRestEncryptKey": "{{ randAlphaNum 32 }}",
         "QueryTimeout": 30
     },
     "LogSettings": {
