@@ -25,3 +25,7 @@ dependencies:
     version: 0.1.0
     tags:
       - core
+  - name: mattermost-minio
+    version: 0.1.3
+    tags:
+      - core
