@@ -5,7 +5,7 @@ global:
   dbName: "mattermost"
   mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
   features:
-    elasticsearch: true
+    elasticsearch: false
 
 tags:
   core: true
