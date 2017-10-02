@@ -12,18 +12,6 @@ spec:
       labels:
         component: {{template "fullname" .}}
         role: client
-      annotations:
-        pod.beta.kubernetes.io/init-containers: '[
-          {
-          "name": "sysctl",
-            "image": "busybox",
-            "imagePullPolicy": "IfNotPresent",
-            "command": ["sysctl", "-w", "vm.max_map_count=262144"],
-            "securityContext": {
-              "privileged": true
-            }
-          }
-        ]'
     spec:
       containers:
       - name: client
