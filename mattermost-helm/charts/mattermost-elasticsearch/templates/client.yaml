@@ -57,6 +57,6 @@ spec:
         - name: storage
           mountPath: /data
       volumes:
-        - emptyDir:
-            medium: ""
-          name: "storage"
+        - name: storage
+          configMap:
+            name: {{template "fullname" .}}

@@ -3,11 +3,11 @@ description: Mattermost Enterprise server with high availitibity.
 name: mattermost-helm
 version: 0.2.0
 appVersion: master
-keywords: 
+keywords:
 - mattermost
 - communication
 - slack alternative
 home: https://mattermost.com
-source: 
+source:
 - https://github.com/mattermost/platform
 - https://github.com/mattermost/mattermost-kubernetes
