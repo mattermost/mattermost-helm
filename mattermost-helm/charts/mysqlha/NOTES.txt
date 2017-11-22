@@ -1,3 +1,0 @@
-Pulled from https://github.com/kubernetes/charts/pull/766 and
-https://github.com/jpoon/charts/tree/34a02075f53c9b2a81f8b8cb5bbb4fc045803b21
-Please switch to using it as a helm requirement from the incubator repository once merged.

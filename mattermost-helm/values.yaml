@@ -76,3 +76,5 @@ mysqlha:
     mysqlUser: "mmuser"
     mysqlPassword: "passwd"
     mysqlDatabase: "mattermost"
+    mysqlReplicationUser: "repl"
+    mysqlReplicationPassword: "replpasswd"
