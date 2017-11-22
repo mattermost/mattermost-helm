@@ -11,7 +11,7 @@ spec:
   template:
     metadata:
       labels:
-        name: {{template "fullname" .}}-ds
+        name: {{template "fullname" .}}
     spec:
       containers:
       - name: {{template "fullname" .}}-ds
