@@ -1,4 +1,0 @@
-{{- define "mysqlmm.cnf" -}}
-[mysql]
-max_connections=5000
-{{- end -}}

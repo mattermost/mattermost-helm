@@ -42,10 +42,11 @@ mattermost-loadtest:
   resultsUsername: ""
   resultsPassword: ""
 
-
 mysqlha:
   mysqlha:
     mysqlRootPassword: "rootpasswd"
     mysqlUser: "mmuser"
     mysqlPassword: "passwd"
     mysqlDatabase: "mattermost"
+    mysqlReplicationUser: "repl"
+    mysqlReplicationPassword: "replpasswd"
