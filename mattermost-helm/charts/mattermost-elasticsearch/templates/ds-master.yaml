@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  labels:
+    name: {{template "fullname" .}}
+  name: {{template "fullname" .}}-ds
+spec:
+  selector:
+    matchLabels:
+      name: {{template "fullname" .}}
+  template:
+    metadata:
+      labels:
+        name: {{template "fullname" .}}
+    spec:
+      containers:
+      - name: {{template "fullname" .}}-ds
+        image: gcr.io/google-containers/startup-script:v1
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        env:
+        - name: STARTUP_SCRIPT
+          value: |
+            #! /bin/bash
+            sysctl -w vm.max_map_count=262144
+            echo "done"
