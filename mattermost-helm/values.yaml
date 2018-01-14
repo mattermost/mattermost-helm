@@ -18,7 +18,10 @@ mattermost-app:
   replicaCount: 2
   image:
     tag: daily-build
-  
+  jobserver:
+    enabled: enabled
+    replicaCount: 2
+
 mattermost-proxy:
   replicaCount: 2
 
