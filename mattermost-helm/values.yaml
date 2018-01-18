@@ -46,3 +46,5 @@ mattermost-loadtest:
   resultsUsername: ""
   resultsPassword: ""
 
+mattermost-push-proxy:
+  replicaCount: 2
