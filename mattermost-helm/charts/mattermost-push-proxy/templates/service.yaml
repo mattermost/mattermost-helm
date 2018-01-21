@@ -15,4 +15,4 @@ spec:
       protocol: TCP
       name: {{ .Values.service.name }}
   selector:
-    app: {{ template "mattermost-push-proxy.name" . }}
+    app: {{ template "fullname" . }}

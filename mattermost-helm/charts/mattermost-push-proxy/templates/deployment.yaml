@@ -18,9 +18,9 @@ spec:
           ports:
             - containerPort: {{ .Values.service.internalPort }}
           volumeMounts:
-          - mountPath: /mattermost-push-proxy/config/mattermost-push-proxy.json
-            name: mattermost-push-proxy-json
-            subPath: mattermost-push-proxy.json
+          - mountPath: /config/config.json
+            name: push-config-json
+            subPath: push-config.json
           #livenessProbe:
           #  httpGet:
           #    path: /
@@ -36,10 +36,10 @@ spec:
 {{ toYaml .Values.nodeSelector | indent 8 }}
     {{- end }}
       volumes:
-        - name: mattermost-push-proxy-json
+        - name: push-config-json
           configMap:
-            name: {{template "fullname" .}}-json
+            name: {{template "fullname" .}}-push-config-json
             items:
-            - key: mattermost-push-proxy.json
-              path: mattermost-push-proxy.json
+            - key: push-config.json
+              path: push-config.json
 
