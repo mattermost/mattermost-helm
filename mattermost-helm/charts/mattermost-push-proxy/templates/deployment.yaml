@@ -21,14 +21,11 @@ spec:
           - mountPath: /config/config.json
             name: push-config-json
             subPath: push-config.json
-          #livenessProbe:
-          #  httpGet:
-          #    path: /
-          #    port: {{ .Values.service.internalPort }}
-          #readinessProbe:
-          #  httpGet:
-          #    path: /
-          #    port: {{ .Values.service.internalPort }}
+          {{- if .Values.appleCertPath }}
+          - mountPath: /certs/apple-push-cert.pem
+            name: apple-push-cert 
+            subPath: apple-push-cert.pem
+          {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- if .Values.nodeSelector }}
@@ -42,4 +39,12 @@ spec:
             items:
             - key: push-config.json
               path: push-config.json
+        {{- if .Values.appleCertPath }}
+        - name: apple-push-cert
+          configMap:
+            name: {{template "fullname" .}}-apple-cert-path
+            items:
+            - key: apple-push-cert.pem
+              path: apple-push-cert.pem
+        {{- end }}
 

@@ -9,26 +9,34 @@
         {
             "Type":"apple",
             "ApplePushUseDevelopment":false,
+	    {{- if eq .Values.appleCertPath "" }}
             "ApplePushCertPrivate":"",
-            "ApplePushCertPassword":"",
+            {{- else }}
+            "ApplePushCertPrivate": "/certs/apple-push-cert.pem",
+	    {{- end }}
+            "ApplePushCertPassword":"{ .Values.appleCertPassword }}",
             "ApplePushTopic":"com.mattermost.Mattermost"
         },
         {
             "Type":"apple_rn",
             "ApplePushUseDevelopment":false,
+	    {{- if eq .Values.appleCertPath "" }}
             "ApplePushCertPrivate":"",
-            "ApplePushCertPassword":"",
+            {{- else }}
+            "ApplePushCertPrivate": "/certs/apple-push-cert.pem",
+            {{- end }}
+            "ApplePushCertPassword":"{{ .Values.appleCertPassword }}",
             "ApplePushTopic":"com.mattermost.react.native"
         }
     ],
     "AndroidPushSettings":[
         {
             "Type":"android",
-            "AndroidApiKey":""
+            "AndroidApiKey":"{{ .Values.androidApiKey }}"
         },
         {
             "Type":"android_rn",
-            "AndroidApiKey":""
+            "AndroidApiKey":"{{ .Values.androidApiKey }}"
         }
     ]
 }
