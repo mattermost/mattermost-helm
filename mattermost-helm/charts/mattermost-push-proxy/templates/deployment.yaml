@@ -21,7 +21,7 @@ spec:
           - mountPath: /config/config.json
             name: push-config-json
             subPath: push-config.json
-          {{- if .Values.appleCertPath }}
+          {{- if .Values.apns.configMap }}
           - mountPath: /certs/apple-push-cert.pem
             name: apple-push-cert 
             subPath: apple-push-cert.pem
@@ -39,10 +39,10 @@ spec:
             items:
             - key: push-config.json
               path: push-config.json
-        {{- if .Values.appleCertPath }}
+        {{- if .Values.apns.configMap }}
         - name: apple-push-cert
           configMap:
-            name: {{template "fullname" .}}-apple-cert-path
+            name: {{template "fullname" .}}-{{ .Values.apns.configMap }}
             items:
             - key: apple-push-cert.pem
               path: apple-push-cert.pem

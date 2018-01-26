@@ -14,14 +14,13 @@ RUN apt-get update \
 
 RUN mkdir -p /mattermost-push-proxy \
     && cd /mattermost-push-proxy \
-    && wget https://github.com/mattermost/mattermost-push-proxy/releases/download/v4.4/mattermost-push-proxy-$PP_VERSION.tar.gz \
+    && wget https://github.com/mattermost/mattermost-push-proxy/releases/download/v`echo $PP_VERSION | cut -d. -f1,2`/mattermost-push-proxy-$PP_VERSION.tar.gz \
     && tar -xvzf mattermost-push-proxy-$PP_VERSION.tar.gz \
     && rm mattermost-push-proxy-$PP_VERSION.tar.gz \
     && mv mattermost-push-proxy/* ./ \
     && rm -rf mattermost-push-proxy
   
 WORKDIR /mattermost-push-proxy
-#CMD mattermost-push-proxy -config config/mattermost-push-proxy.json
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 

@@ -6,5 +6,5 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     app: {{ template "fullname" . }}
 data:
-   apple-push-cert.pem: {{ .Values.appleCertPath | quote }}
+   apple-push-cert.pem: {{ .Values.apns.privateCert | quote }}
 

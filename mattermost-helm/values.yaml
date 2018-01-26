@@ -49,6 +49,10 @@ mattermost-loadtest:
 
 mattermost-push-proxy:
   replicaCount: 2
-  appleCertPath: ""
-  appleCertPassword: ""
+  apns:
+    configMap: "apple-cert-path"
+    privateCert: ""
+    privateCertPassword: ""
+    pushTopic: "com.mattermost.Mattermost"
+    rnPushTopic: "com.mattermost.react.native"
   androidApiKey: ""

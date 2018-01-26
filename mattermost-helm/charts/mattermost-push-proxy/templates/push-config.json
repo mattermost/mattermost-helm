@@ -9,24 +9,24 @@
         {
             "Type":"apple",
             "ApplePushUseDevelopment":false,
-	    {{- if eq .Values.appleCertPath "" }}
+	    {{- if eq .Values.apns.privateCert "" }}
             "ApplePushCertPrivate":"",
             {{- else }}
             "ApplePushCertPrivate": "/certs/apple-push-cert.pem",
 	    {{- end }}
-            "ApplePushCertPassword":"{ .Values.appleCertPassword }}",
-            "ApplePushTopic":"com.mattermost.Mattermost"
+            "ApplePushCertPassword":"{{ .Values.apns.privateCertPassword }}",
+            "ApplePushTopic":"{{ .Values.apns.pushTopic }}"
         },
         {
             "Type":"apple_rn",
             "ApplePushUseDevelopment":false,
-	    {{- if eq .Values.appleCertPath "" }}
+	    {{- if eq .Values.apns.privateCert "" }}
             "ApplePushCertPrivate":"",
             {{- else }}
             "ApplePushCertPrivate": "/certs/apple-push-cert.pem",
             {{- end }}
-            "ApplePushCertPassword":"{{ .Values.appleCertPassword }}",
-            "ApplePushTopic":"com.mattermost.react.native"
+            "ApplePushCertPassword":"{{ .Values.apns.privateCertPassword }}",
+            "ApplePushTopic":"{{ .Values.apns.rnPushTopic }}"
         }
     ],
     "AndroidPushSettings":[

@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: brunzer/mattermost-push-proxy
-  tag: initial
+  tag: latest
   pullPolicy: Always
 service:
   name: mattermost-push-proxy
