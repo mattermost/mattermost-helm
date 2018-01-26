@@ -1,0 +1,13 @@
+{{- if .Values.jobserver.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "mattermost-app.jobserver.fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    component: "{{ .Values.jobserver.name }}"
+spec:
+  type: {{ .Values.jobserver.service.type }}
+  clusterIP: None
+{{- end -}}

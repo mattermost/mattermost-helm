@@ -1,0 +1,41 @@
+{{- if .Values.jobserver.enabled -}}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "mattermost-app.jobserver.fullname" . }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.jobserver.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+        component: "{{ .Values.jobserver.name }}"
+    spec:
+      containers:
+      - name: {{ template "mattermost-app.jobserver.fullname" . }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["platform", "jobserver"]
+        volumeMounts:
+        - mountPath: /mattermost/config/config.json
+          name: config-json
+          subPath: config.json
+        - mountPath: /mattermost/mattermost.mattermost-license
+          name: mattermost-license
+          subPath: mattermost.mattermost-license
+      volumes:
+        - name: config-json
+          configMap:
+            name: {{template "fullname" .}}-config-json
+            items:
+            - key: config.json
+              path: config.json
+        - name: mattermost-license
+          configMap:
+            name: {{template "fullname" .}}-mattermost-license
+            items:
+            - key: mattermost.mattermost-license
+              path: mattermost.mattermost-license
+{{- end -}}

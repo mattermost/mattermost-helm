@@ -293,5 +293,12 @@
     "DataRetentionSettings": {
         "Enable": false
     }
+    {{- if .Values.jobserver.enabled -}}
+    ,
+    "JobSettings": {
+        "RunJobs": false,
+        "RunScheduler": false
+    }
+    {{- end -}}
 }
 {{- end -}}

@@ -33,3 +33,10 @@ resources:
     cpu: 100m
     memory: 256Mi
 
+jobserver:
+  name: jobserver
+  enabled: true
+  replicaCount: 1
+  service:
+    name: mattermost-app-jobserver
+    type: ClusterIP
