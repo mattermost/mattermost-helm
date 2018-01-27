@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: brunzer/mattermost-push-proxy
+  repository: mattermost/mattermost-push-proxy
   tag: latest
   pullPolicy: Always
 service:
