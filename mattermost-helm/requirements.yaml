@@ -3,10 +3,6 @@ dependencies:
     version: 0.1.0
     tags:
       - core
-  - name: mattermost-db
-    version: 0.2.6
-    tags:
-      - core
   - name: mattermost-grafana
     version: 0.3.6
     tags:
@@ -25,6 +21,13 @@ dependencies:
     version: 0.1.0
     tags:
       - core
+  - name: mysqlha
+    version: 0.1.0
+    tags:
+      - core
+    import-values:
+      - child: "mysqlha"
+        parent: global.dbconfig
   - name: mattermost-minio
     version: 0.1.3
     tags:
