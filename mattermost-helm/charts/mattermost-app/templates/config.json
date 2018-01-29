@@ -81,8 +81,8 @@
     },
     "SqlSettings": {
         "DriverName": "mysql",
-        "DataSource": "{{ .Values.global.dbUser }}:{{ .Values.global.dbPassword }}@tcp({{ .Release.Name }}-mattermost-db:3306)/{{ .Values.global.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",
-        "DataSourceReplicas": [],
+        "DataSource": "{{ .Values.global.dbconfig.mysqlUser }}:{{ .Values.global.dbconfig.mysqlPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.global.dbconfig.mysqlDatabase }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",
+        "DataSourceReplicas": ["{{ .Values.global.dbconfig.mysqlUser }}:{{ .Values.global.dbconfig.mysqlPassword }}@tcp({{ .Release.Name }}-mysqlha-readonly:3306)/{{ .Values.global.dbconfig.mysqlDatabase }}?charset=utf8mb4,utf8&readTimeout=30s"],
         "DataSourceSearchReplicas": [],
         "MaxIdleConns": 20,
         "MaxOpenConns": 100,

@@ -1,0 +1,6 @@
+dependencies:
+- name: mysqlha
+  repository: http://storage.googleapis.com/kubernetes-charts-incubator
+  version: 0.1.0
+digest: sha256:b49372c406bc4b7818b5fdfa7f68f6d0c47cc4b4ebd319c0b3dc6df6ef4f2b22
+generated: 2017-11-22T10:18:32.936183674Z
