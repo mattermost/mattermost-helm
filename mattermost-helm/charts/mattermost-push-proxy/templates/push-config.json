@@ -9,34 +9,45 @@
         {
             "Type":"apple",
             "ApplePushUseDevelopment":false,
-	    {{- if eq .Values.apns.privateCert "" }}
+	    {{- if eq .Values.applePushSettings.apple.privateCert "" }}
             "ApplePushCertPrivate":"",
             {{- else }}
             "ApplePushCertPrivate": "/certs/apple-push-cert.pem",
 	    {{- end }}
-            "ApplePushCertPassword":"{{ .Values.apns.privateCertPassword }}",
-            "ApplePushTopic":"{{ .Values.apns.pushTopic }}"
+            "ApplePushCertPassword":"{{ .Values.applePushSettings.apple.privateCertPassword }}",
+            "ApplePushTopic":"{{ .Values.applePushSettings.apple.pushTopic }}"
         },
         {
             "Type":"apple_rn",
             "ApplePushUseDevelopment":false,
-	    {{- if eq .Values.apns.privateCert "" }}
+	    {{- if eq .Values.applePushSettings.apple_rn.privateCert "" }}
             "ApplePushCertPrivate":"",
             {{- else }}
-            "ApplePushCertPrivate": "/certs/apple-push-cert.pem",
+            "ApplePushCertPrivate": "/certs/apple-rn-push-cert.pem",
             {{- end }}
-            "ApplePushCertPassword":"{{ .Values.apns.privateCertPassword }}",
-            "ApplePushTopic":"{{ .Values.apns.rnPushTopic }}"
+            "ApplePushCertPassword":"{{ .Values.applePushSettings.apple_rn.privateCertPassword }}",
+            "ApplePushTopic":"{{ .Values.applePushSettings.apple_rn.pushTopic }}"
+        },
+        {
+            "Type":"apple_rnbeta",
+            "ApplePushUseDevelopment":false,
+            {{- if eq .Values.applePushSettings.apple_rnbeta.privateCert "" }}
+            "ApplePushCertPrivate":"",
+            {{- else }}
+            "ApplePushCertPrivate": "/certs/apple-rnbeta-push-cert.pem",
+            {{- end }}
+            "ApplePushCertPassword":"{{ .Values.applePushSettings.apple_rnbeta.privateCertPassword }}",
+            "ApplePushTopic":"{{ .Values.applePushSettings.apple_rnbeta.pushTopic }}"
         }
     ],
     "AndroidPushSettings":[
         {
             "Type":"android",
-            "AndroidApiKey":"{{ .Values.androidApiKey }}"
+            "AndroidApiKey":"{{ .Values.androidPushSettings.android.apiKey }}"
         },
         {
             "Type":"android_rn",
-            "AndroidApiKey":"{{ .Values.androidApiKey }}"
+            "AndroidApiKey":"{{ .Values.androidPushSettings.android_rn.apiKey }}"
         }
     ]
 }
