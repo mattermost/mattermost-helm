@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{template "fullname" .}}-apple-rnbeta-cert-path
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: {{ template "fullname" . }}
+data:
+   apple-rnbeta-push-cert.pem: {{ .Values.applePushSettings.apple_rnbeta.privateCert | quote }}
+

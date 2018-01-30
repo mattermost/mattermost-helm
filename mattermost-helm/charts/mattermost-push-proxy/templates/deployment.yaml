@@ -1,0 +1,76 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.internalPort }}
+          volumeMounts:
+          - mountPath: /config/config.json
+            name: push-config-json
+            subPath: push-config.json
+          {{- if .Values.applePushSettings.apple.configMap }}
+          - mountPath: /certs/apple-push-cert.pem
+            name: apple-push-cert 
+            subPath: apple-push-cert.pem
+          {{- end }}
+          {{- if .Values.applePushSettings.apple_rn.configMap }}
+          - mountPath: /certs/apple-rn-push-cert.pem
+            name: apple-rn-push-cert
+            subPath: apple-rn-push-cert.pem
+          {{- end }}
+          {{- if .Values.applePushSettings.apple_rnbeta.configMap }}
+          - mountPath: /certs/apple-rnbeta-push-cert.pem
+            name: apple-rnbeta-push-cert
+            subPath: apple-rnbeta-push-cert.pem
+          {{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
+      volumes:
+        - name: push-config-json
+          configMap:
+            name: {{template "fullname" .}}-push-config-json
+            items:
+            - key: push-config.json
+              path: push-config.json
+        {{- if .Values.applePushSettings.apple.configMap }}
+        - name: apple-push-cert
+          configMap:
+            name: {{template "fullname" .}}-{{ .Values.applePushSettings.apple.configMap }}
+            items:
+            - key: apple-push-cert.pem
+              path: apple-push-cert.pem
+        {{- end }}
+        {{- if .Values.applePushSettings.apple_rn.configMap }}
+        - name: apple-rn-push-cert
+          configMap:
+            name: {{template "fullname" .}}-{{ .Values.applePushSettings.apple_rn.configMap }}
+            items:
+            - key: apple-rn-push-cert.pem
+              path: apple-rn-push-cert.pem
+        {{- end }}
+        {{- if .Values.applePushSettings.apple_rnbeta.configMap }}
+        - name: apple-rnbeta-push-cert
+          configMap:
+            name: {{template "fullname" .}}-{{ .Values.applePushSettings.apple_rnbeta.configMap }}
+            items:
+            - key: apple-rnbeta-push-cert.pem
+              path: apple-rnbeta-push-cert.pem
+        {{- end }}
+
