@@ -9,5 +9,6 @@ keywords:
 - slack alternative
 home: https://mattermost.com
 source: 
-- https://github.com/mattermost/platform
+- https://github.com/mattermost/mattermost-server
+- https://github.com/mattermost/mattermost-webapp
 - https://github.com/mattermost/mattermost-kubernetes
