@@ -14,10 +14,66 @@ data:
   replicas: 2
   heapSize: 256m
 
+  persistentVolume:
+    ## If true, data will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: false
+
+    ## data Persistent Volume access modes
+    ## Must match those of existing PV or dynamic provisioner
+    ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    accessModes:
+      - ReadWriteOnce
+
+    ## data Persistent Volume Claim annotations
+    ##
+    annotations: {}
+
+
+    ## data Persistent Volume size
+    ##
+    size: 50Gi
+
+    ## data Persistent Volume Storage Class
+    ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
+    ## Default: volume.alpha.kubernetes.io/storage-class: default
+    ##
+    storageClass: ""
+
 master:
   replicas: 3
   heapSize: 128m
   requiredMasters: "\"2\""
+
+  persistentVolume:
+    ## If true, master will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: false
+
+    ## master data Persistent Volume access modes
+    ## Must match those of existing PV or dynamic provisioner
+    ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    accessModes:
+      - ReadWriteOnce
+
+    ## master data Persistent Volume Claim annotations
+    ##
+    annotations: {}
+
+
+    ## master data Persistent Volume size
+    ##
+    size: 50Gi
+
+    ## master data Persistent Volume Storage Class
+    ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
+    ## Default: volume.alpha.kubernetes.io/storage-class: default
+    ##
+    storageClass: ""
 
 service:
   name: mattermost-elasticsearch

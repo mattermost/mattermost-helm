@@ -71,5 +71,5 @@ mattermost-push-proxy:
   androidPushSettings:
     android:
       apiKey: ""
-    android_rn: 
+    android_rn:
       apiKey: ""
