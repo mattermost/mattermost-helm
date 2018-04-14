@@ -6,6 +6,16 @@ common:
   clusterName: mmes
   plugins: analysis-icu
 
+persistence:
+  enabled: false
+
+  ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
+  ## Default: volume.alpha.kubernetes.io/storage-class: default
+  ##
+  # storageClass:
+  accessMode: ReadWriteOnce
+  size: 8Gi
+
 client:
   replicas: 2
   heapSize: 128m
