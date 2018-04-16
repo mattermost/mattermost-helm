@@ -6,6 +6,10 @@ common:
   clusterName: mmes
   plugins: analysis-icu
 
+## Persist data to a persitent volume
+persistence:
+  enabled: false
+
 client:
   replicas: 2
   heapSize: 128m
