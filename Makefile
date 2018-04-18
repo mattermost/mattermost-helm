@@ -19,11 +19,11 @@ endif
 .init:
 	helm init --client-only
 	touch $@
-	
+
 package: check .init
 	mkdir -p dist
 	rm -f mattermost-helm/charts/*.tgz
-	helm package mattermost-helm/charts/* -d mattermost-helm/charts
+	helm dependency update mattermost-helm
 	helm package mattermost-helm -d $(DIST_ROOT)
 
 clean:
