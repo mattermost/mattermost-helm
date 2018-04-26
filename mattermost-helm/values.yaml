@@ -15,6 +15,9 @@ tags:
 
 mattermost-app:
   replicaCount: 2
+  minio:
+    accessKey: "AKIAIOSFODNN7EXAMPMM"
+    secretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKMM"
   image:
     tag: daily-build
   jobserver:

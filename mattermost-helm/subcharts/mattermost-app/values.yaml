@@ -1,6 +1,11 @@
 # Default values for mattermost-app.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+
+minio:
+  accessKey: ''
+  secretKey: ''
+
 replicaCount: 1
 image:
   repository: mattermost/mattermost-kubernetes
