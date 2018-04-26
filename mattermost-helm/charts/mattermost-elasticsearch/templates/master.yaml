@@ -34,6 +34,8 @@ spec:
               fieldPath: metadata.name
         - name: DISCOVERY_SERVICE
           value: {{template "fullname" .}}-discovery
+        - name: NETWORK_HOST
+          value: {{ .Values.master.networkHost }}
         - name: NODE_DATA
           value: "false"
         - name: NODE_MASTER

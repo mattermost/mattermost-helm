@@ -34,6 +34,8 @@ spec:
               fieldPath: metadata.name
         - name: DISCOVERY_SERVICE
           value: {{template "fullname" .}}-discovery
+        - name: NETWORK_HOST
+          value: {{ .Values.client.networkHost }}
         - name: NODE_DATA
           value: "false"
         - name: NODE_MASTER
@@ -57,6 +59,6 @@ spec:
         - name: storage
           mountPath: /data
       volumes:
-        - name: storage
-          configMap:
-            name: {{template "fullname" .}}
+      - emptyDir:
+          medium: ""
+        name: storage
