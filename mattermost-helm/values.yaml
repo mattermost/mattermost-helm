@@ -3,8 +3,6 @@ global:
   dbUser: "mmuser"
   dbPassword: "passwd"
   dbName: "mattermost"
-  filesAccessKey: "AKIAIOSFODNN7EXAMPMM"
-  filesSecretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKMM"
   mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
   features:
     elasticsearch: false
@@ -17,6 +15,9 @@ tags:
 
 mattermost-app:
   replicaCount: 2
+  minio:
+    accessKey: "AKIAIOSFODNN7EXAMPMM"
+    secretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKMM"
   image:
     tag: daily-build
   jobserver:
@@ -73,3 +74,7 @@ mattermost-push-proxy:
       apiKey: ""
     android_rn:
       apiKey: ""
+
+minio:
+  accessKey: "AKIAIOSFODNN7EXAMPMM"
+  secretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKMM"
