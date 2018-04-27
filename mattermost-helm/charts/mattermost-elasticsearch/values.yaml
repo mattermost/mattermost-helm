@@ -12,11 +12,13 @@ persistence:
 
 client:
   replicas: 2
-  heapSize: 128m
+  heapSize: 512m
+  networkHost: "_eth0:ipv4_"
 
 data:
   replicas: 2
-  heapSize: 256m
+  heapSize: 512m
+  networkHost: "_eth0:ipv4_"
 
   persistentVolume:
     ## If true, data will create/use a Persistent Volume Claim
@@ -48,7 +50,8 @@ data:
 
 master:
   replicas: 3
-  heapSize: 128m
+  heapSize: 512m
+  networkHost: "_eth0:ipv4_"
   requiredMasters: "\"2\""
 
   persistentVolume:
