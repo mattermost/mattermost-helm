@@ -1,62 +1,9 @@
-
-config.json
-config.yaml
-db-password.txt
-db-root-password.txt
 mattermost.mattermost-license
 *.mattermost-license
 
-logs
+dist/
+
 .DS_Store
-node_modules
-/dist
-/webapp/dist
-npm-debug.log
-
-web/static/js/bundle*.js
-web/static/js/bundle*.js.map
-web/static/js/libs*.js
-
-config/active.dat
-config/config.json
-
-# Enteprise imports file
-imports.go
-cmd/mattermost/imports.go
-
-# Build Targets
-.prebuild
-.npminstall
-
-# Compiled Object files, Static and Dynamic libs (Shared Objects)
-*.o
-*.a
-*.so
-
-# Folders
-_obj
-_test
-
-# Architecture specific extensions/prefixes
-[568vq].out
-
-*.cgo1.go
-*.cgo2.c
-_cgo_defun.c
-_cgo_gotypes.go
-_cgo_export.*
-
-_testmain.go
-
-*.exe
-*.test
-*.prof
-
-# Log files
-*mattermost.log
-*npm-debug.log*
-
-.tmp
 
 # Vim temporary files
 [._]*.s[a-w][a-z]
@@ -65,26 +12,6 @@ _testmain.go
 Session.vim
 .netrwhist
 *~
-
-# Build files
-*bundle.js
-
-web/sass-files/sass/.sass-cache/
-*config.codekit
-*.sass-cache
-*styles.css
-
-# Default local file storage
-data/*
-webapp/data/*
-api/data/*
-api4/data/*
-
-enterprise
-
-cover.out
-ecover.out
-*.test
 
 .agignore
 .ctags
