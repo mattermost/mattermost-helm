@@ -1,6 +1,4 @@
 # Default values for mattermost-app.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
 replicaCount: 1
 image:
   repository: mattermost/mattermost-kubernetes
@@ -40,3 +38,11 @@ jobserver:
   service:
     name: mattermost-app-jobserver
     type: ClusterIP
+
+notifications:
+  # Push proxy must be configured or useHPNS must be true for push noticiations to work.
+  push:
+    enabled: false
+    # Hosted push notication service. Requires an enterprise license.
+    # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
+    useHPNS: false

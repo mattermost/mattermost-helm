@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: mattermost/mattermost-push-proxy
-  tag: latest
+  tag: daily-build
   pullPolicy: Always
 service:
   name: mattermost-push-proxy

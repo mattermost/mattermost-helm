@@ -19,7 +19,7 @@ RUN mkdir -p /mattermost-push-proxy \
     && rm mattermost-push-proxy-$PP_VERSION.tar.gz \
     && mv mattermost-push-proxy/* ./ \
     && rm -rf mattermost-push-proxy
-  
+
 WORKDIR /mattermost-push-proxy
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
