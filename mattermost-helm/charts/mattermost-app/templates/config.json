@@ -144,8 +144,12 @@
         "SMTPPort": "",
         "ConnectionSecurity": "",
         "InviteSalt": "{{ randAlphaNum 32 }}",
-        "SendPushNotifications": {{ .Values.global.sendPushNotifications }},
-        "PushNotificationServer": "http://{{ .Release.Name }}-mattermost-push-proxy:8806",
+        "SendPushNotifications": {{ .Values.notifications.push.enabled }},
+        {{- if .Values.notifications.push.useHPNS -}}
+        "PushNotificationServer": "https://push.mattermost.com",
+        {{- else -}}
+        "PushNotificationServer": "http://{{ .Release.Name }}-mattermost-push-proxy:8066",
+        {{- end -}}
         "PushNotificationContents": "generic",
         "EnableEmailBatching": false,
         "EmailBatchingBufferSize": 256,
