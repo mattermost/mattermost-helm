@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "fullname" . }}
+        app: {{ template "fullname" . }}-jobserver
         component: "{{ .Values.jobserver.name }}"
     spec:
       containers:
