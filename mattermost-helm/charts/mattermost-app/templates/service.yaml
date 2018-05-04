@@ -6,6 +6,8 @@ metadata:
     app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
+  selector:
+    app: {{ template "fullname" . }}
   type: {{ .Values.service.type }}
   ports:
   - port: {{ .Values.service.externalPort }}
