@@ -41,7 +41,7 @@ spec:
           timeoutSeconds: 5
           periodSeconds: 15
           httpGet:
-            path: /api/v3/general/ping
+            path: /api/v4/system/ping
             port: {{ .Values.service.internalPort }}
         volumeMounts:
         - mountPath: /mattermost/config/config.json
