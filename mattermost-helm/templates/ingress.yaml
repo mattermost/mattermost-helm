@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-mattermost-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_cache mattermost_cache;
+      proxy_cache_revalidate on;
+      proxy_cache_min_uses 2;
+      proxy_cache_use_stale timeout;
+      proxy_cache_lock on;
+    {{- if .Values.tls.enabled }}
+    kubernetes.io/tls-acme: 'true'
+    {{- end }}
+{{- if .Values.tls.enabled }}
+spec:
+  rules:
+  - host: {{ .Values.tls.hostname }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-mattermost-app
+          servicePort: 8065
+  tls:
+  - secretName: {{ .Release.Name }}-mattermost-tls-cert
+    hosts:
+    - {{ .Values.tls.hostname }}
+{{- else }}
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-mattermost-app
+          servicePort: 8065
+{{- end }}

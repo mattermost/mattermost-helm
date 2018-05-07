@@ -30,19 +30,3 @@ resources:
   requests:
     cpu: 100m
     memory: 256Mi
-
-jobserver:
-  name: jobserver
-  enabled: true
-  replicaCount: 1
-  service:
-    name: mattermost-app-jobserver
-    type: ClusterIP
-
-notifications:
-  # Push proxy must be configured or useHPNS must be true for push noticiations to work.
-  push:
-    enabled: false
-    # Hosted push notification service. Requires an enterprise license.
-    # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
-    useHPNS: false

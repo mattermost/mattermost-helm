@@ -1,0 +1,9 @@
+dependencies:
+- name: kube-lego
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 0.4.0
+- name: nginx-ingress
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 0.17.1
+digest: sha256:3ac6c143b93fce4bdcc9121a2f6b16b4f95edb88eca172daff7b6b69aa0ed8cf
+generated: 2018-05-02T12:31:33.635970902-04:00

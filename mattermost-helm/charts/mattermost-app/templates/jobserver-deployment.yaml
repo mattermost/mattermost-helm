@@ -1,4 +1,4 @@
-{{- if .Values.jobserver.enabled -}}
+{{- if .Values.global.features.jobserver.enabled -}}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -6,12 +6,12 @@ metadata:
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
-  replicas: {{ .Values.jobserver.replicaCount }}
+  replicas: {{ .Values.global.features.jobserver.replicaCount }}
   template:
     metadata:
       labels:
         app: {{ template "fullname" . }}-jobserver
-        component: "{{ .Values.jobserver.name }}"
+        component: "{{ .Values.global.features.jobserver.name }}"
     spec:
       containers:
       - name: {{ template "mattermost-app.jobserver.fullname" . }}

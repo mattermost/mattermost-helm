@@ -1,4 +1,4 @@
-{{- if .Values.jobserver.enabled -}}
+{{- if .Values.global.features.jobserver.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,8 +6,8 @@ metadata:
   labels:
     app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    component: "{{ .Values.jobserver.name }}"
+    component: "{{ .Values.global.features.jobserver.name }}"
 spec:
-  type: {{ .Values.jobserver.service.type }}
+  type: {{ .Values.global.features.jobserver.service.type }}
   clusterIP: None
 {{- end -}}
