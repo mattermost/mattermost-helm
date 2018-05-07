@@ -1,6 +1,8 @@
 Mattermost Kubernetes
 ==========================
 
+This helm chart is still under construction.
+
 # Configuration
 
 To start, copy [mattermost-helm/values.yaml](https://github.com/mattermost/mattermost-kubernetes/blob/master/mattermost-helm/values.yaml) and name it `config.yaml`. This will be your configuration file for the Mattermost helm chart.
@@ -35,6 +37,13 @@ After it's working in the staging environment, we need to do a few things to swi
 * Delete the staging tls cert with `kubectl delete secret <release-name>-mattermost-tls-cert`
 
 Now, just install or upgrade your helm release, wait a couple minutes and you should have a valid TSL certificate working at your domain.
+
+# Install
+
+```
+helm repo add mattermost https://releases.mattermost.com/helm
+helm upgrade -f config.yaml mattermost-helm
+```
 
 # Getting started using minikube
 
