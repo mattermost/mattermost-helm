@@ -1,5 +1,40 @@
-Mattermost Kubernetes 
+Mattermost Kubernetes
 ==========================
+
+# Configuration
+
+To start, copy [mattermost-helm/values.yaml](https://github.com/mattermost/mattermost-kubernetes/blob/master/mattermost-helm/values.yaml) and name it `config.yaml`. This will be your configuration file for the Mattermost helm chart.
+
+## DNS
+
+Depending on the DNS service you're using, the exact steps will differ but generally to point your domain name at your release you can do the following:
+
+Note that your helm release must already be installed and running.
+
+1. Run `kubectl describe svc <release-name>-nginx-ingress-controller`
+2. Copy the domain name beside "LoadBalancer Ingress:"
+3. On your DNS service, create a CNAME record pointing from the domain you'd like to use to the domain name you just copied
+4. Save that and wait 10-15 minutes for the DNS change to propagate
+
+## TLS/SSL
+
+To configure the chart to use Let's Encrypt to register and get a TSL certificate, do the following:
+
+* Set `tls.enabled` to `true`
+* Set `tls.hostname` to the domain name that will be hosting your Mattermost instance
+* Set `kube-lego.LEGO_EMAIL` to the email to use when registering the TSL certifcate
+
+Note that at first, we're using the staging Let's Encrypt URL. We suggest doing this so that if there is an error, you don't get rate limited by Let's Encrypt.
+
+Now, install or upgrade your helm release, wait a couple minutes and go to your domain. You should see an invalid TSL certificate. That certificate should be named "Fake LE Intermediate X1". If it is, then it worked.
+
+After it's working in the staging environment, we need to do a few things to switch it over to production:
+
+* Set `kube-lego.LEGO_URL` to `https://acme-v01.api.letsencrypt.org/directory`
+* Delete the existing kube-lego secret with `kubectl delete secret kube-lego-account`
+* Delete the staging tls cert with `kubectl delete secret <release-name>-mattermost-tls-cert`
+
+Now, just install or upgrade your helm release, wait a couple minutes and you should have a valid TSL certificate working at your domain.
 
 # Getting started using minikube
 
