@@ -20,15 +20,15 @@ Note that your helm release must already be installed and running.
 
 ## TLS/SSL
 
-To configure the chart to use Let's Encrypt to register and get a TSL certificate, do the following:
+To configure the chart to use Let's Encrypt to register and get a TLS certificate, do the following:
 
 * Set `tls.enabled` to `true`
 * Set `tls.hostname` to the domain name that will be hosting your Mattermost instance
-* Set `kube-lego.LEGO_EMAIL` to the email to use when registering the TSL certifcate
+* Set `kube-lego.LEGO_EMAIL` to the email to use when registering the TLS certifcate
 
 Note that at first, we're using the staging Let's Encrypt URL. We suggest doing this so that if there is an error, you don't get rate limited by Let's Encrypt.
 
-Now, install or upgrade your helm release, wait a couple minutes and go to your domain. You should see an invalid TSL certificate. That certificate should be named "Fake LE Intermediate X1". If it is, then it worked.
+Now, install or upgrade your helm release, wait a couple minutes and go to your domain. You should see an invalid TLS certificate. That certificate should be named "Fake LE Intermediate X1". If it is, then it worked.
 
 After it's working in the staging environment, we need to do a few things to switch it over to production:
 
@@ -36,7 +36,7 @@ After it's working in the staging environment, we need to do a few things to swi
 * Delete the existing kube-lego secret with `kubectl delete secret kube-lego-account`
 * Delete the staging tls cert with `kubectl delete secret <release-name>-mattermost-tls-cert`
 
-Now, just install or upgrade your helm release, wait a couple minutes and you should have a valid TSL certificate working at your domain.
+Now, just install or upgrade your helm release, wait a couple minutes and you should have a valid TLS certificate working at your domain.
 
 # Install
 
