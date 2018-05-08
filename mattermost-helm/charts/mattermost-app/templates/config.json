@@ -144,8 +144,8 @@
         "SMTPPort": "",
         "ConnectionSecurity": "",
         "InviteSalt": "{{ randAlphaNum 32 }}",
-        "SendPushNotifications": {{ .Values.notifications.push.enabled }},
-        {{- if .Values.notifications.push.useHPNS -}}
+        "SendPushNotifications": {{ .Values.global.features.notifications.push.enabled }},
+        {{- if .Values.global.features.notifications.push.useHPNS -}}
         "PushNotificationServer": "https://push.mattermost.com",
         {{- else -}}
         "PushNotificationServer": "http://{{ .Release.Name }}-mattermost-push-proxy:8066",
@@ -297,7 +297,7 @@
     "DataRetentionSettings": {
         "Enable": false
     }
-    {{- if .Values.jobserver.enabled -}}
+    {{- if .Values.global.features.jobserver.enabled -}}
     ,
     "JobSettings": {
         "RunJobs": false,
