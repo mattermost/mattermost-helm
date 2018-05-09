@@ -1,4 +1,4 @@
-{{- if .Values.server.persistentVolume.enabled -}}
+{{- if and .Values.server.persistentVolume.enabled .Values.global.features.grafana.enabled }}
 {{- if not .Values.server.persistentVolume.existingClaim -}}
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -28,4 +28,4 @@ spec:
     requests:
       storage: {{ .Values.server.persistentVolume.size | quote }}
 {{- end -}}
-{{- end -}}
+{{- end }}

@@ -5,3 +5,7 @@ dependencies:
   - name: nginx-ingress
     repository: https://kubernetes-charts.storage.googleapis.com
     version: 0.17.1
+  - name: mysqlha
+    repository: https://kubernetes-charts-incubator.storage.googleapis.com
+    version: 0.2.0
+    condition: mysqlha.enabled

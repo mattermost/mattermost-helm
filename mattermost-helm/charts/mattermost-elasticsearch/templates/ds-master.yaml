@@ -1,3 +1,4 @@
+{{- if .Values.global.features.elasticsearch.enabled }}
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
@@ -25,3 +26,4 @@ spec:
             #! /bin/bash
             sysctl -w vm.max_map_count=262144
             echo "done"
+{{- end }}

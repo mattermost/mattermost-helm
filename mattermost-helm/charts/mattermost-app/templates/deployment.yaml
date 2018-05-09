@@ -20,6 +20,12 @@ spec:
             "image": "appropriate/curl:latest",
             "imagePullPolicy": "IfNotPresent",
             "command": ["sh", "-c", "until ! {{ .Values.global.features.elasticsearch }} || curl --max-time 5 http://{{ .Release.Name }}-mattermost-elasticsearch:9200 ; do echo waiting for elasticsearch; sleep 5; done;"]
+          },
+          {
+            "name": "init-mysql",
+            "image": "appropriate/curl:latest",
+            "imagePullPolicy": "IfNotPresent",
+            "command": ["sh", "-c", "until ! curl --max-time 5 http://{{ .Release.Name }}-mysqlha-readonly:3306 ; do echo waiting for mysql; sleep 5; done;"]
           }
         ]'
     spec:
@@ -60,8 +66,5 @@ spec:
             - key: config.json
               path: config.json
         - name: mattermost-license
-          configMap:
-            name: {{template "fullname" .}}-mattermost-license
-            items:
-            - key: mattermost.mattermost-license
-              path: mattermost.mattermost-license
+          secret:
+            secretName: {{template "fullname" .}}-mattermost-license

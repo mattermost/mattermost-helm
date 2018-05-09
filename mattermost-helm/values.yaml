@@ -7,10 +7,15 @@ global:
   filesSecretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKMM"
   mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
   features:
-    elasticsearch: false
+    elasticsearch:
+      enabled: false
+    loadTest:
+      enabled: false
+    grafana:
+      enabled: false
     jobserver:
       name: jobserver
-      enabled: true
+      enabled: false
       replicaCount: 1
       service:
         name: mattermost-app-jobserver
@@ -23,10 +28,31 @@ global:
         # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
         useHPNS: false
 
+mysqlha:
+  enabled: true
+  mysqlha:
+    replicaCount: 2
+    mysqlRootPassword: "rootpasswd"
+    mysqlUser: "mmuser"
+    mysqlPassword: "passwd"
+    mysqlDatabase: "mattermost"
+  persistence:
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, azure-disk on
+    ##   Azure, standard on GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+    ## Enable persistence using Persistent Volume Claims
+    ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    ## See: https://github.com/kubernetes/charts/tree/master/incubator/mysqlha
+    enabled: false
+
 tags:
   core: true
-  metrics: true
-  loadtest: false
+  metrics: false
 
 mattermost-app:
   replicaCount: 2
@@ -86,7 +112,7 @@ mattermost-loadtest:
   resultsPassword: ""
 
 mattermost-push-proxy:
-  replicaCount: 2
+  replicaCount: 1
   applePushSettings:
     apple:
       configMap: "apple-cert-path"

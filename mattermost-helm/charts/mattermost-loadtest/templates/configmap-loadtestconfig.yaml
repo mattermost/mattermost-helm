@@ -1,3 +1,4 @@
+{{- if .Values.global.features.loadTest.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,3 +9,4 @@ metadata:
 data:
   loadtestconfig.json: |
 {{include "loadtestconfig.json" . | printf "%s" | indent 4}}
+{{- end }}

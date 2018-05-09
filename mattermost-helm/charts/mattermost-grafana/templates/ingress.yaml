@@ -1,4 +1,4 @@
-{{- if .Values.server.ingress.enabled -}}
+{{- if and .Values.server.ingress.enabled .Values.global.features.grafana.enabled }}
 {{- $releaseName := .Release.Name -}}
 {{- $servicePort := .Values.server.httpPort -}}
 apiVersion: extensions/v1beta1
@@ -30,4 +30,4 @@ spec:
   tls:
 {{ toYaml .Values.server.ingress.tls | indent 4 }}
   {{- end -}}
-{{- end -}}
+{{- end }}

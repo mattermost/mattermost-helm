@@ -1,3 +1,4 @@
+{{- if .Values.global.features.grafana.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -13,3 +14,4 @@ data:
   grafana-install-plugins: {{ .Values.server.installPlugins | quote }}
   {{- end }}
 {{ toYaml .Values.serverConfigFile | indent 2 }}
+{{- end }}

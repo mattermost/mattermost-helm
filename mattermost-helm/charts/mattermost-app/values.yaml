@@ -2,7 +2,7 @@
 replicaCount: 1
 image:
   repository: mattermost/mattermost-kubernetes
-  tag: master
+  tag: 4.9.2
   pullPolicy: Always
 service:
   name: mattermost-app
