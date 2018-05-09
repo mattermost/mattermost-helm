@@ -49,11 +49,15 @@
         "ClusterLogTimeoutMilliseconds": 2000
     },
     "ElasticsearchSettings": {
+        {{- if .Values.global.features.elasticsearch.enabled }}
         "ConnectionUrl": "http://{{ .Release.Name }}-mattermost-elasticsearch:9200",
+        {{- else }}
+        "ConnectionUrl": "",
+        {{- end }}
         "Username": "",
         "Password": "",
-        "EnableIndexing": {{ .Values.global.features.elasticsearch }},
-        "EnableSearching": {{ .Values.global.features.elasticsearch }},
+        "EnableIndexing": {{ .Values.global.features.elasticsearch.enabled }},
+        "EnableSearching": {{ .Values.global.features.elasticsearch.enabled }},
         "Sniff": true
     },
     "TeamSettings": {
@@ -81,8 +85,8 @@
     },
     "SqlSettings": {
         "DriverName": "mysql",
-        "DataSource": "{{ .Values.global.dbUser }}:{{ .Values.global.dbPassword }}@tcp({{ .Release.Name }}-mattermost-db:3306)/{{ .Values.global.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",
-        "DataSourceReplicas": [],
+        "DataSource": "{{ .Values.global.dbUser }}:{{ .Values.global.dbPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.global.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",
+        "DataSourceReplicas": ["{{ .Values.global.dbUser }}:{{ .Values.global.dbPassword }}@tcp({{ .Release.Name }}-mysqlha-readonly:3306)/{{ .Values.global.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"],
         "DataSourceSearchReplicas": [],
         "MaxIdleConns": 20,
         "MaxOpenConns": 100,

@@ -5,5 +5,8 @@ dependencies:
 - name: nginx-ingress
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 0.17.1
-digest: sha256:3ac6c143b93fce4bdcc9121a2f6b16b4f95edb88eca172daff7b6b69aa0ed8cf
-generated: 2018-05-02T12:31:33.635970902-04:00
+- name: mysqlha
+  repository: https://kubernetes-charts-incubator.storage.googleapis.com
+  version: 0.2.0
+digest: sha256:9bdfa91ec8c82f1566c86aed897ab56628fe906721721fdef27e0dd419059383
+generated: 2018-05-08T09:18:02.61380976+02:00

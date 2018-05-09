@@ -1,3 +1,4 @@
+{{- if .Values.global.features.loadTest.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -36,14 +37,12 @@ spec:
             - key: config.json
               path: config.json
         - name: mattermost-license
-          configMap:
-            name: {{template "fullname" .}}-mattermost-license
-            items:
-            - key: mattermost.mattermost-license
-              path: mattermost.mattermost-license
+          secret:
+            secretName: {{template "fullname" .}}-mattermost-license
         - name: loadtestconfig-json
           configMap:
             name: {{template "fullname" .}}-loadtestconfig-json
             items:
             - key: loadtestconfig.json
               path: loadtestconfig.json
+{{- end }}

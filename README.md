@@ -38,6 +38,16 @@ After it's working in the staging environment, we need to do a few things to swi
 
 Now, just install or upgrade your helm release, wait a couple minutes and you should have a valid TSL certificate working at your domain.
 
+## MySQL
+
+We are using the incubator/mysqlha chart to be able to get HA for the databases.
+Since this is still in the incubator phase you need to add the repository:
+
+```
+helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+```
+
+
 # Install
 
 ```

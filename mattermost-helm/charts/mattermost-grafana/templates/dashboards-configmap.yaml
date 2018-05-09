@@ -1,3 +1,4 @@
+{{- if .Values.global.features.grafana.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,3 +12,4 @@ metadata:
 data:
   dashboard-kpi.json: |
 {{include "dashboard-kpi.json" . | printf "%s" | indent 4}}
+{{- end }}

@@ -1,4 +1,4 @@
-{{- if .Values.server.setDatasource.enabled -}}
+{{- if and .Values.server.setDatasource.enabled .Values.global.features.grafana.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -41,4 +41,4 @@ spec:
           - "--data-binary"
           - "{\"name\":\"{{ .Values.server.setDatasource.datasource.name }}\",\"type\":\"{{ .Values.server.setDatasource.datasource.type }}\",\"url\":\"http://{{ .Release.Name }}-mattermost-prometheus-server:9090/\",\"database\":\"{{ .Values.server.setDatasource.datasource.database }}\",\"jsonData\":{ {{ .Values.server.setDatasource.datasource.jsonData }} },\"access\":\"{{ .Values.server.setDatasource.datasource.access }}\",\"isDefault\":{{ .Values.server.setDatasource.datasource.isDefault }}}"
       restartPolicy: {{ .Values.server.setDatasource.restartPolicy }}
-{{- end -}}
+{{- end }}
