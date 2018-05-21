@@ -8,5 +8,8 @@ dependencies:
 - name: mysqlha
   repository: https://kubernetes-charts-incubator.storage.googleapis.com
   version: 0.2.0
-digest: sha256:9bdfa91ec8c82f1566c86aed897ab56628fe906721721fdef27e0dd419059383
-generated: 2018-05-08T09:18:02.61380976+02:00
+- name: minio
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 1.3.0
+digest: sha256:ef29f7949aa150b3ad4003a16eb3f8889d9eea70672279b8d3217822f38b7785
+generated: 2018-05-21T12:04:32.271934295-04:00

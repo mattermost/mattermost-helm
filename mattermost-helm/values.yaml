@@ -1,4 +1,6 @@
 global:
+  # Set siteUrl to the URL your users will use to access Mattermost
+  siteUrl: ""
   dbRootPassword: "rootpasswd"
   dbUser: "mmuser"
   dbPassword: "passwd"
@@ -134,3 +136,93 @@ mattermost-push-proxy:
       apiKey: ""
     android_rn:
       apiKey: ""
+
+# See https://github.com/kubernetes/charts/tree/master/stable/minio#configuration
+# for more configuration options
+minio:
+  accessKey: "AKIAIOSFODNN7EXAMPMM"
+  secretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKMM"
+
+  persistence:
+    enabled: false
+
+  # See https://docs.minio.io/docs/minio-server-configuration-guide
+  minioConfig:
+    region: ""
+    browser: "off"
+    domain: ""
+    standardStorageClass: ""
+    reducedRedundancyStorageClass: ""
+    aqmp:
+      enable: false
+      url: ""
+      exchange: ""
+      routingKey: ""
+      exchangeType: ""
+      deliveryMode: 0
+      mandatory: false
+      immediate: false
+      durable: false
+      internal: false
+      noWait: false
+      autoDeleted: false
+    nats:
+      enable: false
+      address: ""
+      subject: ""
+      username: ""
+      password: ""
+      token: ""
+      secure: false
+      pingInterval: 0
+      enableStreaming: false
+      clusterID: ""
+      clientID: ""
+      async: false
+      maxPubAcksInflight: 0
+    elasticsearch:
+      enable: false
+      format: "namespace"
+      url: ""
+      index: ""
+    redis:
+      enable: false
+      format: "namespace"
+      address: ""
+      password: ""
+      key: ""
+    postgresql:
+      enable: false
+      format: "namespace"
+      connectionString: ""
+      table: ""
+      host: ""
+      port: ""
+      user: ""
+      password: ""
+      database: ""
+    kafka:
+      enable: false
+      brokers: "null"
+      topic: ""
+    webhook:
+      enable: false
+      endpoint: ""
+    mysql:
+      enable: false
+      format: "namespace"
+      dsnString: ""
+      table: ""
+      host: ""
+      port: ""
+      user: ""
+      password: ""
+      database: ""
+    mqtt:
+      enable: false
+      broker: ""
+      topic: ""
+      qos: 0
+      clientId: ""
+      username: ""
+      password: ""
