@@ -1,7 +1,7 @@
 {{- define "config.json" -}}
 {
     "ServiceSettings": {
-        "SiteURL": "",
+        "SiteURL": "{{ .Values.global.siteUrl }}",
         "LicenseFileLocation": "/mattermost/mattermost.mattermost-license",
         "ListenAddress": ":8065",
         "ConnectionSecurity": "",
@@ -127,9 +127,9 @@
         "InitialFont": "luximbi.ttf",
         "AmazonS3AccessKeyId": "{{ .Values.global.filesAccessKey }}",
         "AmazonS3SecretAccessKey": "{{ .Values.global.filesSecretKey }}",
-        "AmazonS3Bucket": "kubebucket",
+        "AmazonS3Bucket": "bucket",
         "AmazonS3Region": "",
-        "AmazonS3Endpoint": "{{ .Release.Name }}-mattermost-minio:9000",
+        "AmazonS3Endpoint": "{{ .Release.Name }}-minio:9000",
         "AmazonS3SSL": false,
         "AmazonS3SignV2": false
     },

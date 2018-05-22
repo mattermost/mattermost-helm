@@ -9,3 +9,6 @@ dependencies:
     repository: https://kubernetes-charts-incubator.storage.googleapis.com
     version: 0.2.0
     condition: mysqlha.enabled
+  - name: minio
+    repository: https://kubernetes-charts.storage.googleapis.com
+    version: 1.3.0
