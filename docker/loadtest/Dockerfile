@@ -26,4 +26,4 @@ RUN mkdir -p /mattermost-load-test \
 	&& rm -f /mattermost-load-test/loadtestconfig.json
 
 WORKDIR /mattermost-load-test
-CMD ["loadtest", "all"]
+CMD ["cat"]
