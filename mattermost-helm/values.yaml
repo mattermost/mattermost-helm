@@ -99,10 +99,10 @@ mattermost-elasticsearch:
 
 mattermost-loadtest:
   numTeams: 1
-  numChannelsPerTeam: 4000
-  numUsers: 5000
+  numChannelsPerTeam: 400
+  numUsers: 1000
   testLengthMinutes: 20
-  numActiveEntities: 5000
+  numActiveEntities: 1000
   actionRateMilliseconds: 60000
   actionRateMaxVarianceMilliseconds: 15000
   pprofDelayMinutes: 15
