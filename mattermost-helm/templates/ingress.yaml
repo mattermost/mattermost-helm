@@ -7,6 +7,11 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: 50m
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+{{- if .Values.tls.enabled }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+{{- else }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+{{- end }}
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_cache mattermost_cache;
       proxy_cache_revalidate on;
