@@ -1,8 +1,8 @@
 {{- define "loadtestconfig.json" -}}
 {
     "ConnectionConfiguration": {
-        "ServerURL": "http://{{ .Release.Name }}-mattermost-proxy",
-        "WebsocketURL": "ws://{{ .Release.Name }}-mattermost-proxy",
+        "ServerURL": "http://{{ .Release.Name }}-nginx-ingress-controller",
+        "WebsocketURL": "ws://{{ .Release.Name }}-nginx-ingress-controller",
         "PProfUrl": "http://{{ .Release.Name }}-mattermost-app:8067/debug/pprof",
         "LocalCommands": true,
         "SSHHostnamePort": "",
