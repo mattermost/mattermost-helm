@@ -4,6 +4,8 @@
         "ServerURL": "http://{{ .Release.Name }}-nginx-ingress-controller",
         "WebsocketURL": "ws://{{ .Release.Name }}-nginx-ingress-controller",
         "PProfUrl": "http://{{ .Release.Name }}-mattermost-app:8067/debug/pprof",
+        "DriverName": "mysql",
+        "DataSource": "{{ .Values.global.dbUser }}:{{ .Values.global.dbPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.global.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",
         "LocalCommands": true,
         "SSHHostnamePort": "",
         "SSHUsername": "",
