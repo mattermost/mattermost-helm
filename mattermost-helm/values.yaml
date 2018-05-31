@@ -101,6 +101,7 @@ mattermost-loadtest:
   numTeams: 1
   numChannelsPerTeam: 400
   numUsers: 1000
+  skipBulkLoad: true
   testLengthMinutes: 20
   numActiveEntities: 1000
   actionRateMilliseconds: 60000
