@@ -89,7 +89,7 @@
         "DataSourceReplicas": ["{{ .Values.global.dbUser }}:{{ .Values.global.dbPassword }}@tcp({{ .Release.Name }}-mysqlha-readonly:3306)/{{ .Values.global.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"],
         "DataSourceSearchReplicas": [],
         "MaxIdleConns": 20,
-        "MaxOpenConns": 75,
+        "MaxOpenConns": 35,
         "Trace": false,
         "AtRestEncryptKey": "{{ randAlphaNum 32 }}",
         "QueryTimeout": 30
