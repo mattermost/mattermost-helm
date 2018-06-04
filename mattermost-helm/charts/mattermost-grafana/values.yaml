@@ -199,7 +199,7 @@ server:
       ##
 
       ## HARDCODED BECAUE YOU CAN'T TEMPLATE values.yaml
-      ##url: "http://{{ .Release.Name }}-mattermost-prometheus"
+      ##url: "http://{{ .Release.Name }}-prometheus-server"
 
       ## The name of the database at the datasource.
       ## Required parameter when used with elasticsearch, which refers to the index_name
