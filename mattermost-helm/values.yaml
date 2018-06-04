@@ -98,6 +98,7 @@ mattermost-elasticsearch:
     replicaCount: 2
 
 mattermost-loadtest:
+  replicaCount: 1
   numTeams: 1
   numChannelsPerTeam: 400
   numUsers: 1000

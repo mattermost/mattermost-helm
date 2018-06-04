@@ -6,6 +6,7 @@ metadata:
   labels:
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 spec:
+  replicas: {{ .Values.replicaCount }
   template:
     metadata:
       labels:
