@@ -1,5 +1,5 @@
 1. Wait for the External endpoint to be available (this may take several minutes)
 2. Get the application URL by running these commands:
- export SERVICE_NAME=$(kubectl get svc --namespace {{ .Release.Namespace }} -l "app={{ .Release.Name }}-mattermost-proxy" -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")
+ export SERVICE_NAME=$(kubectl get svc --namespace {{ .Release.Namespace }} -l "app=nginx-ingress,release={{ .Release.Name }}" -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")
 
   echo "Visit http://$SERVICE_NAME to use your application"
