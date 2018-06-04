@@ -21,6 +21,9 @@ ingress:
     # - secretName: chart-example-tls
     #   hosts:
     #     - chart-example.local
+
+replicaCount: 1
+
 resources:
   requests:
     cpu: 100m
