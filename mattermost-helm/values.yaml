@@ -38,6 +38,17 @@ mysqlha:
     mysqlUser: "mmuser"
     mysqlPassword: "passwd"
     mysqlDatabase: "mattermost"
+    configFiles:
+      master.cnf: |
+        [mysqld]
+        log-bin
+        skip_name_resolve
+      slave.cnf: |
+        [mysqld]
+        super-read-only
+        skip_name_resolve
+        slave_parallel_workers = 100
+        slave_parallel_type = LOGICAL_CLOCK
   persistence:
     ## If defined, storageClassName: <storageClass>
     ## If set to "-", storageClassName: "", which disables dynamic provisioning
