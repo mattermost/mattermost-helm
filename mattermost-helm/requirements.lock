@@ -6,13 +6,13 @@ dependencies:
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 0.17.1
 - name: mysqlha
-  repository: https://kubernetes-charts-incubator.storage.googleapis.com
-  version: 0.2.1
+  repository: https://releases.mattermost.com/helm/mysqlha
+  version: 0.2.2
 - name: minio
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 1.3.0
 - name: prometheus
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 6.7.0
-digest: sha256:76013025e636e585b435900f83cc59e330cef5dd2b4db364b81d1c1fafd2d559
-generated: 2018-06-04T13:07:14.577973186-04:00
+digest: sha256:95c64714a1d0d6b6931aa050483bed8eeeb27d45b69736ad0c584ca16e401e3a
+generated: 2018-06-05T15:50:14.629830134-04:00

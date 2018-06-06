@@ -21,6 +21,8 @@ endif
 	touch $@
 	
 package: check .init
+	# Temporary while we wait for changes to be merged upstream
+	helm repo add mattermost-mysqlha https://releases.mattermost.com/helm/mysqlha
 	mkdir -p dist
 	rm -f mattermost-helm/charts/*.tgz
 	helm package mattermost-helm/charts/* -d mattermost-helm/charts
