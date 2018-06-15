@@ -33,9 +33,6 @@ spec:
             - key: config.json
               path: config.json
         - name: mattermost-license
-          configMap:
-            name: {{template "fullname" .}}-mattermost-license
-            items:
-            - key: mattermost.mattermost-license
-              path: mattermost.mattermost-license
+          secret:
+            secretName: {{ template "fullname" . }}-mattermost-license
 {{- end -}}
