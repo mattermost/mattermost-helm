@@ -1,8 +1,8 @@
 # Default values for mattermost-app.
 replicaCount: 1
 image:
-  repository: mattermost/mattermost-kubernetes
-  tag: 4.9.2
+  repository: mattermost/mattermost-enterprise-edition
+  tag: 5.0.0-rc7
   pullPolicy: Always
 service:
   name: mattermost-app

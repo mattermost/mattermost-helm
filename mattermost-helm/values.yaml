@@ -62,6 +62,7 @@ mysqlha:
     ##
     ## See: https://github.com/kubernetes/charts/tree/master/incubator/mysqlha
     enabled: false
+    size: 10Gi
 
 tags:
   core: true
@@ -70,10 +71,8 @@ tags:
 mattermost-app:
   replicaCount: 2
   image:
-    tag: daily-build
-  jobserver:
-    enabled: enabled
-    replicaCount: 2
+    repository: mattermost/mattermost-enterprise-edition
+    tag: 5.0.0-rc7
 
 tls:
   # When enabled kube-lego will use Let's Encrypt to get a SSL cert
