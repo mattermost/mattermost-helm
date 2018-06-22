@@ -72,7 +72,7 @@ mattermost-app:
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
-    tag: 5.0.0-rc7
+    tag: 5.0.0
 
 tls:
   # When enabled kube-lego will use Let's Encrypt to get a SSL cert
