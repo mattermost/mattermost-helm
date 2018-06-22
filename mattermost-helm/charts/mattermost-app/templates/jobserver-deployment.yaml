@@ -34,5 +34,5 @@ spec:
               path: config.json
         - name: mattermost-license
           secret:
-            secretName: {{ template "fullname" . }}-mattermost-license
+            secretName: {{ .Release.Name }}-mattermost-license
 {{- end -}}
