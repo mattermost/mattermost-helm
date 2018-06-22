@@ -5,8 +5,8 @@ global:
   dbUser: "mmuser"
   dbPassword: "passwd"
   dbName: "mattermost"
-  filesAccessKey: "AKIAIOSFODNN7EXAMPMM"
-  filesSecretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKMM"
+  filesAccessKey: mattermostadmin
+  filesSecretKey: mattermostadmin
   mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
   features:
     elasticsearch:
@@ -29,6 +29,12 @@ global:
         # Hosted push notification service. Requires an enterprise license.
         # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
         useHPNS: false
+
+tags:
+  ingress: false
+  metrics: false
+  storage: true
+  database: true
 
 mysqlha:
   enabled: true
@@ -81,6 +87,7 @@ tls:
   hostname: example.com
 
 kube-lego:
+  enabled: false
   config:
     # Replace this email with the one for registering your SSL cert
     LEGO_EMAIL: someone@example.com
@@ -91,6 +98,7 @@ kube-lego:
     create: true
 
 nginx-ingress:
+  enabled: false
   controller:
     config:
       http-snippet: |
@@ -151,15 +159,19 @@ mattermost-push-proxy:
     android_rn:
       apiKey: ""
 
+# Minio access/secret keys for the in-cluster S3 usage
 # See https://github.com/kubernetes/charts/tree/master/stable/minio#configuration
 # for more configuration options
+# Minio is not exposed publically
 minio:
-  accessKey: "AKIAIOSFODNN7EXAMPMM"
-  secretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKMM"
-
+  enabled: true
+  imageTag: RELEASE.2018-05-25T19-49-13Z
+  serviceType: ClusterIP
+  accessKey: mattermostadmin
+  secretKey: mattermostadmin
+  nodeSelector: {}
   persistence:
-    enabled: false
-
+    enabled: true
   # See https://docs.minio.io/docs/minio-server-configuration-guide
   minioConfig:
     region: ""
@@ -244,6 +256,7 @@ minio:
 # See https://github.com/kubernetes/charts/tree/master/stable/prometheus#configuration
 # for more configuration options
 prometheus:
+  enabled: false
   alertmanager:
     enabled: false
     ingress:
