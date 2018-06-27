@@ -70,10 +70,6 @@ mysqlha:
     enabled: false
     size: 10Gi
 
-tags:
-  core: true
-  metrics: false
-
 mattermost-app:
   replicaCount: 2
   image:
