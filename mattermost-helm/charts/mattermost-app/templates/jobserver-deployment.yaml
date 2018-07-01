@@ -18,10 +18,18 @@ spec:
           image: "appropriate/curl:latest"
           imagePullPolicy: "IfNotPresent"
           command: ["sh", "-c", "until ! {{ .Values.global.features.elasticsearch.enabled }} || curl --max-time 5 http://{{ .Release.Name }}-mattermost-elasticsearch:9200 ; do echo waiting for elasticsearch; sleep 5; done; echo init-elasticsearch finished"]
+        {{- if eq .Values.global.dbBackend "mysqlha" -}}
         - name: "init-mysql"
           image: "appropriate/curl:latest"
           imagePullPolicy: "IfNotPresent"
           command: ["sh", "-c", "until curl --max-time 5 http://{{ .Release.Name }}-mysqlha-readonly:3306; do echo waiting for {{ .Release.Name }}-mysqlha; sleep 5; done;"]
+        {{- end -}}
+        {{- if eq .Values.global.dbBackend "postgresql" -}}
+        - name: "init-postgres"
+          image: "postgres:latest"
+          imagePullPolicy: "IfNotPresent"
+          command: ["sh", "-c", "until pg_isready -h {{ .Release.Name }}-postgresql -p 5432; do echo waiting for {{ .Release.Name }}-postgresql; sleep 5; done;"]
+        {{- end -}}
       containers:
       - name: {{ template "mattermost-app.jobserver.fullname" . }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

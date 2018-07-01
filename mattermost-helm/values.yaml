@@ -1,6 +1,7 @@
 global:
   # Set siteUrl to the URL your users will use to access Mattermost
   siteUrl: ""
+  dbBackend: "mysqlha"
   dbRootPassword: "rootpasswd"
   dbUser: "mmuser"
   dbPassword: "passwd"
@@ -59,6 +60,26 @@ mysqlha:
         skip_name_resolve
         slave_parallel_workers = 100
         slave_parallel_type = LOGICAL_CLOCK
+  persistence:
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, azure-disk on
+    ##   Azure, standard on GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+    ## Enable persistence using Persistent Volume Claims
+    ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    ## See: https://github.com/kubernetes/charts/tree/master/incubator/mysqlha
+    enabled: false
+    size: 10Gi
+
+postgresql:
+  enabled: false
+  postgresUser: "mmuser"
+  postgresPassword: "passwd"
+  postgresDatabase: "mattermost"
   persistence:
     ## If defined, storageClassName: <storageClass>
     ## If set to "-", storageClassName: "", which disables dynamic provisioning

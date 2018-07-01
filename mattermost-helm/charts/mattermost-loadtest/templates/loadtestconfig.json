@@ -4,8 +4,14 @@
         "ServerURL": "http://{{ .Release.Name }}-nginx-ingress-controller",
         "WebsocketURL": "ws://{{ .Release.Name }}-nginx-ingress-controller",
         "PProfUrl": "http://{{ .Release.Name }}-mattermost-app:8067/debug/pprof",
+        {{- if eq .Values.global.dbBackend "mysqlha" -}}
         "DriverName": "mysql",
         "DataSource": "{{ .Values.global.dbUser }}:{{ .Values.global.dbPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.global.dbName }}?charset=utf8mb4,utf8&readTimeout=240s&writeTimeout=240s",
+        {{- end -}}
+        {{- if eq .Values.global.dbBackend "postgresql" -}}
+        "DriverName": "postgres",
+        "DataSource": "postgres://{{ .Values.global.dbUser }}:{{ .Values.global.dbPassword }}@{{ .Release.Name }}-postgresql:5432/{{ .Values.global.dbName }}?sslmode=disable&connect_timeout=10",
+        {{- end -}}
         "LocalCommands": true,
         "SSHHostnamePort": "",
         "SSHUsername": "",
