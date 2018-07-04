@@ -29,6 +29,8 @@ global:
         # Hosted push notification service. Requires an enterprise license.
         # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
         useHPNS: false
+    linkPreviews:
+      enabled: false
 
 tags:
   ingress: false
@@ -123,6 +125,7 @@ mattermost-loadtest:
   numActiveEntities: 1000
   actionRateMilliseconds: 60000
   actionRateMaxVarianceMilliseconds: 15000
+  linkPreviewChance: 0.2
   pprofDelayMinutes: 15
   pprofLengthSeconds: 240
   sendReportToMMServer: false
