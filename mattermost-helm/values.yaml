@@ -29,6 +29,8 @@ global:
         # Hosted push notification service. Requires an enterprise license.
         # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
         useHPNS: false
+    linkPreviews:
+      enabled: false
 
 tags:
   ingress: false

@@ -22,7 +22,7 @@
         "EnableOnlyAdminIntegrations": false,
         "EnablePostUsernameOverride": false,
         "EnablePostIconOverride": false,
-        "EnableLinkPreviews": false,
+        "EnableLinkPreviews": {{ .Values.global.features.linkPreviews.enabled }},
         "EnableTesting": false,
         "EnableDeveloper": false,
         "EnableSecurityFixAlert": true,
