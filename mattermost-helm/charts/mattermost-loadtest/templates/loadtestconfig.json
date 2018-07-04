@@ -52,6 +52,7 @@
         "ActionRateMaxVarianceMilliseconds": {{ .Values.actionRateMaxVarianceMilliseconds }},
         "EnableRequestTiming": true,
         "UploadImageChance": 0.01,
+        "LinkPreviewChance": {{ .Values.linkPreviewChance }},
         "DoStatusPolling": true
     },
     "DisplayConfiguration": {

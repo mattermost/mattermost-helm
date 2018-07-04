@@ -129,6 +129,7 @@ mattermost-loadtest:
   numActiveEntities: 1000
   actionRateMilliseconds: 60000
   actionRateMaxVarianceMilliseconds: 15000
+  linkPreviewChance: 0.2
   pprofDelayMinutes: 15
   pprofLengthSeconds: 240
   sendReportToMMServer: false
