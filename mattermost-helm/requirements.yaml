@@ -10,8 +10,8 @@ dependencies:
     tags:
       - ingress
   - name: mysqlha
-    repository: https://releases.mattermost.com/helm/mysqlha
-    version: 0.2.2
+    repository: https://kubernetes-charts-incubator.storage.googleapis.com
+    version: 0.3.0
     tags:
       - database
     condition: mysqlha.enabled
