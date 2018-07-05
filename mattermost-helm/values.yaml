@@ -31,6 +31,8 @@ global:
         useHPNS: false
     linkPreviews:
       enabled: false
+    customEmoji:
+      enabled: false
 
 tags:
   ingress: false
