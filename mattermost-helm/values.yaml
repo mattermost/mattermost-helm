@@ -121,6 +121,7 @@ mattermost-loadtest:
   numChannelsPerTeam: 400
   numUsers: 1000
   numPosts: 20000000
+  numEmoji: 2000
   replyChance: 0.3
   skipBulkLoad: true
   testLengthMinutes: 20
