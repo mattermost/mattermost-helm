@@ -38,7 +38,7 @@ pipeline {
                         export KUBECONFIG=${config}
 
                         helm init --client-only
-                        helm repo add mattermost-mysql https://releases.mattermost.com/helm/mysqlha
+                        helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
                         helm repo update
                         helm dependency update
 
