@@ -54,6 +54,7 @@
         "EnableRequestTiming": true,
         "UploadImageChance": 0.01,
         "LinkPreviewChance": {{ .Values.linkPreviewChance }},
+        "CustomEmojiChance": {{ .Values.customEmojiChance }},
         "DoStatusPolling": true
     },
     "DisplayConfiguration": {
