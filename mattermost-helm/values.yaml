@@ -31,6 +31,8 @@ global:
         useHPNS: false
     linkPreviews:
       enabled: false
+    customEmoji:
+      enabled: false
 
 tags:
   ingress: false
@@ -119,6 +121,7 @@ mattermost-loadtest:
   numChannelsPerTeam: 400
   numUsers: 1000
   numPosts: 20000000
+  numEmoji: 2000
   replyChance: 0.3
   skipBulkLoad: true
   testLengthMinutes: 20
@@ -126,6 +129,7 @@ mattermost-loadtest:
   actionRateMilliseconds: 60000
   actionRateMaxVarianceMilliseconds: 15000
   linkPreviewChance: 0.2
+  customEmojiChance: 0.2
   pprofDelayMinutes: 15
   pprofLengthSeconds: 240
   sendReportToMMServer: false

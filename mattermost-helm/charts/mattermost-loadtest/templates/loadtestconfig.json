@@ -23,6 +23,7 @@
         "NumChannelsPerTeam": {{ .Values.numChannelsPerTeam }},
         "NumUsers": {{ .Values.numUsers }},
         "NumPosts": {{.Values.numPosts}},
+        "NumEmoji": {{.Values.numEmoji}},
         "PostTimeRange": 2600000,
         "ReplyChance": {{.Values.replyChance}},
         "PercentHighVolumeTeams": 0.2,
@@ -53,6 +54,7 @@
         "EnableRequestTiming": true,
         "UploadImageChance": 0.01,
         "LinkPreviewChance": {{ .Values.linkPreviewChance }},
+        "CustomEmojiChance": {{ .Values.customEmojiChance }},
         "DoStatusPolling": true
     },
     "DisplayConfiguration": {
