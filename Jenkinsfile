@@ -48,12 +48,13 @@ pipeline {
 
                         helm install -n \${BRANCH}-${BUILD_NUMBER} \
                             --namespace \${BRANCH}-${BUILD_NUMBER} \
-                            --set mattermost-app.image.tag=5.0.0 \
+                            --set mattermostApp.image.tag=5.0.0 \
                             --set global.siteUrl="http://\${BRANCH}-${BUILD_NUMBER}.azure.k8s.mattermost.com" \
-                            --set tls.enabled=false \
-                            --set mattermost-app.replicaCount=1 \
+                            --set ingress.hosts="http://\${BRANCH}-${BUILD_NUMBER}.azure.k8s.mattermost.com" \
+                            --set mattermostApp.replicaCount=1 \
                             --set mysqlha.mysqlha.replicaCount=1 \
                             --set minio.persistence.enabled=false \
+                            --set global.features.ingress.enabled=false \
                             --wait .
 
                         STATUS=\$(kubectl get pods --field-selector=status.phase!=Running -n \${BRANCH}-${BUILD_NUMBER})
