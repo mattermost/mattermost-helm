@@ -10,5 +10,5 @@ keywords:
 home: https://mattermost.com
 icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
 source:
-- https://github.com/mattermost/platform
+- https://github.com/mattermost/mattermost-server
 - https://github.com/mattermost/mattermost-kubernetes

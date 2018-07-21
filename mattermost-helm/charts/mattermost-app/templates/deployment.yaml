@@ -24,7 +24,7 @@ spec:
         - name: "init-mysql"
           image: "appropriate/curl:latest"
           imagePullPolicy: "IfNotPresent"
-          command: ["sh", "-c", "until curl --max-time 5 http://{{ .Release.Name }}-mysqlha-readonly:3306; do echo waiting for {{ .Release.Name }}-mysqlha; sleep 5; done;"]
+          command: ["sh", "-c", "until ! {{ .Values.global.features.database.useInternal }} || curl --max-time 5 http://{{ .Release.Name }}-mysqlha-readonly:3306; do echo waiting for {{ .Release.Name }}-mysqlha; sleep 5; done;"]
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

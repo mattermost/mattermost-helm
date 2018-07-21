@@ -84,9 +84,20 @@
         "MaxNotificationsPerChannel": 1000
     },
     "SqlSettings": {
+        {{- if .Values.global.features.database.useInternal }}
         "DriverName": "mysql",
-        "DataSource": "{{ .Values.global.dbUser }}:{{ .Values.global.dbPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.global.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",
-        "DataSourceReplicas": ["{{ .Values.global.dbUser }}:{{ .Values.global.dbPassword }}@tcp({{ .Release.Name }}-mysqlha-readonly:3306)/{{ .Values.global.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"],
+        "DataSource": "{{ .Values.global.features.database.internal.dbUser }}:{{ .Values.global.features.database.internal.dbPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.global.features.database.internal.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",
+        "DataSourceReplicas": ["{{ .Values.global.features.database.internal.dbUser }}:{{ .Values.global.features.database.internal.dbPassword }}@tcp({{ .Release.Name }}-mysqlha-readonly:3306)/{{ .Values.global.features.database.internal.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"],
+        {{- else }}
+        "DriverName": "{{ .Values.global.features.database.external.driver }}",
+        "DataSource": "{{ .Values.global.features.database.external.dataSource }}",
+        "DataSourceReplicas": [
+            {{ range $index, $element := .Values.global.features.database.external.dataSourceReplicas }}
+                {{if $index}},{{end}}
+                {{$element}}
+            {{end}}
+        ],
+        {{- end }}
         "DataSourceSearchReplicas": [],
         "MaxIdleConns": 20,
         "MaxOpenConns": 35,
