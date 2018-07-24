@@ -1,8 +1,8 @@
 global:
   # Set siteUrl to the URL your users will use to access Mattermost
   siteUrl: ""
-  filesAccessKey: mattermostadmin
-  filesSecretKey: mattermostadmin
+  filesAccessKey: "mattermostadmin"
+  filesSecretKey: "mattermostadmin"
   mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
   features:
     ingress:
@@ -166,26 +166,88 @@ mattermost-push-proxy:
     android_rn:
       apiKey: ""
 
-# Minio access/secret keys for the in-cluster S3 usage
-# See https://github.com/kubernetes/charts/tree/master/stable/minio#configuration
-# for more configuration options
-# Minio is not exposed publically
 minio:
-  enabled: true
-  imageTag: RELEASE.2018-05-25T19-49-13Z
-  serviceType: ClusterIP
-  accessKey: mattermostadmin
-  secretKey: mattermostadmin
-  nodeSelector: {}
+  image:
+    repository: minio/minio
+    tag: RELEASE.2018-07-10T01-42-11Z
+    pullPolicy: IfNotPresent
+  mcImage:
+    repository: minio/mc
+    tag: RELEASE.2018-06-09T02-18-09Z
+    pullPolicy: IfNotPresent
+  mode: standalone
+  priorityClassName: ""
+  accessKey: "mattermostadmin"
+  secretKey: "mattermostadmin"
+  configPath: "/root/.minio/"
+  mountPath: "/export"
+  replicas: 4
+
   persistence:
     enabled: true
-  # See https://docs.minio.io/docs/minio-server-configuration-guide
+    ## A manually managed Persistent Volume and Claim
+    ## Requires persistence.enabled: true
+    ## If defined, PVC must be created manually before volume will be bound
+    # existingClaim:
+
+    ## minio data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    ## Storage class of PV to bind. By default it looks for standard storage class.
+    ## If the PV uses a different storage class, specify that here.
+    storageClass:
+    accessMode: ReadWriteOnce
+    size: 10Gi
+
+  ## If subPath is set mount a sub folder of a volume instead of the root of the volume.
+  ## This is especially handy for volume plugins that don't natively support sub mounting (like glusterfs).
+  ##
+  subPath: ""
+
+  service:
+    type: ClusterIP
+    clusterIP: None
+    port: 9000
+    # nodePort: 31311
+    annotations:
+      prometheus.io/scrape: 'true'
+      prometheus.io/path:   '/minio/prometheus/metrics'
+      prometheus.io/port:   '9000'
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+
+  defaultBucket:
+    enabled: true
+    name: bucket
+    policy: none
+    purge: false
+
+  ## https://docs.minio.io/docs/minio-bucket-notification-guide
+  ## https://github.com/minio/minio/blob/master/docs/config
   minioConfig:
     region: ""
     browser: "off"
     domain: ""
-    standardStorageClass: ""
-    reducedRedundancyStorageClass: ""
+    worm: "off"
+    storageClass:
+      standardStorageClass: ""
+      reducedRedundancyStorageClass: ""
+    cache:
+      drives: []
+      expiry: 90
+      maxuse: 80
+      exclude: []
     aqmp:
       enable: false
       url: ""
@@ -259,6 +321,11 @@ minio:
       clientId: ""
       username: ""
       password: ""
+      reconnectInterval: 0
+      keepAliveInterval: 0
+  networkPolicy:
+    enabled: false
+    allowExternal: true
 
 # See https://github.com/kubernetes/charts/tree/master/stable/prometheus#configuration
 # for more configuration options
