@@ -1,14 +1,22 @@
 global:
   # Set siteUrl to the URL your users will use to access Mattermost
   siteUrl: ""
-  dbRootPassword: "rootpasswd"
-  dbUser: "mmuser"
-  dbPassword: "passwd"
-  dbName: "mattermost"
   filesAccessKey: mattermostadmin
   filesSecretKey: mattermostadmin
   mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
   features:
+    ingress:
+      enabled: true
+    database:
+      useInternal: true
+      internal:
+        dbUser: "mmuser"
+        dbPassword: "passwd"
+        dbName: "mattermost"
+      external:
+        driver: "mysql"
+        dataSource: ""
+        dataSourceReplicas:
     elasticsearch:
       enabled: false
     loadTest:
@@ -33,12 +41,8 @@ global:
       enabled: false
     customEmoji:
       enabled: false
-
-tags:
-  ingress: false
-  metrics: false
-  storage: true
-  database: true
+    storage:
+      enabled: true
 
 mysqlha:
   enabled: true

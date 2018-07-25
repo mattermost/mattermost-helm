@@ -2,26 +2,20 @@ dependencies:
   - name: kube-lego
     repository: https://kubernetes-charts.storage.googleapis.com
     version: 0.4.2
-    tags:
-      - ingress
+    condition: global.features.ingress.enabled
   - name: nginx-ingress
     repository: https://kubernetes-charts.storage.googleapis.com
     version: 0.20.3
-    tags:
-      - ingress
+    condition: global.features.ingress.enabled
   - name: mysqlha
     repository: https://kubernetes-charts-incubator.storage.googleapis.com
     version: 0.3.0
-    tags:
-      - database
-    condition: mysqlha.enabled
+    condition: global.features.database.useInternal
   - name: minio
     repository: https://kubernetes-charts.storage.googleapis.com
     version: 1.3.4
-    tags:
-      - storage
+    condition: global.features.storage.enabled
   - name: prometheus
     repository: https://kubernetes-charts.storage.googleapis.com
     version: 6.7.4
-    tags:
-      - metrics
+    condition: global.features.grafana.enabled
