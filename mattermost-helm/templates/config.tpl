@@ -1,4 +1,4 @@
-{{- define "config.json" -}}
+{{- define "config.tpl" -}}
 {
     "ServiceSettings": {
         "SiteURL": "{{ .Values.global.siteUrl }}",
@@ -136,8 +136,8 @@
         "ProfileWidth": 128,
         "ProfileHeight": 128,
         "InitialFont": "luximbi.ttf",
-        "AmazonS3AccessKeyId": "{{ .Values.global.filesAccessKey }}",
-        "AmazonS3SecretAccessKey": "{{ .Values.global.filesSecretKey }}",
+        "AmazonS3AccessKeyId": "{{ .Values.minio.accessKey }}",
+        "AmazonS3SecretAccessKey": "{{ .Values.minio.secretKey }}",
         "AmazonS3Bucket": "bucket",
         "AmazonS3Region": "",
         "AmazonS3Endpoint": "{{ .Release.Name }}-minio:9000",

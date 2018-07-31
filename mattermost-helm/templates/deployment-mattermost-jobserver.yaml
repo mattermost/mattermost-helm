@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "mattermost-app.jobserver.fullname" . }}
+  name: {{ template "mattermost-enterprise-edition.jobserver.fullname" . }}
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "fullname" . }}-jobserver
+        app: {{ template "mattermost-enterprise-edition.jobserver.fullname" . }}-jobserver
         component: "{{ .Values.global.features.jobserver.name }}"
     spec:
       initContainers:
@@ -23,9 +23,9 @@ spec:
           imagePullPolicy: "IfNotPresent"
           command: ["sh", "-c", "until curl --max-time 5 http://{{ .Release.Name }}-mysqlha-readonly:3306; do echo waiting for {{ .Release.Name }}-mysqlha; sleep 5; done;"]
       containers:
-      - name: {{ template "mattermost-app.jobserver.fullname" . }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+      - name: {{ template "mattermost-enterprise-edition.jobserver.fullname" . }}
+        image: "{{ .Values.mattermostApp.image.repository }}:{{ .Values.mattermostApp.image.tag }}"
+        imagePullPolicy: {{ .Values.mattermostApp.image.pullPolicy }}
         command: ["platform", "jobserver"]
         volumeMounts:
         - mountPath: /mattermost/config/config.json
@@ -37,11 +37,11 @@ spec:
       volumes:
         - name: config-json
           configMap:
-            name: {{template "fullname" .}}-config-json
+            name: {{template "mattermost-enterprise-edition.fullname" .}}-config-json
             items:
             - key: config.json
               path: config.json
         - name: mattermost-license
           secret:
-            secretName: {{ .Release.Name }}-mattermost-license
+            secretName: {{template "mattermost-enterprise-edition.fullname" .}}-mattermost-license
 {{- end -}}

@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{template "fullname" .}}-tests
-data:
-  run.sh: |-
-    @test "Testing Mattermost is accessible" {
-      curl --retry 48 --retry-delay 10 {{template "fullname" .}}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.service.internalPort }}
-    }
