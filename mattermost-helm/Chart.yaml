@@ -1,12 +1,13 @@
 apiVersion: v1
 description: Mattermost Enterprise server with high availitibity.
 name: mattermost-helm
-version: 0.2.4
-appVersion: master
+version: 0.2.5
+appVersion: 5.0.0
 keywords:
 - mattermost
 - communication
-- slack alternative
+- messaging
+- team colaboration
 home: https://mattermost.com
 icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
 source:

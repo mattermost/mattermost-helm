@@ -2,21 +2,21 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{template "mattermost-enterprise-edition.fullname" .}}-loadtest
   labels:
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.global.features.loadTest.replicaCount }}
   template:
     metadata:
       labels:
-        app: {{ template "name" . }}
+        app: {{template "mattermost-enterprise-edition.name" .}}-loadtest
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: {{template "mattermost-enterprise-edition.fullname" .}}-loadtest
+          image: "{{ .Values.global.features.loadTest.image.repository }}:{{ .Values.global.features.loadTest.image.tag }}"
+          imagePullPolicy: {{ .Values.global.features.loadTest.image.pullPolicy }}
           volumeMounts:
           - mountPath: /mattermost/config/config.json
             name: config-json
@@ -28,20 +28,22 @@ spec:
             name: loadtestconfig-json
             subPath: loadtestconfig.json
           resources:
-{{ toYaml .Values.resources | indent 12 }}
+            requests:
+              cpu: 100m
+              memory: 256Mi
       volumes:
         - name: config-json
           configMap:
-            name: {{template "fullname" .}}-config-json
+            name: {{template "mattermost-enterprise-edition.fullname" .}}-config-json
             items:
             - key: config.json
               path: config.json
         - name: mattermost-license
           secret:
-            secretName: {{ .Release.Name }}-mattermost-license
+            secretName: {{ template "mattermost-enterprise-edition.fullname" . }}-mattermost-license
         - name: loadtestconfig-json
           configMap:
-            name: {{template "fullname" .}}-loadtestconfig-json
+            name: {{ template "mattermost-enterprise-edition.fullname" . }}-loadtestconfig-json
             items:
             - key: loadtestconfig.json
               path: loadtestconfig.json

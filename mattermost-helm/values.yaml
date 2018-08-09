@@ -21,11 +21,36 @@ global:
       enabled: false
     loadTest:
       enabled: false
+      image:
+        repository: mattermost/mattermost-loadtest
+        tag: latest
+        pullPolicy: Always
+      replicaCount: 1
+      numTeams: 1
+      numChannelsPerTeam: 400
+      numUsers: 5
+      numPosts: 200
+      numEmoji: 2000
+      replyChance: 0.3
+      skipBulkLoad: false
+      testLengthMinutes: 2
+      numActiveEntities: 5
+      actionRateMilliseconds: 60000
+      actionRateMaxVarianceMilliseconds: 15000
+      linkPreviewChance: 0.2
+      customEmojiChance: 0.2
+      pprofDelayMinutes: 15
+      pprofLengthSeconds: 240
+      sendReportToMMServer: false
+      resultsServerUrl: ""
+      resultsChannelId: ""
+      resultsUsername: ""
+      resultsPassword: ""
     grafana:
       enabled: false
     jobserver:
       name: jobserver
-      enabled: false
+      enabled: true
       replicaCount: 1
       service:
         name: mattermost-app-jobserver
@@ -43,6 +68,41 @@ global:
       enabled: false
     storage:
       enabled: true
+
+mattermostApp:
+  replicaCount: 2
+  image:
+    repository: mattermost/mattermost-enterprise-edition
+    tag: 5.0.0
+
+  service:
+    name: mattermost-app
+    type: ClusterIP
+    externalPort: 8065
+    internalPort: 8065
+    metricsPort: 8067
+    clusterPort: 8075
+    gossipPort: 8074
+    metricsName: mattermost-app-metrics
+
+  ingress:
+    enabled: true
+    # Used to create Ingress record (should used with service.type: ClusterIP).
+    hosts:
+      - mattermost.example.com
+    tls:
+      # Secrets must be manually created in the namespace.
+      # - secretName: chart-example-tls
+      #   hosts:
+      #     - mattermost.example.com
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 300Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 300Mi
 
 mysqlha:
   enabled: true
@@ -78,18 +138,6 @@ mysqlha:
     enabled: false
     size: 10Gi
 
-mattermost-app:
-  replicaCount: 2
-  image:
-    repository: mattermost/mattermost-enterprise-edition
-    tag: 5.0.0
-
-tls:
-  # When enabled kube-lego will use Let's Encrypt to get a SSL cert
-  enabled: false
-  # Host name the SSL cert will be registered for
-  hostname: example.com
-
 kube-lego:
   enabled: false
   config:
@@ -118,29 +166,6 @@ mattermost-elasticsearch:
     replicaCount: 3
   data:
     replicaCount: 2
-
-mattermost-loadtest:
-  replicaCount: 1
-  numTeams: 1
-  numChannelsPerTeam: 400
-  numUsers: 1000
-  numPosts: 20000000
-  numEmoji: 2000
-  replyChance: 0.3
-  skipBulkLoad: true
-  testLengthMinutes: 20
-  numActiveEntities: 1000
-  actionRateMilliseconds: 60000
-  actionRateMaxVarianceMilliseconds: 15000
-  linkPreviewChance: 0.2
-  customEmojiChance: 0.2
-  pprofDelayMinutes: 15
-  pprofLengthSeconds: 240
-  sendReportToMMServer: false
-  resultsServerUrl: ""
-  resultsChannelId: ""
-  resultsUsername: ""
-  resultsPassword: ""
 
 mattermost-push-proxy:
   replicaCount: 1
