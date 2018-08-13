@@ -138,27 +138,6 @@ mysqlha:
     enabled: false
     size: 10Gi
 
-kube-lego:
-  enabled: false
-  config:
-    # Replace this email with the one for registering your SSL cert
-    LEGO_EMAIL: someone@example.com
-    # Defaults to the staging environment, update to https://acme-v01.api.letsencrypt.org/directory for production
-    LEGO_URL: https://acme-staging.api.letsencrypt.org/directory
-  rbac:
-    # Set to true if your Kubernetes cluster has RBAC enabled
-    create: true
-
-nginx-ingress:
-  enabled: false
-  controller:
-    config:
-      http-snippet: |
-        proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=mattermost_cache:10m max_size=3g inactive=120m use_temp_path=off;
-  rbac:
-    # Set to true if your Kubernetes cluster has RBAC enabled
-    create: true
-
 mattermost-elasticsearch:
   client:
     replicaCount: 2
