@@ -1,7 +1,7 @@
-Mattermost Kubernetes
+Mattermost Kubernetes (Beta)
 ==========================
 
-This helm chart is still under construction.
+This is the helm chart for Mattermost Enterprise Edition. It is in beta and subject to changes but is used by Mattermost internally to run some CI servers.
 
 # Configuration
 
