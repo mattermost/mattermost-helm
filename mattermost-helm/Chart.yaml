@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Mattermost Enterprise server with high availitibity.
 name: mattermost-helm
-version: 0.2.5
+version: 0.2.6
 appVersion: 5.0.0
 keywords:
 - mattermost

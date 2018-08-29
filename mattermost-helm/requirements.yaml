@@ -1,12 +1,4 @@
 dependencies:
-  - name: kube-lego
-    repository: https://kubernetes-charts.storage.googleapis.com
-    version: 0.4.2
-    condition: global.features.ingress.enabled
-  - name: nginx-ingress
-    repository: https://kubernetes-charts.storage.googleapis.com
-    version: 0.20.3
-    condition: global.features.ingress.enabled
   - name: mysqlha
     repository: https://kubernetes-charts-incubator.storage.googleapis.com
     version: 0.3.0
