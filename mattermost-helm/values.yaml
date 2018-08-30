@@ -1,9 +1,13 @@
 global:
   # Set siteUrl to the URL your users will use to access Mattermost
   siteUrl: ""
+  siteName: ""
+  customBrandText: ""
+  customBrandDescriptionText: ""
   filesAccessKey: "mattermostadmin"
   filesSecretKey: "mattermostadmin"
   mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
+  passwordLength: 8
   features:
     ingress:
       enabled: true
@@ -46,6 +50,7 @@ global:
       resultsChannelId: ""
       resultsUsername: ""
       resultsPassword: ""
+      restrictCreationtoDomains: ""
     grafana:
       enabled: false
     jobserver:
@@ -65,8 +70,18 @@ global:
     linkPreviews:
       enabled: false
     customEmoji:
-      enabled: false
+      enabled: true
+    enableGifPicker:
+      enabled: true
+    enableCustomBrand:
+      enabled: true
+    teamCreation:
+      enabled: true
+    openServer:
+      enabled: true
     storage:
+      enabled: true
+    enableFileAttachment:
       enabled: true
 
 mattermostApp:
@@ -137,27 +152,6 @@ mysqlha:
     ## See: https://github.com/kubernetes/charts/tree/master/incubator/mysqlha
     enabled: false
     size: 10Gi
-
-kube-lego:
-  enabled: false
-  config:
-    # Replace this email with the one for registering your SSL cert
-    LEGO_EMAIL: someone@example.com
-    # Defaults to the staging environment, update to https://acme-v01.api.letsencrypt.org/directory for production
-    LEGO_URL: https://acme-staging.api.letsencrypt.org/directory
-  rbac:
-    # Set to true if your Kubernetes cluster has RBAC enabled
-    create: true
-
-nginx-ingress:
-  enabled: false
-  controller:
-    config:
-      http-snippet: |
-        proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=mattermost_cache:10m max_size=3g inactive=120m use_temp_path=off;
-  rbac:
-    # Set to true if your Kubernetes cluster has RBAC enabled
-    create: true
 
 mattermost-elasticsearch:
   client:
@@ -351,6 +345,23 @@ minio:
   networkPolicy:
     enabled: false
     allowExternal: true
+
+# See https://docs.mattermost.com/administration/config-settings.html#notifications
+  emailSettings:
+  enableSignUpWithEmail:
+    enabled: true
+  sendEmailNotifications:
+    enabled: true
+  requireEmailVerification:
+    enabled: false
+  feedbackName: ""
+  feedbackEmail: ""
+  feedbackOrganization:
+  SMTPUsername:
+  SMTPPassword:
+  SMTPServer:
+  SMTPPort: 465
+  connectionSecurity: TLS
 
 # See https://github.com/kubernetes/charts/tree/master/stable/prometheus#configuration
 # for more configuration options
