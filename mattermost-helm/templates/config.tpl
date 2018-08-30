@@ -309,6 +309,14 @@
         "TurnUsername": "",
         "TurnSharedKey": ""
     },
+    "PluginSettings": {
+        "Enable": true,
+        "EnableUploads": true,
+        "Directory": "./plugins",
+        "ClientDirectory": "./client/plugins",
+        "Plugins": {},
+        "PluginStates": {}
+    },
     "DataRetentionSettings": {
         "Enable": false
     }

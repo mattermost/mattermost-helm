@@ -48,10 +48,13 @@ pipeline {
 
                         helm install -n \${BRANCH}-${BUILD_NUMBER} \
                             --namespace \${BRANCH}-${BUILD_NUMBER} \
-                            --set mattermostApp.image.tag=5.0.0 \
                             --set global.siteUrl="http://\${BRANCH}-${BUILD_NUMBER}.azure.k8s.mattermost.com" \
                             --set ingress.hosts="http://\${BRANCH}-${BUILD_NUMBER}.azure.k8s.mattermost.com" \
                             --set mattermostApp.replicaCount=1 \
+                            --set mattermostApp.persistence.pluginsServer.enabled=false \
+                            --set mattermostApp.persistence.pluginsClient.enabled=false \
+                            --set mattermostApp.persistence.configApp.enabled=false \
+                            --set mysqlha.persistence.enabled=false \
                             --set mysqlha.mysqlha.replicaCount=1 \
                             --set minio.persistence.enabled=false \
                             --set global.features.ingress.enabled=false \

@@ -14,19 +14,15 @@ spec:
         component: "{{ .Values.global.features.jobserver.name }}"
     spec:
       initContainers:
-        - name: "init-elasticsearch"
+        - name: "init-mattermost-app"
           image: "appropriate/curl:latest"
           imagePullPolicy: "IfNotPresent"
-          command: ["sh", "-c", "until ! {{ .Values.global.features.elasticsearch.enabled }} || curl --max-time 5 http://{{ .Release.Name }}-mattermost-elasticsearch:9200 ; do echo waiting for elasticsearch; sleep 5; done; echo init-elasticsearch finished"]
-        - name: "init-mysql"
-          image: "appropriate/curl:latest"
-          imagePullPolicy: "IfNotPresent"
-          command: ["sh", "-c", "until curl --max-time 5 http://{{ .Release.Name }}-mysqlha-readonly:3306; do echo waiting for {{ .Release.Name }}-mysqlha; sleep 5; done;"]
+          command: ["sh", "-c", "until curl --max-time 5 http://{{ template "mattermost-enterprise-edition.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.mattermostApp.service.internalPort }}/api/v4/system/ping ; do echo waiting for Mattermost App come up; sleep 5; done; echo init-mattermost-app finished"]
       containers:
       - name: {{ template "mattermost-enterprise-edition.jobserver.fullname" . }}
         image: "{{ .Values.mattermostApp.image.repository }}:{{ .Values.mattermostApp.image.tag }}"
         imagePullPolicy: {{ .Values.mattermostApp.image.pullPolicy }}
-        command: ["platform", "jobserver"]
+        command: ["mattermost", "jobserver"]
         volumeMounts:
         - mountPath: /mattermost/config/config.json
           name: config-json
@@ -37,7 +33,7 @@ spec:
       volumes:
         - name: config-json
           configMap:
-            name: {{template "mattermost-enterprise-edition.fullname" .}}-config-json
+            name: {{template "mattermost-enterprise-edition.fullname" .}}-init-config-json
             items:
             - key: config.json
               path: config.json

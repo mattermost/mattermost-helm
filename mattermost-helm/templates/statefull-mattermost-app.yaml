@@ -1,0 +1,205 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: {{ template "mattermost-enterprise-edition.fullname" . }}
+  labels:
+    app: {{ template "mattermost-enterprise-edition.name" . }}
+    chart: {{ template "mattermost-enterprise-edition.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  serviceName: {{ template "mattermost-enterprise-edition.fullname" . }}
+  replicas: {{ .Values.mattermostApp.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "mattermost-enterprise-edition.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "mattermost-enterprise-edition.name" . }}
+        release: {{ .Release.Name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-mattermost-config.yaml") . | sha256sum }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.mattermostApp.service.metricsPort }}"
+        prometheus.io/path: "/metrics"
+    spec:
+      initContainers:
+      - name: "init-elasticsearch"
+        image: "appropriate/curl:latest"
+        imagePullPolicy: "IfNotPresent"
+        command: [
+          "sh",
+          "-c",
+          "until ! {{ .Values.global.features.elasticsearch.enabled }} || curl --max-time 5 http://{{ .Release.Name }}-mattermost-elasticsearch:9200 ; do echo waiting for elasticsearch; sleep 5; done; echo init-elasticsearch finished"]
+      - name: "init-mysql"
+        image: "appropriate/curl:latest"
+        imagePullPolicy: "IfNotPresent"
+        command: [
+          "sh",
+          "-c",
+          "until ! {{ .Values.global.features.database.useInternal }} || curl --max-time 5 http://{{ .Release.Name }}-mysqlha-readonly:3306; do echo waiting for {{ .Release.Name }}-mysqlha; sleep 5; done;"]
+      - name: "init-config"
+        image: "busybox"
+        imagePullPolicy: "IfNotPresent"
+        command:
+          - sh
+          - "-c"
+          - |
+            set -ex
+            if [[ -f /mattermost/config/config.json ]]; then
+                # If the config from configmap is the same as the config.default
+                # that means the dont have a new configmap and we dont need to
+                # update to not loose the existing configuration changes
+                sha1=$(cat /tmp/config/config.json | sha256sum)
+                sha2=$(cat /mattermost/config/config.default | sha256sum)
+                if [ "$sha1" != "$sha2" ]; then
+                  echo There are new config from configmap
+                  cp /tmp/config/config.json /mattermost/config/config.json
+                  cp /tmp/config/config.json /mattermost/config/config.default
+                fi
+            else
+              cp /tmp/config/config.json /mattermost/config/config.json
+              cp /tmp/config/config.json /mattermost/config/config.default
+            fi
+        volumeMounts:
+          - mountPath: /tmp/config/config.json
+            name: mattermost-init-config-json
+            subPath: config.json
+          - mountPath: /mattermost/config
+            name: mattermost-config
+      containers:
+      - name: {{ template "mattermost-enterprise-edition.name" . }}
+        image: "{{ .Values.mattermostApp.image.repository }}:{{ .Values.mattermostApp.image.tag }}"
+        imagePullPolicy: {{ .Values.mattermostApp.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.mattermostApp.service.internalPort }}
+          name: api
+        - containerPort: {{ .Values.mattermostApp.service.metricsPort }}
+          name: metrics
+        - containerPort: {{ .Values.mattermostApp.service.clusterPort }}
+          name: cluster
+        - containerPort: {{ .Values.mattermostApp.service.gossipPort }}
+          name: gossip
+        livenessProbe:
+          initialDelaySeconds: 90
+          timeoutSeconds: 5
+          periodSeconds: 15
+          httpGet:
+            path: /api/v4/system/ping
+            port: {{ .Values.mattermostApp.service.internalPort }}
+        readinessProbe:
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+          periodSeconds: 15
+          httpGet:
+            path: /api/v4/system/ping
+            port: {{ .Values.mattermostApp.service.internalPort }}
+        volumeMounts:
+        - mountPath: /mattermost/mattermost.mattermost-license
+          name: mattermost-license
+          subPath: mattermost.mattermost-license
+        - mountPath: /mattermost/plugins
+          name: mattermost-plugins
+        - mountPath: /mattermost/client/plugins
+          name: mattermost-plugins-client
+        - mountPath: /mattermost/config
+          name: mattermost-config
+        resources:
+{{ toYaml .Values.mattermostApp.resources | indent 10 }}
+      volumes:
+        - name: tmp-files
+          emptyDir: {}
+        - name: mattermost-init-config-json
+          configMap:
+            name: {{template "mattermost-enterprise-edition.fullname" .}}-init-config-json
+            items:
+            - key: config.json
+              path: config.json
+        - name: mattermost-license
+          secret:
+            secretName: {{template "mattermost-enterprise-edition.fullname" .}}-mattermost-license
+        {{- if not .Values.mattermostApp.persistence.pluginsServer.enabled }}
+        - name: mattermost-plugins
+          emptyDir: {}
+        {{- end }}
+        {{- if not .Values.mattermostApp.persistence.pluginsClient.enabled }}
+        - name: mattermost-plugins-client
+          emptyDir: {}
+        {{- end }}
+        {{- if not .Values.mattermostApp.persistence.configApp.enabled }}
+        - name: mattermost-config
+          emptyDir: {}
+        {{- end }}
+  volumeClaimTemplates:
+  {{- if .Values.mattermostApp.persistence.pluginsServer.enabled }}
+  - metadata:
+      name: mattermost-plugins
+      annotations:
+      {{- range $key, $value := .Values.mattermostApp.persistence.pluginsServer.annotations }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
+    spec:
+      accessModes:
+      {{- range .Values.mattermostApp.persistence.pluginsServer.accessModes }}
+      - {{ . | quote }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.mattermostApp.persistence.pluginsServer.size | quote }}
+      {{- if .Values.mattermostApp.persistence.pluginsServer.storageClass }}
+      {{- if (eq "-" .Values.mattermostApp.persistence.pluginsServer.storageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.mattermostApp.persistence.pluginsServer.storageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}
+  {{- if .Values.mattermostApp.persistence.pluginsClient.enabled }}
+  - metadata:
+      name: mattermost-plugins-client
+      annotations:
+      {{- range $key, $value := .Values.mattermostApp.persistence.pluginsClient.annotations }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
+    spec:
+      accessModes:
+      {{- range .Values.mattermostApp.persistence.pluginsClient.accessModes }}
+      - {{ . | quote }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.mattermostApp.persistence.pluginsClient.size | quote }}
+      {{- if .Values.mattermostApp.persistence.pluginsClient.storageClass }}
+      {{- if (eq "-" .Values.mattermostApp.persistence.pluginsClient.storageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.mattermostApp.persistence.pluginsClient.storageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}
+  {{- if .Values.mattermostApp.persistence.configApp.enabled }}
+  - metadata:
+      name: mattermost-config
+      annotations:
+      {{- range $key, $value := .Values.mattermostApp.persistence.configApp.annotations }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
+    spec:
+      accessModes:
+      {{- range .Values.mattermostApp.persistence.configApp.accessModes }}
+      - {{ . | quote }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.mattermostApp.persistence.configApp.size | quote }}
+      {{- if .Values.mattermostApp.persistence.configApp.storageClass }}
+      {{- if (eq "-" .Values.mattermostApp.persistence.configApp.storageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.mattermostApp.persistence.configApp.storageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}
+

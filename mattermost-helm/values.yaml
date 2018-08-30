@@ -73,7 +73,8 @@ mattermostApp:
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
-    tag: 5.0.0
+    tag: 5.2.1
+    pullPolicy: Always
 
   service:
     name: mattermost-app
@@ -103,6 +104,46 @@ mattermostApp:
     # requests:
     #   cpu: 100m
     #   memory: 300Mi
+  persistence:
+    pluginsServer:
+        enabled: true
+        size: 10Gi
+        ## If defined, storageClassName: <storageClass>
+        ## If set to "-", storageClassName: "", which disables dynamic provisioning
+        ## If undefined (the default) or set to null, no storageClassName spec is
+        ##   set, choosing the default provisioner.  (gp2 on AWS, azure-disk on
+        ##   Azure, standard on GKE, AWS & OpenStack)
+        ##
+        # storageClass: "-"
+        accessModes:
+        - ReadWriteOnce
+        annotations: {}
+    pluginsClient:
+        enabled: true
+        size: 10Gi
+        ## If defined, storageClassName: <storageClass>
+        ## If set to "-", storageClassName: "", which disables dynamic provisioning
+        ## If undefined (the default) or set to null, no storageClassName spec is
+        ##   set, choosing the default provisioner.  (gp2 on AWS, azure-disk on
+        ##   Azure, standard on GKE, AWS & OpenStack)
+        ##
+        # storageClass: "-"
+        accessModes:
+        - ReadWriteOnce
+        annotations: {}
+    configApp:
+        enabled: true
+        size: 1Gi
+        ## If defined, storageClassName: <storageClass>
+        ## If set to "-", storageClassName: "", which disables dynamic provisioning
+        ## If undefined (the default) or set to null, no storageClassName spec is
+        ##   set, choosing the default provisioner.  (gp2 on AWS, azure-disk on
+        ##   Azure, standard on GKE, AWS & OpenStack)
+        ##
+        # storageClass: "-"
+        accessModes:
+        - ReadWriteOnce
+        annotations: {}
 
 mysqlha:
   enabled: true
@@ -117,12 +158,14 @@ mysqlha:
         [mysqld]
         log-bin
         skip_name_resolve
+        max_connections = 300
       slave.cnf: |
         [mysqld]
         super-read-only
         skip_name_resolve
         slave_parallel_workers = 100
         slave_parallel_type = LOGICAL_CLOCK
+        max_connections = 300
   persistence:
     ## If defined, storageClassName: <storageClass>
     ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -135,7 +178,7 @@ mysqlha:
     ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
     ##
     ## See: https://github.com/kubernetes/charts/tree/master/incubator/mysqlha
-    enabled: false
+    enabled: true
     size: 10Gi
 
 mattermost-elasticsearch:
