@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mysql-restore
+spec:
+  template:
+    spec:
+      containers:
+      - name: mysqlrestore
+        image: deitch/mysql-backup:latest
+        imagePullPolicy: Always
+        env:
+          - name: DB_RESTORE_TARGET
+            value: s3://<S3 BUCKET>/db_backup_20180814094007.gz
+          - name: DB_DUMP_DEBUG
+            value: "true"
+          - name: DB_NAMES
+            value: <Name of the database>
+          - name: DB_SERVER
+            value: <Name of the DB Host>
+          - name: DB_USER
+            value: <DB USER>
+          - name: DB_PORT
+            value: 3306
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: <Secret with the DB Pass>
+                key: <Key>
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: <Secret with the AWS ACCESS ID>
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: <Secret with the AWS ACCESS KEY>
+                key: AWS_SECRET_ACCESS_KEY
+          - name: AWS_DEFAULT_REGION
+            value: <AWS REGION>
+      restartPolicy: Never
+  backoffLimit: 4

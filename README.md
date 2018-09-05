@@ -45,6 +45,9 @@ Since this is still in the incubator phase you need to add the repository:
 helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
 ```
 
+### MySQL Backup / Restore
+
+To backup / restore you Mattermost Database please follow this [how-to](mysql-backup/README.md).
 
 # Install
 
