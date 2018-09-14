@@ -1,18 +1,33 @@
 global:
-  # Set siteUrl to the URL your users will use to access Mattermost
-  siteUrl: ""
-  filesAccessKey: "mattermostadmin"
-  filesSecretKey: "mattermostadmin"
+  siteUrl: "http://mattermost.example.com"
+  siteName: "Mattermost"
   mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
+
+  # Settings for general configuration of MM
+  # For more details: https://docs.mattermost.com/administration/config-settings.html
+  enableTeamCreation: true
+  enableUserCreation: true
+  enableOpenServer: true
+  enableLinkPreviews: false
+  enableCustomEmoji: false
+
+  # Settings to enable email notifications
+  sendEmailNotifications: false
+  requireEmailVerification: false
+  feedbackName: ""
+  feedbackEmail: "test@example.com"
+  feedbackOrganization: ""
+  smtpUsername: ""
+  smtpPassword: ""
+  smtpServer: ""
+  smtpPort: ""
+  # empty, TLS, or STARTTLS
+  connectionSecurity: ""
+
   features:
-    ingress:
-      enabled: true
     database:
+      # If use the internal DB please set the user/pass in the MYSQLHA Section
       useInternal: true
-      internal:
-        dbUser: "mmuser"
-        dbPassword: "passwd"
-        dbName: "mattermost"
       external:
         driver: "mysql"
         dataSource: ""
@@ -62,12 +77,6 @@ global:
         # Hosted push notification service. Requires an enterprise license.
         # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
         useHPNS: false
-    linkPreviews:
-      enabled: false
-    customEmoji:
-      enabled: false
-    storage:
-      enabled: true
 
 mattermostApp:
   replicaCount: 2
@@ -214,21 +223,13 @@ mattermost-push-proxy:
       apiKey: ""
 
 minio:
+  enabled: true
   image:
     repository: minio/minio
     tag: RELEASE.2018-07-10T01-42-11Z
     pullPolicy: IfNotPresent
-  mcImage:
-    repository: minio/mc
-    tag: RELEASE.2018-06-09T02-18-09Z
-    pullPolicy: IfNotPresent
-  mode: standalone
-  priorityClassName: ""
   accessKey: "mattermostadmin"
   secretKey: "mattermostadmin"
-  configPath: "/root/.minio/"
-  mountPath: "/export"
-  replicas: 4
 
   persistence:
     enabled: true
@@ -249,31 +250,10 @@ minio:
     storageClass:
     accessMode: ReadWriteOnce
     size: 10Gi
-
-  ## If subPath is set mount a sub folder of a volume instead of the root of the volume.
-  ## This is especially handy for volume plugins that don't natively support sub mounting (like glusterfs).
-  ##
-  subPath: ""
-
-  service:
-    type: ClusterIP
-    clusterIP: None
-    port: 9000
-    # nodePort: 31311
-    annotations:
-      prometheus.io/scrape: 'true'
-      prometheus.io/path:   '/minio/prometheus/metrics'
-      prometheus.io/port:   '9000'
-
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-
   resources:
     requests:
       memory: 256Mi
       cpu: 250m
-
   defaultBucket:
     enabled: true
     name: bucket
@@ -282,170 +262,21 @@ minio:
 
   ## https://docs.minio.io/docs/minio-bucket-notification-guide
   ## https://github.com/minio/minio/blob/master/docs/config
-  minioConfig:
-    region: ""
-    browser: "off"
-    domain: ""
-    worm: "off"
-    storageClass:
-      standardStorageClass: ""
-      reducedRedundancyStorageClass: ""
-    cache:
-      drives: []
-      expiry: 90
-      maxuse: 80
-      exclude: []
-    aqmp:
-      enable: false
-      url: ""
-      exchange: ""
-      routingKey: ""
-      exchangeType: ""
-      deliveryMode: 0
-      mandatory: false
-      immediate: false
-      durable: false
-      internal: false
-      noWait: false
-      autoDeleted: false
-    nats:
-      enable: false
-      address: ""
-      subject: ""
-      username: ""
-      password: ""
-      token: ""
-      secure: false
-      pingInterval: 0
-      enableStreaming: false
-      clusterID: ""
-      clientID: ""
-      async: false
-      maxPubAcksInflight: 0
-    elasticsearch:
-      enable: false
-      format: "namespace"
-      url: ""
-      index: ""
-    redis:
-      enable: false
-      format: "namespace"
-      address: ""
-      password: ""
-      key: ""
-    postgresql:
-      enable: false
-      format: "namespace"
-      connectionString: ""
-      table: ""
-      host: ""
-      port: ""
-      user: ""
-      password: ""
-      database: ""
-    kafka:
-      enable: false
-      brokers: "null"
-      topic: ""
-    webhook:
-      enable: false
-      endpoint: ""
-    mysql:
-      enable: false
-      format: "namespace"
-      dsnString: ""
-      table: ""
-      host: ""
-      port: ""
-      user: ""
-      password: ""
-      database: ""
-    mqtt:
-      enable: false
-      broker: ""
-      topic: ""
-      qos: 0
-      clientId: ""
-      username: ""
-      password: ""
-      reconnectInterval: 0
-      keepAliveInterval: 0
-  networkPolicy:
-    enabled: false
-    allowExternal: true
+  # minioConfig:
 
 # See https://github.com/kubernetes/charts/tree/master/stable/prometheus#configuration
 # for more configuration options
 prometheus:
-  enabled: false
+  install: false
+  rbac:
+    create: true
   alertmanager:
     enabled: false
-    ingress:
-      enabled: false
-  configmapReload:
-    name: configmap-reload
+  alertmanagerFiles:
+    alertmanager.yml: {}
   kubeStateMetrics:
     enabled: false
   nodeExporter:
     enabled: false
   pushgateway:
     enabled: false
-  rbac:
-    # Set to true if your Kubernetes cluster has RBAC enabled
-    create: true
-  server:
-    name: server
-    ingress:
-      enabled: false
-    persistentVolume:
-      enabled: false
-    replicaCount: 1
-    service:
-      servicePort: 9090
-  serviceAccounts:
-    alertmanager:
-      create: false
-    kubeStateMetrics:
-      create: false
-    nodeExporter:
-      create: false
-    pushgateway:
-      create: false
-  serverFiles:
-    prometheus.yml:
-      global:
-        scrape_interval: 15s
-      rule_files:
-        - /etc/config/rules
-        - /etc/config/alerts
-      scrape_configs:
-        - job_name: prometheus
-          static_configs:
-            - targets:
-              - localhost:9090
-        - job_name: 'mattermost-app'
-          scrape_interval: 5s
-          kubernetes_sd_configs:
-            - role: pod
-          relabel_configs:
-            - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-              action: keep
-              regex: true
-            - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
-              action: replace
-              target_label: __metrics_path__
-              regex: (.+)
-            - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-              action: replace
-              regex: (.+):(?:\d+);(\d+)
-              replacement: ${1}:${2}
-              target_label: __address__
-            - action: labelmap
-              regex: __meta_kubernetes_pod_label_(.+)
-            - source_labels: [__meta_kubernetes_namespace]
-              action: replace
-              target_label: kubernetes_namespace
-            - source_labels: [__meta_kubernetes_pod_name]
-              action: replace
-              #regex: __meta_kubernetes_pod_label_app(.*)
-              target_label: kubernetes_pod_name

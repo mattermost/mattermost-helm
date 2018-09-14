@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{template "mattermost-enterprise-edition.fullname" .}}-init-config-json
+  name: {{ template "mattermost-enterprise-edition.fullname" . }}-init-config-json
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     app: {{ template "mattermost-enterprise-edition.name" . }}
 data:
   config.json: |
-{{include "config.tpl" . | printf "%s" | indent 4}}
+{{ include "config.tpl" . | printf "%s" | indent 4 }}

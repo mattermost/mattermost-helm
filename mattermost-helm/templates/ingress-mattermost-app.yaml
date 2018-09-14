@@ -30,15 +30,15 @@ metadata:
     {{- end }}
 spec:
   rules:
-    {{- range $host := .Values.mattermostApp.ingress.hosts }}
-    - host: {{ $host }}
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: {{ $serviceName }}
-              servicePort: {{ $servicePort }}
-    {{- end -}}
+  {{- range $host := .Values.mattermostApp.ingress.hosts }}
+  - host: {{ $host }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ $serviceName }}
+          servicePort: {{ $servicePort }}
+  {{- end -}}
   {{- if .Values.mattermostApp.ingress.tls }}
   tls:
 {{ toYaml .Values.mattermostApp.ingress.tls | indent 4 }}
