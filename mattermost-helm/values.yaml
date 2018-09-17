@@ -67,22 +67,14 @@ global:
         # Hosted push notification service. Requires an enterprise license.
         # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
         useHPNS: false
-    linkPreviews:
-      enabled: false
-    customEmoji:
-      enabled: true
-    enableGifPicker:
-      enabled: true
-    enableCustomBrand:
-      enabled: true
-    teamCreation:
-      enabled: true
-    openServer:
-      enabled: true
-    storage:
-      enabled: true
-    enableFileAttachment:
-      enabled: true
+    linkPreviews: false
+    customEmoji: true
+    enableGifPicker: true
+    enableCustomBrand: true
+    teamCreation: true
+    openServer: true
+    storage: true
+    enableFileAttachment: true
 
 mattermostApp:
   replicaCount: 2
