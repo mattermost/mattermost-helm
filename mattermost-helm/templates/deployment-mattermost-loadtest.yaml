@@ -34,7 +34,7 @@ spec:
       volumes:
         - name: config-json
           configMap:
-            name: {{template "mattermost-enterprise-edition.fullname" .}}-config-json
+            name: {{template "mattermost-enterprise-edition.fullname" .}}-init-config-json
             items:
             - key: config.json
               path: config.json
