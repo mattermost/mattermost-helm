@@ -22,7 +22,7 @@
         "EnableOnlyAdminIntegrations": false,
         "EnablePostUsernameOverride": false,
         "EnablePostIconOverride": false,
-        "EnableLinkPreviews": {{ .Values.global.features.linkPreviews.enabled }},
+        "EnableLinkPreviews": {{ .Values.global.enableLinkPreviews }},
         "EnableTesting": false,
         "EnableDeveloper": false,
         "EnableSecurityFixAlert": true,
@@ -37,7 +37,7 @@
         "WebsocketSecurePort": 443,
         "WebsocketPort": 80,
         "WebserverMode": "gzip",
-        "EnableCustomEmoji": {{ .Values.global.features.customEmoji.enabled }},
+        "EnableCustomEmoji": {{ .Values.global.enableCustomEmoji }},
         "RestrictCustomEmojiCreation": "all",
         "RestrictPostDelete": "all",
         "AllowEditPost": "always",
@@ -61,11 +61,11 @@
         "Sniff": true
     },
     "TeamSettings": {
-        "SiteName": "Mattermost",
+        "SiteName": {{ .Values.global.siteName | quote }},
         "MaxUsersPerTeam": 50000,
-        "EnableTeamCreation": true,
-        "EnableUserCreation": true,
-        "EnableOpenServer": true,
+        "EnableTeamCreation": {{ .Values.global.enableTeamCreation }},
+        "EnableUserCreation": {{ .Values.global.enableUserCreation }},
+        "EnableOpenServer": {{ .Values.global.enableOpenServer }},
         "RestrictCreationToDomains": "",
         "EnableCustomBrand": false,
         "CustomBrandText": "",
@@ -86,16 +86,16 @@
     "SqlSettings": {
         {{- if .Values.global.features.database.useInternal }}
         "DriverName": "mysql",
-        "DataSource": "{{ .Values.global.features.database.internal.dbUser }}:{{ .Values.global.features.database.internal.dbPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.global.features.database.internal.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",
-        "DataSourceReplicas": ["{{ .Values.global.features.database.internal.dbUser }}:{{ .Values.global.features.database.internal.dbPassword }}@tcp({{ .Release.Name }}-mysqlha-readonly:3306)/{{ .Values.global.features.database.internal.dbName }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"],
+        "DataSource": "{{ .Values.mysqlha.mysqlha.mysqlUser }}:{{ .Values.mysqlha.mysqlha.mysqlPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.mysqlha.mysqlha.mysqlDatabase }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",
+        "DataSourceReplicas": ["{{ .Values.mysqlha.mysqlha.mysqlUser }}:{{ .Values.mysqlha.mysqlha.mysqlPassword }}@tcp({{ .Release.Name }}-mysqlha-readonly:3306)/{{ .Values.mysqlha.mysqlha.mysqlDatabase }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"],
         {{- else }}
         "DriverName": "{{ .Values.global.features.database.external.driver }}",
         "DataSource": "{{ .Values.global.features.database.external.dataSource }}",
         "DataSourceReplicas": [
-            {{ range $index, $element := .Values.global.features.database.external.dataSourceReplicas }}
-                {{if $index}},{{end}}
-                {{$element}}
-            {{end}}
+        {{ range $index, $element := .Values.global.features.database.external.dataSourceReplicas }}
+        {{- if $index }},{{- end }}
+        {{ $element }}
+        {{ end }}
         ],
         {{- end }}
         "DataSourceSearchReplicas": [],
@@ -138,7 +138,7 @@
         "InitialFont": "luximbi.ttf",
         "AmazonS3AccessKeyId": "{{ .Values.minio.accessKey }}",
         "AmazonS3SecretAccessKey": "{{ .Values.minio.secretKey }}",
-        "AmazonS3Bucket": "bucket",
+        "AmazonS3Bucket": "{{ .Values.minio.defaultBucket.name }}",
         "AmazonS3Region": "",
         "AmazonS3Endpoint": "{{ .Release.Name }}-minio:9000",
         "AmazonS3SSL": false,
@@ -148,23 +148,23 @@
         "EnableSignUpWithEmail": true,
         "EnableSignInWithEmail": true,
         "EnableSignInWithUsername": true,
-        "SendEmailNotifications": false,
-        "RequireEmailVerification": false,
-        "FeedbackName": "",
-        "FeedbackEmail": "test@example.com",
-        "FeedbackOrganization": "",
-        "SMTPUsername": "",
-        "SMTPPassword": "",
-        "SMTPServer": "",
-        "SMTPPort": "",
-        "ConnectionSecurity": "",
-        "InviteSalt": "{{ randAlphaNum 32 }}",
+        "SendEmailNotifications": {{ .Values.global.sendEmailNotifications }},
+        "RequireEmailVerification": {{ .Values.global.requireEmailVerification }},
+        "FeedbackName": {{ .Values.global.feedbackName | quote }},
+        "FeedbackEmail": {{ .Values.global.feedbackEmail | quote }},
+        "FeedbackOrganization": {{ .Values.global.feedbackOrganization | quote }},
+        "SMTPUsername": {{ .Values.global.smtpUsername | quote }},
+        "SMTPPassword": {{ .Values.global.smtpPassword | quote }},
+        "SMTPServer": {{ .Values.global.smtpServer | quote }},
+        "SMTPPort": {{ .Values.global.smtpPort | quote }},
+        "ConnectionSecurity": {{ .Values.global.connectionSecurity | quote }},
+        "InviteSalt": {{ randAlphaNum 32 | quote }},
         "SendPushNotifications": {{ .Values.global.features.notifications.push.enabled }},
-        {{- if .Values.global.features.notifications.push.useHPNS -}}
+        {{- if .Values.global.features.notifications.push.useHPNS }}
         "PushNotificationServer": "https://push.mattermost.com",
-        {{- else -}}
+        {{- else }}
         "PushNotificationServer": "http://{{ .Release.Name }}-mattermost-push-proxy:8066",
-        {{- end -}}
+        {{- end }}
         "PushNotificationContents": "generic",
         "EnableEmailBatching": false,
         "EmailBatchingBufferSize": 256,
@@ -326,6 +326,6 @@
         "RunJobs": false,
         "RunScheduler": false
     }
-    {{- end -}}
+    {{- end }}
 }
-{{- end -}}
+{{- end }}

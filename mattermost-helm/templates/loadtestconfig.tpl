@@ -1,9 +1,9 @@
 {{- define "loadtestconfig.tpl" -}}
 {
     "ConnectionConfiguration": {
-        "ServerURL": "http://{{ template "mattermost-enterprise-edition.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.mattermostApp.service.internalPort }}",
-        "WebsocketURL": "ws://{{ template "mattermost-enterprise-edition.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.mattermostApp.service.internalPort }}",
-        "PProfUrl": "http://{{ template "mattermost-enterprise-edition.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.mattermostApp.service.metricsName }}/debug/pprof",
+        "ServerURL": "http://{{ (index .Values.mattermostApp.ingress.hosts 0) }}",
+        "WebsocketURL": "ws://{{ (index .Values.mattermostApp.ingress.hosts 0) }}",
+        "PProfUrl": "http://{{ (index .Values.mattermostApp.ingress.hosts 0) }}/debug/pprof",
         "DriverName": "mysql",
         "DataSource": "{{ .Values.mysqlha.mysqlha.mysqlUser }}:{{ .Values.mysqlha.mysqlha.mysqlPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{  .Values.mysqlha.mysqlha.mysqlDatabase }}?charset=utf8mb4,utf8&readTimeout=240s&writeTimeout=240s",
         "LocalCommands": true,
@@ -22,10 +22,10 @@
         "NumTeams": {{ .Values.global.features.loadTest.numTeams }},
         "NumChannelsPerTeam": {{ .Values.global.features.loadTest.numChannelsPerTeam }},
         "NumUsers": {{ .Values.global.features.loadTest.numUsers }},
-        "NumPosts": {{.Values.global.features.loadTest.numPosts}},
-        "NumEmoji": {{.Values.global.features.loadTest.numEmoji}},
+        "NumPosts": {{ .Values.global.features.loadTest.numPosts }},
+        "NumEmoji": {{ .Values.global.features.loadTest.numEmoji }},
         "PostTimeRange": 2600000,
-        "ReplyChance": {{.Values.global.features.loadTest.replyChance}},
+        "ReplyChance": {{ .Values.global.features.loadTest.replyChance }},
         "PercentHighVolumeTeams": 0.2,
         "PercentMidVolumeTeams": 0.5,
         "PercentLowVolumeTeams": 0.3,

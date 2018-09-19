@@ -14,10 +14,10 @@ spec:
         component: "{{ .Values.global.features.jobserver.name }}"
     spec:
       initContainers:
-        - name: "init-mattermost-app"
-          image: "appropriate/curl:latest"
-          imagePullPolicy: "IfNotPresent"
-          command: ["sh", "-c", "until curl --max-time 5 http://{{ template "mattermost-enterprise-edition.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.mattermostApp.service.internalPort }}/api/v4/system/ping ; do echo waiting for Mattermost App come up; sleep 5; done; echo init-mattermost-app finished"]
+      - name: "init-mattermost-app"
+        image: "appropriate/curl:latest"
+        imagePullPolicy: "IfNotPresent"
+        command: ["sh", "-c", "until curl --max-time 5 http://{{ template "mattermost-enterprise-edition.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.mattermostApp.service.internalPort }}/api/v4/system/ping ; do echo waiting for Mattermost App come up; sleep 5; done; echo init-mattermost-app finished"]
       containers:
       - name: {{ template "mattermost-enterprise-edition.jobserver.fullname" . }}
         image: "{{ .Values.mattermostApp.image.repository }}:{{ .Values.mattermostApp.image.tag }}"
@@ -31,13 +31,13 @@ spec:
           name: mattermost-license
           subPath: mattermost.mattermost-license
       volumes:
-        - name: config-json
-          configMap:
-            name: {{template "mattermost-enterprise-edition.fullname" .}}-init-config-json
-            items:
-            - key: config.json
-              path: config.json
-        - name: mattermost-license
-          secret:
-            secretName: {{template "mattermost-enterprise-edition.fullname" .}}-mattermost-license
+      - name: config-json
+        configMap:
+          name: {{template "mattermost-enterprise-edition.fullname" .}}-init-config-json
+          items:
+          - key: config.json
+            path: config.json
+      - name: mattermost-license
+        secret:
+          secretName: {{template "mattermost-enterprise-edition.fullname" .}}-mattermost-license
 {{- end -}}

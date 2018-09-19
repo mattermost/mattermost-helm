@@ -57,7 +57,6 @@ pipeline {
                             --set mysqlha.persistence.enabled=false \
                             --set mysqlha.mysqlha.replicaCount=1 \
                             --set minio.persistence.enabled=false \
-                            --set global.features.ingress.enabled=false \
                             --wait .
 
                         STATUS=\$(kubectl get pods --field-selector=status.phase!=Running -n \${BRANCH}-${BUILD_NUMBER})

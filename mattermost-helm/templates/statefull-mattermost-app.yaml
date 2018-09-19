@@ -109,29 +109,29 @@ spec:
         resources:
 {{ toYaml .Values.mattermostApp.resources | indent 10 }}
       volumes:
-        - name: tmp-files
-          emptyDir: {}
-        - name: mattermost-init-config-json
-          configMap:
-            name: {{template "mattermost-enterprise-edition.fullname" .}}-init-config-json
-            items:
-            - key: config.json
-              path: config.json
-        - name: mattermost-license
-          secret:
-            secretName: {{template "mattermost-enterprise-edition.fullname" .}}-mattermost-license
-        {{- if not .Values.mattermostApp.persistence.pluginsServer.enabled }}
-        - name: mattermost-plugins
-          emptyDir: {}
-        {{- end }}
-        {{- if not .Values.mattermostApp.persistence.pluginsClient.enabled }}
-        - name: mattermost-plugins-client
-          emptyDir: {}
-        {{- end }}
-        {{- if not .Values.mattermostApp.persistence.configApp.enabled }}
-        - name: mattermost-config
-          emptyDir: {}
-        {{- end }}
+      - name: tmp-files
+        emptyDir: {}
+      - name: mattermost-init-config-json
+        configMap:
+          name: {{template "mattermost-enterprise-edition.fullname" .}}-init-config-json
+          items:
+          - key: config.json
+            path: config.json
+      - name: mattermost-license
+        secret:
+          secretName: {{template "mattermost-enterprise-edition.fullname" .}}-mattermost-license
+      {{- if not .Values.mattermostApp.persistence.pluginsServer.enabled }}
+      - name: mattermost-plugins
+        emptyDir: {}
+      {{- end }}
+      {{- if not .Values.mattermostApp.persistence.pluginsClient.enabled }}
+      - name: mattermost-plugins-client
+        emptyDir: {}
+      {{- end }}
+      {{- if not .Values.mattermostApp.persistence.configApp.enabled }}
+      - name: mattermost-config
+        emptyDir: {}
+      {{- end }}
   volumeClaimTemplates:
   {{- if .Values.mattermostApp.persistence.pluginsServer.enabled }}
   - metadata:
@@ -202,4 +202,3 @@ spec:
       {{- end }}
       {{- end }}
   {{- end }}
-
