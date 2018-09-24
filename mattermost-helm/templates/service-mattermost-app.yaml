@@ -18,5 +18,3 @@ spec:
     targetPort: {{ .Values.mattermostApp.service.metricsPort }}
     protocol: TCP
     name: {{ .Values.mattermostApp.service.metricsName }}
-  selector:
-    app: {{ template "mattermost-enterprise-edition.name" . }}
