@@ -26,28 +26,29 @@ spec:
         prometheus.io/path: "/metrics"
     spec:
       initContainers:
-      - name: "init-elasticsearch"
-        image: "appropriate/curl:latest"
-        imagePullPolicy: "IfNotPresent"
+      - name: init-elasticsearch
+        image: appropriate/curl:latest
+        imagePullPolicy: IfNotPresent
         command: [
           "sh",
           "-c",
           "until ! {{ .Values.global.features.elasticsearch.enabled }} || curl --max-time 5 http://{{ .Release.Name }}-mattermost-elasticsearch:9200 ; do echo waiting for elasticsearch; sleep 5; done; echo init-elasticsearch finished"]
-      - name: "init-mysql"
-        image: "appropriate/curl:latest"
-        imagePullPolicy: "IfNotPresent"
+      - name: init-mysql
+        image: appropriate/curl:latest
+        imagePullPolicy: IfNotPresent
         command: [
           "sh",
           "-c",
           "until ! {{ .Values.global.features.database.useInternal }} || curl --max-time 5 http://{{ .Release.Name }}-mysqlha-readonly:3306; do echo waiting for {{ .Release.Name }}-mysqlha; sleep 5; done;"]
-      - name: "init-config"
-        image: "busybox"
-        imagePullPolicy: "IfNotPresent"
+      - name: init-config
+        image: busybox
+        imagePullPolicy: IfNotPresent
         command:
           - sh
           - "-c"
           - |
             set -ex
+            rm -rfv /mattermost/config/lost+found
             if [[ -f /mattermost/config/config.json ]]; then
                 # If the config from configmap is the same as the config.default
                 # that means the dont have a new configmap and we dont need to
@@ -63,12 +64,30 @@ spec:
               cp /tmp/config/config.json /mattermost/config/config.json
               cp /tmp/config/config.json /mattermost/config/config.default
             fi
+            chown -R 2000:2000 /mattermost/config
         volumeMounts:
           - mountPath: /tmp/config/config.json
             name: mattermost-init-config-json
             subPath: config.json
-          - mountPath: /mattermost/config
+          - mountPath: /mattermost/config/
             name: mattermost-config
+      - name: remove-lost-found-set-permissions
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        command:
+        - sh
+        - "-c"
+        - |
+          set -ex
+          rm -rfv /mattermost/plugins/lost+found
+          rm -rfv /mattermost/client/plugins/lost+found
+          chown -R 2000:2000 /mattermost/plugins/
+          chown -R 2000:2000 /mattermost/client/plugins/
+        volumeMounts:
+        - mountPath: /mattermost/plugins/
+          name: mattermost-plugins
+        - mountPath: /mattermost/client/plugins/
+          name: mattermost-plugins-client
       containers:
       - name: {{ template "mattermost-enterprise-edition.name" . }}
         image: "{{ .Values.mattermostApp.image.repository }}:{{ .Values.mattermostApp.image.tag }}"
@@ -100,17 +119,15 @@ spec:
         - mountPath: /mattermost/mattermost.mattermost-license
           name: mattermost-license
           subPath: mattermost.mattermost-license
-        - mountPath: /mattermost/plugins
+        - mountPath: /mattermost/plugins/
           name: mattermost-plugins
-        - mountPath: /mattermost/client/plugins
+        - mountPath: /mattermost/client/plugins/
           name: mattermost-plugins-client
-        - mountPath: /mattermost/config
+        - mountPath: /mattermost/config/
           name: mattermost-config
         resources:
 {{ toYaml .Values.mattermostApp.resources | indent 10 }}
       volumes:
-      - name: tmp-files
-        emptyDir: {}
       - name: mattermost-init-config-json
         configMap:
           name: {{template "mattermost-enterprise-edition.fullname" .}}-init-config-json

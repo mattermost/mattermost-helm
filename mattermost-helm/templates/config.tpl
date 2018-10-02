@@ -3,7 +3,7 @@
     "ServiceSettings": {
         "SiteURL": "{{ .Values.global.siteUrl }}",
         "LicenseFileLocation": "/mattermost/mattermost.mattermost-license",
-        "ListenAddress": ":8065",
+        "ListenAddress": ":{{ .Values.mattermostApp.service.internalPort }}",
         "ConnectionSecurity": "",
         "TLSCertFile": "",
         "TLSKeyFile": "",
