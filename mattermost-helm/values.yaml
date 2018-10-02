@@ -82,14 +82,14 @@ mattermostApp:
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
-    tag: 5.2.1
+    tag: 5.3.1
     pullPolicy: Always
 
   service:
     name: mattermost-app
     type: ClusterIP
-    externalPort: 8065
-    internalPort: 8065
+    externalPort: 8000
+    internalPort: 8000
     metricsPort: 8067
     clusterPort: 8075
     gossipPort: 8074
