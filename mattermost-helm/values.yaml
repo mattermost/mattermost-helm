@@ -82,7 +82,7 @@ mattermostApp:
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
-    tag: 5.3.1
+    tag: 5.4.0
     pullPolicy: Always
 
   service:
@@ -153,6 +153,33 @@ mattermostApp:
         accessModes:
         - ReadWriteOnce
         annotations: {}
+  extraInitContainers: #|
+    # Extra Container to donwload and install the plugins
+    # - name: init-plugins-config
+    #   image: busybox
+    #   imagePullPolicy: IfNotPresent
+    #   command:
+    #     - sh
+    #     - "-c"
+    #     - |
+    #       PLUGINS_TAR="hovercardexample.tar.gz"
+    #       PLUGINS_TAR="${PLUGINS_TAR} https://<YOUR_PATH_TO_DOWNLOAD_PLUGINS_1>"
+    #       PLUGINS_TAR="${PLUGINS_TAR} https://<YOUR_PATH_TO_DOWNLOAD_PLUGINS_2>"
+    #       PLUGINS_TAR="${PLUGINS_TAR} https://<YOUR_PATH_TO_DOWNLOAD_PLUGINS_N>"
+
+    #       for plugin_tar in ${PLUGINS_TAR};
+    #       do
+    #         wget ${plugin_tar} -P /mattermost/plugins
+    #         cd /mattermost/plugins
+    #         tar -xzvf ${plugin_tar}
+    #         rm -f ${plugin_tar}
+    #       done
+    #   volumeMounts:
+    #   # Need to match the volume mount for plugins volumes
+    #   - name: mattermost-plugins
+    #     mountPath: /mattermost/plugins/
+    #   - name: mattermost-plugins-client
+    #     mountPath: /mattermost/client/plugins/
 
 mysqlha:
   enabled: true
