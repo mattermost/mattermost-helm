@@ -71,6 +71,7 @@ spec:
             subPath: config.json
           - mountPath: /mattermost/config/
             name: mattermost-config
+      {{- if and .Values.mattermostApp.persistence.pluginsServer.enabled .Values.mattermostApp.persistence.pluginsClient.enabled }}
       - name: remove-lost-found-set-permissions
         image: busybox
         imagePullPolicy: IfNotPresent
@@ -88,6 +89,10 @@ spec:
           name: mattermost-plugins
         - mountPath: /mattermost/client/plugins/
           name: mattermost-plugins-client
+      {{- end}}
+{{- if .Values.mattermostApp.extraInitContainers }}
+{{ tpl .Values.mattermostApp.extraInitContainers . | indent 6 }}
+{{- end }}
       containers:
       - name: {{ template "mattermost-enterprise-edition.name" . }}
         image: "{{ .Values.mattermostApp.image.repository }}:{{ .Values.mattermostApp.image.tag }}"
