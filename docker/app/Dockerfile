@@ -23,4 +23,4 @@ EXPOSE 8074
 EXPOSE 8075
 
 WORKDIR /mattermost
-CMD ["bin/platform"]
+CMD ["bin/mattermost"]
