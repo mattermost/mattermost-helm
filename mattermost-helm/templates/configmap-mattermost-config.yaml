@@ -3,8 +3,10 @@ kind: ConfigMap
 metadata:
   name: {{ template "mattermost-enterprise-edition.fullname" . }}-init-config-json
   labels:
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    app: {{ template "mattermost-enterprise-edition.name" . }}
+    app.kubernetes.io/name: {{ template "mattermost-enterprise-edition.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart:  {{ template "mattermost-enterprise-edition.chart" . }}
 data:
   config.json: |
 {{ include "config.tpl" . | printf "%s" | indent 4 }}
