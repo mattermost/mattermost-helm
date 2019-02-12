@@ -14,7 +14,9 @@ jobs:
     steps:
       - checkout
       - run:
-          command: ct lint --config ci/ct.yaml
+          command: |
+            cd ..
+            ct lint --config mattermost-kubernetes/ci/ct.yaml
 
   install-charts:
     machine: true
