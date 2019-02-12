@@ -41,6 +41,10 @@ global:
         tag: latest
         pullPolicy: Always
       replicaCount: 1
+      strategy:
+        type: Recreate
+        rollingUpdate: null
+      revisionHistoryLimit: 2
       numTeams: 1
       numChannelsPerTeam: 400
       numUsers: 5
@@ -67,6 +71,10 @@ global:
       name: jobserver
       enabled: true
       replicaCount: 1
+      strategy:
+        type: Recreate
+        rollingUpdate: null
+      revisionHistoryLimit: 2
       service:
         name: mattermost-app-jobserver
         type: ClusterIP
@@ -82,8 +90,15 @@ mattermostApp:
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
-    tag: 5.4.0
-    pullPolicy: Always
+    tag: 5.7.1
+    pullPolicy: IfNotPresent
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  revisionHistoryLimit: 2
 
   service:
     name: mattermost-app
@@ -113,47 +128,8 @@ mattermostApp:
     # requests:
     #   cpu: 100m
     #   memory: 300Mi
-  persistence:
-    pluginsServer:
-        enabled: true
-        size: 10Gi
-        ## If defined, storageClassName: <storageClass>
-        ## If set to "-", storageClassName: "", which disables dynamic provisioning
-        ## If undefined (the default) or set to null, no storageClassName spec is
-        ##   set, choosing the default provisioner.  (gp2 on AWS, azure-disk on
-        ##   Azure, standard on GKE, AWS & OpenStack)
-        ##
-        # storageClass: "-"
-        accessModes:
-        - ReadWriteOnce
-        annotations: {}
-    pluginsClient:
-        enabled: true
-        size: 10Gi
-        ## If defined, storageClassName: <storageClass>
-        ## If set to "-", storageClassName: "", which disables dynamic provisioning
-        ## If undefined (the default) or set to null, no storageClassName spec is
-        ##   set, choosing the default provisioner.  (gp2 on AWS, azure-disk on
-        ##   Azure, standard on GKE, AWS & OpenStack)
-        ##
-        # storageClass: "-"
-        accessModes:
-        - ReadWriteOnce
-        annotations: {}
-    configApp:
-        enabled: true
-        size: 1Gi
-        ## If defined, storageClassName: <storageClass>
-        ## If set to "-", storageClassName: "", which disables dynamic provisioning
-        ## If undefined (the default) or set to null, no storageClassName spec is
-        ##   set, choosing the default provisioner.  (gp2 on AWS, azure-disk on
-        ##   Azure, standard on GKE, AWS & OpenStack)
-        ##
-        # storageClass: "-"
-        accessModes:
-        - ReadWriteOnce
-        annotations: {}
-  extraInitContainers: #|
+
+  extraInitContainers:
     # Extra Container to donwload and install the plugins
     # - name: init-plugins-config
     #   image: busybox
