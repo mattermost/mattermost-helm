@@ -1,0 +1,24 @@
+mattermostApp:
+  replicaCount: 1
+  persistence:
+    pluginsServer:
+        enabled: false
+    pluginsClient:
+        enabled: false
+    configApp:
+        enabled: false
+
+mysqlha:
+  mysqlha:
+    replicaCount: 2
+  persistence:
+    storageClass: "hostpath"
+    enabled: true
+    size: 100Mi
+
+minio:
+  persistence:
+    enabled: true
+    storageClass: "hostpath"
+    accessMode: ReadWriteOnce
+    size: 10Gi

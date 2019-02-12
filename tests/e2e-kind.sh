@@ -12,7 +12,7 @@ readonly K8S_VERSION=v1.13.2
 run_ct_container() {
     echo 'Running ct container...'
     docker run --rm --interactive --detach --network host --name ct \
-        --volume "$(pwd)/ci/ct.yaml:/etc/ct/ct.yaml" \
+        --volume "$(pwd)/tests/ct.yaml:/etc/ct/ct.yaml" \
         --volume "$(pwd):/workdir" \
         --workdir /workdir \
         "quay.io/helmpack/chart-testing:$CT_VERSION" \
@@ -38,7 +38,7 @@ create_kind_cluster() {
     chmod +x kind
     sudo mv kind /usr/local/bin/kind
 
-    kind create cluster --name "$CLUSTER_NAME" --config ci/kind-config.yaml --image "kindest/node:$K8S_VERSION"
+    kind create cluster --name "$CLUSTER_NAME" --config tests/kind-config.yaml --image "kindest/node:$K8S_VERSION"
 
     docker_exec mkdir -p /root/.kube
 

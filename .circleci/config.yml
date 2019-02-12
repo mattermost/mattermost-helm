@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: shellcheck -x ci/e2e-kind.sh
+          command: shellcheck -x tests/e2e-kind.sh
 
   lint-charts:
     docker:
@@ -14,14 +14,14 @@ jobs:
     steps:
       - checkout
       - run:
-          command: ct lint --config ci/ct.yaml
+          command: ct lint --config tests/ct.yaml
 
   install-charts:
     machine: true
     steps:
       - checkout
       - run:
-          command: ci/e2e-kind.sh
+          command: tests/e2e-kind.sh
           no_output_timeout: 1h
 
 workflows:
