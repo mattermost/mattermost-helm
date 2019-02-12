@@ -4,12 +4,12 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "mattermost-enterprise-edition.fullname" . }}
+  name: {{ include "mattermost-enterprise-edition.fullname" . }}
   labels:
-    app: {{ template "mattermost-enterprise-edition.name" . }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
+    app.kubernetes.io/name: {{ include "mattermost-enterprise-edition.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart:  {{ include "mattermost-enterprise-edition.chart" . }}
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/proxy-buffering: "on"

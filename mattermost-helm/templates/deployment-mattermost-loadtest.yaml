@@ -1,20 +1,38 @@
 {{- if .Values.global.features.loadTest.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{template "mattermost-enterprise-edition.fullname" .}}-loadtest
+  name: {{ include "mattermost-enterprise-edition.name" .}}-loadtest
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/name: {{ include "mattermost-enterprise-edition.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: loadtest
+    helm.sh/chart:  {{ include "mattermost-enterprise-edition.chart" . }}
 spec:
   replicas: {{ .Values.global.features.loadTest.replicaCount }}
+  {{- with .Values.global.features.loadTest.strategy }}
+  strategy:
+    {{- . | toYaml | nindent 4 }}
+  {{- end }}
+  revisionHistoryLimit: {{ .Values.global.features.loadTest.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "mattermost-enterprise-edition.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/managed-by: {{ .Release.Service }}
+      app.kubernetes.io/component: loadtest
   template:
     metadata:
       labels:
-        app: {{template "mattermost-enterprise-edition.name" .}}-loadtest
-        release: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ include "mattermost-enterprise-edition.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/component: loadtest
+        helm.sh/chart: {{ include "mattermost-enterprise-edition.chart" . }}
     spec:
       containers:
-        - name: {{template "mattermost-enterprise-edition.fullname" .}}-loadtest
+        - name: {{template "mattermost-enterprise-edition.name" .}}-loadtest
           image: "{{ .Values.global.features.loadTest.image.repository }}:{{ .Values.global.features.loadTest.image.tag }}"
           imagePullPolicy: {{ .Values.global.features.loadTest.image.pullPolicy }}
           volumeMounts:
