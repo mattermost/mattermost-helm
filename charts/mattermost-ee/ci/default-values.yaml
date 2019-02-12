@@ -10,9 +10,10 @@ mattermostApp:
 
 mysqlha:
   mysqlha:
-    replicaCount: 2
+    replicaCount: 1
   persistence:
     storageClass: "hostpath"
+    accessMode: ReadWriteOnce
     enabled: true
     size: 100Mi
 
