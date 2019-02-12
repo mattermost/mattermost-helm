@@ -15,7 +15,9 @@ jobs:
       - checkout
       - run:
           command: |
+            ls -la
             cd ..
+            ls -la
             ct lint --config mattermost-kubernetes/ci/ct.yaml
 
   install-charts:
