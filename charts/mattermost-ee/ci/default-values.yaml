@@ -21,4 +21,4 @@ minio:
     enabled: true
     storageClass: "hostpath"
     accessMode: ReadWriteOnce
-    size: 10Gi
+    size: 100Mi
