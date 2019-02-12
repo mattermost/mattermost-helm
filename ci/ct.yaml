@@ -1,0 +1,6 @@
+remote: origin
+target-branch: master
+chart-dirs: .
+chart-repos:
+  - incubator=https://kubernetes-charts-incubator.storage.googleapis.com/
+helm-extra-args: --timeout 800
