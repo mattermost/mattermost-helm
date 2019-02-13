@@ -111,7 +111,7 @@ mattermostApp:
     metricsName: mattermost-app-metrics
 
   ingress:
-    enabled: true
+    enabled: false
     # Used to create Ingress record (should used with service.type: ClusterIP).
     hosts:
       - mattermost.example.com

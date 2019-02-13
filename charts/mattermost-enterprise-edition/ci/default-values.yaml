@@ -2,11 +2,11 @@ mattermostApp:
   replicaCount: 1
   persistence:
     pluginsServer:
-        enabled: false
+      enabled: false
     pluginsClient:
-        enabled: false
+      enabled: false
     configApp:
-        enabled: false
+      enabled: false
 
 mysqlha:
   mysqlha:
