@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-ENV PP_VERSION=4.4.0
+ENV APP_VERSION=4.4.0
 ENV PATH="/mattermost-push-proxy/bin:${PATH}"
 
 # Install some needed packages
@@ -14,18 +14,18 @@ RUN apt-get update \
 
 RUN mkdir -p /mattermost-push-proxy \
     && cd /mattermost-push-proxy \
-    && wget https://github.com/mattermost/mattermost-push-proxy/releases/download/v`echo $PP_VERSION | cut -d. -f1,2`/mattermost-push-proxy-$PP_VERSION.tar.gz \
-    && tar -xvzf mattermost-push-proxy-$PP_VERSION.tar.gz \
-    && rm mattermost-push-proxy-$PP_VERSION.tar.gz \
+    && wget https://github.com/mattermost/mattermost-push-proxy/releases/download/v`echo $APP_VERSION | cut -d. -f1,2`/mattermost-push-proxy-$APP_VERSION.tar.gz \
+    && tar -xvzf mattermost-push-proxy-$APP_VERSION.tar.gz \
+    && rm mattermost-push-proxy-$APP_VERSION.tar.gz \
     && mv mattermost-push-proxy/* ./ \
     && rm -rf mattermost-push-proxy
 
 WORKDIR /mattermost-push-proxy
+
 COPY entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 8066
 
-VOLUME /mattermost-push-proxy
-VOLUME /config
-VOLUME /certs
+VOLUME ["/mattermost-push-proxy", "/config", "/certs"]
+
+ENTRYPOINT ["/entrypoint.sh"]
