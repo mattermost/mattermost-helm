@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{template "fullname" .}}-app-test-{{ randAlphaNum 5 | lower }}"
+  name: "{{ include  "mattermost-enterprise-edition.fullname" . }}-app-test-{{ randAlphaNum 5 | lower }}"
   annotations:
     "helm.sh/hook": test-success
 spec:
@@ -32,7 +32,7 @@ spec:
   volumes:
   - name: tests
     configMap:
-      name: {{template "fullname" .}}-app-tests
+      name: {{ include  "mattermost-enterprise-edition.fullname" . }}-app-tests
   - name: tools
     emptyDir: {}
   restartPolicy: Never

@@ -20,4 +20,4 @@ tags
 
 .init
 
-mattermost-helm/charts/*.tgz
+charts/mattermost-enterprise-edition/charts/*.tgz
