@@ -14,7 +14,7 @@ For cert-manager follow [this](https://cert-manager.readthedocs.io/en/latest/) a
 
 # Configuration
 
-To start, copy [mattermost-helm/values.yaml](https://github.com/mattermost/mattermost-kubernetes/blob/master/mattermost-helm/values.yaml) and name it `config.yaml`. This will be your configuration file for the Mattermost helm chart.
+To start, copy [mattermost-enterprise-edition/values.yaml](https://github.com/mattermost/mattermost-kubernetes/blob/master/mattermost-enterprise-edition/values.yaml) and name it `config.yaml`. This will be your configuration file for the Mattermost helm chart.
 
 ## DNS
 
@@ -53,7 +53,7 @@ To backup / restore you Mattermost Database please follow this [how-to](mysql-ba
 
 ```
 helm repo add mattermost https://releases.mattermost.com/helm
-helm upgrade -f config.yaml mattermost-helm
+helm upgrade -f config.yaml mattermost-enterprise-edition
 ```
 
 # Getting started using minikube
@@ -87,7 +87,7 @@ helm repo add mattermost https://releases.mattermost.com/helm
 helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
 ```
 
-## Launch Mattermost
+## Launch Mattermost Enterprise Edition
 
 The helm charts have external dependencies, fetch them with:
 
@@ -97,23 +97,37 @@ helm dependency update
 
 Once dependencies have been loaded, you can launch the charts directly with:
 ```bash
-helm install ./mattermost-helm
+helm install ./mattermost-enterprise-edition
 ```
 
 If you have a custom config you would like to use (say a license key), create a `config.yaml`
 
-To list options for mattermost-helm:
+To list options for mattermost-enterprise-edition:
 
 ```bash
-helm inspect values mattermost-helm
+helm inspect values mattermost-enterprise-edition
 ```
 
 Create a yaml file `config.yaml` to overide any defaults you want to change and
 install using:
 
 ```bash
-helm install -f config.yaml ./mattermost-helm
+helm install -f config.yaml ./mattermost-enterprise-edition
 ```
+
+## Launch Mattermost Push Proxy
+
+You can launch the Mattermost push proxy chart with:
+```bash
+helm install ./mattermost-push-proxy
+```
+
+To list options for mattermost-push-proxy:
+
+```bash
+helm inspect values mattermost-push-proxy
+```
+
 
 ## Tearing down your Mattermost deployment
 

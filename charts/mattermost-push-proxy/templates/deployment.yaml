@@ -1,4 +1,3 @@
-{{- if .Values.global.features.notifications.push.enabled }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -75,4 +74,3 @@ spec:
             - key: apple-rnbeta-push-cert.pem
               path: apple-rnbeta-push-cert.pem
         {{- end }}
-{{- end }}
