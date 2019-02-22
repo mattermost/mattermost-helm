@@ -19,9 +19,9 @@ spec:
           ports:
             - containerPort: {{ .Values.service.internalPort }}
           volumeMounts:
-          - mountPath: /config/config.json
-            name: push-config-json
-            subPath: push-config.json
+          - mountPath: /config/config.tpl
+            name: push-config-template
+            subPath: push-config.tpl
           {{- if .Values.applePushSettings.apple.configMap }}
           - mountPath: /certs/apple-push-cert.pem
             name: apple-push-cert
@@ -44,12 +44,12 @@ spec:
 {{ toYaml .Values.nodeSelector | indent 8 }}
     {{- end }}
       volumes:
-        - name: push-config-json
+        - name: push-config-template
           configMap:
-            name: {{template "fullname" .}}-push-config-json
+            name: {{template "fullname" .}}-push-config-template
             items:
-            - key: push-config.json
-              path: push-config.json
+            - key: push-config.tpl
+              path: push-config.tpl
         {{- if .Values.applePushSettings.apple.configMap }}
         - name: apple-push-cert
           configMap:
