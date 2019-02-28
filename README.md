@@ -1,16 +1,19 @@
 Mattermost Kubernetes
 ==========================
 
-This is the helm chart for Mattermost Enterprise Edition. It is in beta and subject to changes but is used by Mattermost internally to run some CI servers.
+This is the helm chart for Mattermost Enterprise Edition. It is subject to changes, but is used by Mattermost internally to run some CI servers.
+
+To read an overview of how to migrate Mattermost to Kubernetes, [see this blog post](https://mattermost.com/blog/mattermost-kubernetes/).
+
+To install Mattermost Team Edition helm chart in GitLab helm chart deployment, [see this documentation](https://docs.mattermost.com/install/install-mmte-helm-gitlab-helm.html).
 
 # Pre requisites
 
-To use the Mattermost Enterprise Helm Chart you will need first a running Kubernetes cluster or Minikube.
+To use the Mattermost Enterprise Helm Chart, you will first need a running Kubernetes cluster or Minikube.
 
-If you want to expose the application to the outside, you will need to configure some ingress in the Kubernetes and also if you want to get ssl certificates automatically you can use [cert-manager](https://github.com/jetstack/cert-manager), you also can use [kube-lego](https://github.com/jetstack/kube-lego) but it is deprecated. You can choose the one that you are most comfortable.
-We use the [nginx-ingress](https://github.com/kubernetes/ingress-nginx) and to install this in your Kubernetes cluster you can follow [this documentation](https://kubernetes.github.io/ingress-nginx/deploy/) or also can use the [helm charts](https://github.com/helm/charts/tree/master/stable/nginx-ingress)
+If you want to expose the application outside of your network, configure ingress in the Kubernetes cluster. Internally, Mattermost uses the [nginx-ingress](https://github.com/kubernetes/ingress-nginx). To install this in your Kubernetes cluster, follow [this documentation](https://kubernetes.github.io/ingress-nginx/deploy/). You may also use the [helm charts](https://github.com/helm/charts/tree/master/stable/nginx-ingress) directly.
 
-For cert-manager follow [this](https://cert-manager.readthedocs.io/en/latest/) and here is the [helm charts](https://github.com/helm/charts/tree/master/stable/cert-manager)
+Moreover, if you want to automatically retrieve SSL certificates, use [cert-manager](https://github.com/jetstack/cert-manager). You also can use [kube-lego](https://github.com/jetstack/kube-lego), but it is deprecated. You can choose the one that you are most comfortable with. For cert-manager, you can follow [this documentation](https://cert-manager.readthedocs.io/en/latest/) and here is its [helm charts](https://github.com/helm/charts/tree/master/stable/cert-manager).
 
 # Configuration
 
