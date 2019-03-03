@@ -1,19 +1,19 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ include "mattermost-push-proxy.fullname" . }}
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    chart: {{ include "mattermost-push-proxy.chart" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
-        app: {{ template "fullname" . }}
+        app: {{ include "mattermost-push-proxy.fullname" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "mattermost-push-proxy.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
@@ -46,14 +46,14 @@ spec:
       volumes:
         - name: push-config-template
           configMap:
-            name: {{template "fullname" .}}-push-config-template
+            name: {{ include "mattermost-push-proxy.fullname" . }}-push-config-template
             items:
             - key: push-config.tpl
               path: push-config.tpl
         {{- if .Values.applePushSettings.apple.configMap }}
         - name: apple-push-cert
           configMap:
-            name: {{template "fullname" .}}-{{ .Values.applePushSettings.apple.configMap }}
+            name: {{ include "mattermost-push-proxy.fullname" . }}-{{ .Values.applePushSettings.apple.configMap }}
             items:
             - key: apple-push-cert.pem
               path: apple-push-cert.pem
@@ -61,7 +61,7 @@ spec:
         {{- if .Values.applePushSettings.apple_rn.configMap }}
         - name: apple-rn-push-cert
           configMap:
-            name: {{template "fullname" .}}-{{ .Values.applePushSettings.apple_rn.configMap }}
+            name: {{ include "mattermost-push-proxy.fullname" . }}-{{ .Values.applePushSettings.apple_rn.configMap }}
             items:
             - key: apple-rn-push-cert.pem
               path: apple-rn-push-cert.pem
@@ -69,7 +69,7 @@ spec:
         {{- if .Values.applePushSettings.apple_rnbeta.configMap }}
         - name: apple-rnbeta-push-cert
           configMap:
-            name: {{template "fullname" .}}-{{ .Values.applePushSettings.apple_rnbeta.configMap }}
+            name: {{ include "mattermost-push-proxy.fullname" . }}-{{ .Values.applePushSettings.apple_rnbeta.configMap }}
             items:
             - key: apple-rnbeta-push-cert.pem
               path: apple-rnbeta-push-cert.pem

@@ -1,12 +1,12 @@
-{{- $serviceName := include "fullname" . -}}
+{{- $serviceName := include "mattermost-push-proxy.fullname" . -}}
 {{- $servicePort := .Values.service.externalPort -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ include "mattermost-push-proxy.fullname" . }}
   labels:
-    app: {{ template "fullname" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app: {{ include "mattermost-push-proxy.fullname" . }}
+    chart: {{ include "mattermost-push-proxy.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
