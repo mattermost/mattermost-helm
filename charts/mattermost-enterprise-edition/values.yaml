@@ -111,7 +111,7 @@ mattermostApp:
     metricsName: mattermost-app-metrics
 
   ingress:
-    enabled: true
+    enabled: false
     # Used to create Ingress record (should used with service.type: ClusterIP).
     hosts:
       - mattermost.example.com
@@ -129,7 +129,7 @@ mattermostApp:
     #   cpu: 100m
     #   memory: 300Mi
 
-  extraInitContainers:
+  extraInitContainers: []
     # Extra Container to donwload and install the plugins
     # - name: init-plugins-config
     #   image: busybox

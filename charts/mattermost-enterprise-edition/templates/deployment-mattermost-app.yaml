@@ -70,9 +70,9 @@ spec:
           subPath: config.json
         - mountPath: /mattermost/config/
           name: mattermost-config
-{{- if .Values.mattermostApp.extraInitContainers }}
-{{ toYaml .Values.mattermostApp.extraInitContainers | indent 6 }}
-{{- end }}
+      {{- if .Values.mattermostApp.extraInitContainers }}
+      {{- .Values.mattermostApp.extraInitContainers | toYaml | nindent 6 }}
+      {{- end }}
       containers:
       - name: {{ include "mattermost-enterprise-edition.name" . }}
         image: "{{ .Values.mattermostApp.image.repository }}:{{ .Values.mattermostApp.image.tag }}"
