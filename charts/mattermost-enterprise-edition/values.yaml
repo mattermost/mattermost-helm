@@ -129,7 +129,7 @@ mattermostApp:
     #   cpu: 100m
     #   memory: 300Mi
 
-  extraInitContainers:
+  extraInitContainers: []
     # Extra Container to donwload and install the plugins
     # - name: init-plugins-config
     #   image: busybox

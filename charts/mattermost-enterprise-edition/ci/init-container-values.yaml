@@ -8,16 +8,16 @@ mattermostApp:
     configApp:
       enabled: false
 
+  extraInitContainers:
+    - name: init-test
+      image: busybox
+      imagePullPolicy: IfNotPresent
+      command:
+        - sh
+        - "-c"
+        - |
+          echo "Hello Mattermost"
+
 mysqlha:
   mysqlha:
     replicaCount: 1
-
-extraInitContainers:
-  - name: init-test
-    image: busybox
-    imagePullPolicy: IfNotPresent
-    command:
-      - sh
-      - "-c"
-      - |
-        echo "Hello Mattermost"
