@@ -11,12 +11,6 @@ mattermostApp:
 mysqlha:
   mysqlha:
     replicaCount: 1
-  persistence:
-    enabled: false
-
-minio:
-  persistence:
-    enabled: false
 
 extraInitContainers:
   - name: init-test
