@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: {{ include "mattermost-push-proxy.fullname" . }}
   labels:
-    app: {{ include "mattermost-push-proxy.fullname" . }}
-    chart: {{ include "mattermost-push-proxy.chart" . }}
-    #release: {{ .Release.Name }}
-    #heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ include "mattermost-push-proxy.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart:  {{ include "mattermost-push-proxy.chart" . }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -15,4 +15,7 @@ spec:
       protocol: TCP
       name: {{ .Values.service.name }}
   selector:
-    app: {{ include "mattermost-push-proxy.fullname" . }}
+    app.kubernetes.io/name: {{ include "mattermost-push-proxy.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: server

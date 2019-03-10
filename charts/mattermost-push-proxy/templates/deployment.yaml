@@ -1,16 +1,29 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "mattermost-push-proxy.fullname" . }}
   labels:
-    chart: {{ include "mattermost-push-proxy.chart" . }}
+    app.kubernetes.io/name: {{ include "mattermost-push-proxy.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: server
+    helm.sh/chart:  {{ include "mattermost-push-proxy.chart" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "mattermost-push-proxy.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/managed-by: {{ .Release.Service }}
+      app.kubernetes.io/component: server
   template:
     metadata:
       labels:
-        app: {{ include "mattermost-push-proxy.fullname" . }}
-        release: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ include "mattermost-push-proxy.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/component: server
+        helm.sh/chart: {{ include "mattermost-push-proxy.chart" . }}
     spec:
       containers:
         - name: {{ include "mattermost-push-proxy.name" . }}
