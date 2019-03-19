@@ -1,28 +1,40 @@
-{{- if .Values.global.features.notifications.push.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ include "mattermost-push-proxy.fullname" . }}
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/name: {{ include "mattermost-push-proxy.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: server
+    helm.sh/chart:  {{ include "mattermost-push-proxy.chart" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "mattermost-push-proxy.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/managed-by: {{ .Release.Service }}
+      app.kubernetes.io/component: server
   template:
     metadata:
       labels:
-        app: {{ template "fullname" . }}
-        release: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ include "mattermost-push-proxy.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/component: server
+        helm.sh/chart: {{ include "mattermost-push-proxy.chart" . }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "mattermost-push-proxy.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.internalPort }}
           volumeMounts:
-          - mountPath: /config/config.json
-            name: push-config-json
-            subPath: push-config.json
+          - mountPath: /config/config.tpl
+            name: push-config-template
+            subPath: push-config.tpl
           {{- if .Values.applePushSettings.apple.configMap }}
           - mountPath: /certs/apple-push-cert.pem
             name: apple-push-cert
@@ -45,16 +57,16 @@ spec:
 {{ toYaml .Values.nodeSelector | indent 8 }}
     {{- end }}
       volumes:
-        - name: push-config-json
+        - name: push-config-template
           configMap:
-            name: {{template "fullname" .}}-push-config-json
+            name: {{ include "mattermost-push-proxy.fullname" . }}-push-config-template
             items:
-            - key: push-config.json
-              path: push-config.json
+            - key: push-config.tpl
+              path: push-config.tpl
         {{- if .Values.applePushSettings.apple.configMap }}
         - name: apple-push-cert
           configMap:
-            name: {{template "fullname" .}}-{{ .Values.applePushSettings.apple.configMap }}
+            name: {{ include "mattermost-push-proxy.fullname" . }}-{{ .Values.applePushSettings.apple.configMap }}
             items:
             - key: apple-push-cert.pem
               path: apple-push-cert.pem
@@ -62,7 +74,7 @@ spec:
         {{- if .Values.applePushSettings.apple_rn.configMap }}
         - name: apple-rn-push-cert
           configMap:
-            name: {{template "fullname" .}}-{{ .Values.applePushSettings.apple_rn.configMap }}
+            name: {{ include "mattermost-push-proxy.fullname" . }}-{{ .Values.applePushSettings.apple_rn.configMap }}
             items:
             - key: apple-rn-push-cert.pem
               path: apple-rn-push-cert.pem
@@ -70,9 +82,8 @@ spec:
         {{- if .Values.applePushSettings.apple_rnbeta.configMap }}
         - name: apple-rnbeta-push-cert
           configMap:
-            name: {{template "fullname" .}}-{{ .Values.applePushSettings.apple_rnbeta.configMap }}
+            name: {{ include "mattermost-push-proxy.fullname" . }}-{{ .Values.applePushSettings.apple_rnbeta.configMap }}
             items:
             - key: apple-rnbeta-push-cert.pem
               path: apple-rnbeta-push-cert.pem
         {{- end }}
-{{- end }}

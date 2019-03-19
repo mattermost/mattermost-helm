@@ -1,4 +1,4 @@
-{{- define "push-config.json" -}}
+{{- define "push-config.tpl" -}}
 {
     "ListenAddress":":8066",
     "ThrottlePerSec":300,
