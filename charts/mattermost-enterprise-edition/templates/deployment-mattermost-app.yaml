@@ -110,6 +110,9 @@ spec:
           name: mattermost-plugins-client
         - mountPath: /mattermost/config/
           name: mattermost-config
+{{- if .Values.mattermostApp.extraVolumeMounts }}
+{{ toYaml .Values.mattermostApp.extraVolumeMounts | indent 8 }}
+{{- end }}
         resources:
 {{ toYaml .Values.mattermostApp.resources | indent 10 }}
       volumes:
@@ -128,3 +131,6 @@ spec:
       - name: mattermost-license
         secret:
           secretName: {{ include "mattermost-enterprise-edition.fullname" . }}-mattermost-license
+{{- if .Values.mattermostApp.extraVolumes }}
+{{ toYaml .Values.mattermostApp.extraVolumes | indent 6 }}
+{{- end }}

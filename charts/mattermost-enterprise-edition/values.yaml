@@ -86,11 +86,12 @@ global:
         # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
         useHPNS: false
 
+# Mattermost deployment section. Use to configure the deployment and how many replicas and so on.
 mattermostApp:
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
-    tag: 5.7.1
+    tag: 5.9.0
     pullPolicy: IfNotPresent
 
   strategy:
@@ -156,7 +157,20 @@ mattermostApp:
     #     mountPath: /mattermost/plugins/
     #   - name: mattermost-plugins-client
     #     mountPath: /mattermost/client/plugins/
+    #   Add here the extra volumes you might want to use. Use the values you define in the extraVolumeMounts
 
+  # Add additional volumes and mounts, for example to add saml keys in the app or any other thing
+  extraVolumes: []
+    # - hostPath:
+    #     path: /var/log
+    #   name: varlog
+  extraVolumeMounts: []
+    # - name: varlog
+    #   mountPath: /host/var/log
+    #   readOnly: true
+
+# Mysql HA Section. Use this to configure the mysql.
+# If you want an external DB please disable this
 mysqlha:
   enabled: true
   mysqlha:
@@ -201,6 +215,8 @@ mattermost-elasticsearch:
   data:
     replicaCount: 2
 
+# Minio Section. Use this to configure the minio storage.
+# If you want an external storage please disable this
 minio:
   enabled: true
   image:
