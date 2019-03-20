@@ -216,7 +216,7 @@ mattermost-elasticsearch:
     replicaCount: 2
 
 # Minio Section. Use this to configure the minio storage.
-# If you want an external storage please disable this
+# If you want to use external storage please disable this
 minio:
   enabled: true
   image:
