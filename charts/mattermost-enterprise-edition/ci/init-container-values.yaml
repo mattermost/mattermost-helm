@@ -22,6 +22,10 @@ mattermostApp:
           name: varlog
 
   extraVolumeMounts:
+    - mountPath: /tmp/test-tmp
+      name: varlog
+
+  extraVolumes:
     - name: varlog
       emptyDir: {}
       readOnly: true
