@@ -86,7 +86,7 @@ global:
         # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
         useHPNS: false
 
-# Mattermost deployment section. Use to configure the deployment and how many replicas and so on.
+# Mattermost deployment section. Use to configure the deployment, how many replicas and other fields.
 mattermostApp:
   replicaCount: 2
   image:
