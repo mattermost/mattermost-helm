@@ -157,7 +157,7 @@ mattermostApp:
     #     mountPath: /mattermost/plugins/
     #   - name: mattermost-plugins-client
     #     mountPath: /mattermost/client/plugins/
-    #   Add here the extra volumes you might want to use. Use the values you define in the extraVolumeMounts
+    #   Add the extra volumes you might want to use here. Use the values you define in the extraVolumeMounts
 
   # Add additional volumes and mounts, for example to add SAML keys in the app or other files the app server may need to access
   extraVolumes: []
