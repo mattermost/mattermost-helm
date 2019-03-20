@@ -169,7 +169,7 @@ mattermostApp:
     #   mountPath: /host/var/log
     #   readOnly: true
 
-# Mysql HA Section. Use this to configure the mysql.
+# Mysql HA Section. Use this to configure mysql.
 # If you want an external DB please disable this
 mysqlha:
   enabled: true
