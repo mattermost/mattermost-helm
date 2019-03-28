@@ -17,6 +17,18 @@ mattermostApp:
         - "-c"
         - |
           echo "Hello Mattermost"
+      volumeMounts:
+        - mountPath: /tmp/test-tmp
+          name: varlog
+
+  extraVolumeMounts:
+    - mountPath: /tmp/test-tmp
+      name: varlog
+
+  extraVolumes:
+    - name: varlog
+      emptyDir: {}
+      readOnly: true
 
 mysqlha:
   mysqlha:
