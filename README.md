@@ -59,24 +59,6 @@ helm repo add mattermost https://releases.mattermost.com/helm
 helm upgrade -f config.yaml mattermost-enterprise-edition
 ```
 
-# Getting started using minikube
-
-## Install minikube and kubectl
-
-See: https://kubernetes.io/docs/tasks/tools/install-minikube/
-
-## Launch minikube
-
-The helm charts start a lot of containers, and it will work better if you
-launch minikube with additional memory and CPU. You also need to enable
-persistent volume mapping. This only needs to be done the first time you launch
-minikube. The settings will persist across restarts. If you need to modify the
-values try `minikube delete` and `minikube stop`
-
-```bash
-minikube start --memory 4096 --cpus 4 --mount
-```
-
 ## Install and start Helm
 
 See: https://docs.helm.sh/using_helm/#quickstart
@@ -130,7 +112,6 @@ To list options for mattermost-push-proxy:
 ```bash
 helm inspect values mattermost-push-proxy
 ```
-
 
 ## Tearing down your Mattermost deployment
 
