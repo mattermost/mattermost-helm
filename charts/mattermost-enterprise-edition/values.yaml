@@ -1,15 +1,15 @@
 global:
-  siteUrl: "http://mattermost.example.com"
-  siteName: "Mattermost"
-  mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
+  siteUrl: "http://mattermost.example.com" # REQUIRED SETTING, PLEASE UPDATE
+  mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE" # REQUIRED SETTING, PLEASE UPDATE
 
-  # Settings for general configuration of MM
+  # Settings for configuration of Mattermost
   # For more details: https://docs.mattermost.com/administration/config-settings.html
+  siteName: "Mattermost"
   enableTeamCreation: true
   enableUserCreation: true
   enableOpenServer: true
-  enableLinkPreviews: false
-  enableCustomEmoji: false
+  enableLinkPreviews: true
+  enableCustomEmoji: true
 
   # Settings to enable email notifications
   sendEmailNotifications: false
@@ -21,12 +21,12 @@ global:
   smtpPassword: ""
   smtpServer: ""
   smtpPort: ""
-  # empty, TLS, or STARTTLS
-  connectionSecurity: ""
+  connectionSecurity: "" # empty, TLS, or STARTTLS
 
   features:
     database:
-      # If use the internal DB please set the user/pass in the MYSQLHA Section
+      # If using an internal DB, update the passwords in the "mysqlha" section
+      # If using an external DB, disable the MySQL deployment in the "mysqlha" section
       useInternal: true
       external:
         driver: "mysql"
@@ -34,6 +34,26 @@ global:
         dataSourceReplicas:
     elasticsearch:
       enabled: false
+    grafana:
+      enabled: false
+    jobserver:
+      name: jobserver
+      enabled: true
+      replicaCount: 1
+      strategy:
+        type: Recreate
+        rollingUpdate: null
+      revisionHistoryLimit: 2
+      service:
+        name: mattermost-app-jobserver
+        type: ClusterIP
+    notifications:
+      # Push proxy must be configured or useHPNS must be true for push noticiations to work.
+      push:
+        enabled: true
+        # Hosted push notification service. Requires an enterprise license.
+        # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
+        useHPNS: true
     loadTest:
       enabled: false
       image:
@@ -65,28 +85,9 @@ global:
       resultsChannelId: ""
       resultsUsername: ""
       resultsPassword: ""
-    grafana:
-      enabled: false
-    jobserver:
-      name: jobserver
-      enabled: true
-      replicaCount: 1
-      strategy:
-        type: Recreate
-        rollingUpdate: null
-      revisionHistoryLimit: 2
-      service:
-        name: mattermost-app-jobserver
-        type: ClusterIP
-    notifications:
-      # Push proxy must be configured or useHPNS must be true for push noticiations to work.
-      push:
-        enabled: false
-        # Hosted push notification service. Requires an enterprise license.
-        # More details at https://docs.mattermost.com/mobile/mobile-hpns.html.
-        useHPNS: false
 
-# Mattermost deployment section. Use to configure the deployment, how many replicas and other fields.
+# Mattermost deployment section.
+# Use to configure the deploymento the Mattermost app servers.
 mattermostApp:
   replicaCount: 2
   image:
@@ -112,8 +113,8 @@ mattermostApp:
     metricsName: mattermost-app-metrics
 
   ingress:
+    # Used to create Ingress record (should be used with service.type: ClusterIP).
     enabled: false
-    # Used to create Ingress record (should used with service.type: ClusterIP).
     hosts:
       - mattermost.example.com
     tls:
@@ -131,7 +132,7 @@ mattermostApp:
     #   memory: 300Mi
 
   extraInitContainers: []
-    # Extra Container to donwload and install the plugins
+    # Extra Container to donwload and install plugins
     # - name: init-plugins-config
     #   image: busybox
     #   imagePullPolicy: IfNotPresent
@@ -169,12 +170,13 @@ mattermostApp:
     #   mountPath: /host/var/log
     #   readOnly: true
 
-# Mysql HA Section. Use this to configure mysql.
-# If you want an external DB please disable this
+# MySQL HA Section. Use this to configure MySQL.
+# If you are using an external DB, disable this.
 mysqlha:
   enabled: true
   mysqlha:
     replicaCount: 2
+    # Please update the root and regular passwords
     mysqlRootPassword: "rootpasswd"
     mysqlUser: "mmuser"
     mysqlPassword: "passwd"
@@ -215,8 +217,8 @@ mattermost-elasticsearch:
   data:
     replicaCount: 2
 
-# Minio Section. Use this to configure the minio storage.
-# If you want to use external storage please disable this
+# Minio Section. Use this to configure Minio storage.
+# If you want to use external storage, disable this.
 minio:
   enabled: true
   image:
