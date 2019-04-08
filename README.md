@@ -21,7 +21,9 @@ https://kubernetes.io/docs/setup/pick-right-solution/
 
 See: https://docs.helm.sh/using_helm/#quickstart
 
-Once helm is installed and initialized, run the following:
+We recommend installing Helm v2.13.1 or later.
+
+Once Helm is installed and initialized, run the following:
 
 ```bash
 helm repo add mattermost https://releases.mattermost.com/helm
