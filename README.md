@@ -13,7 +13,7 @@ To install the Mattermost Team Edition Helm chart in a GitLab Helm chart deploym
 
 ## 1.1 Kubernetes Cluster
 
-You need a running Kubernetes cluster. If you do not have one, find options and installation instructions here:
+You need a running Kubernetes cluster v1.8+. If you do not have one, find options and installation instructions here:
 
 https://kubernetes.io/docs/setup/pick-right-solution/ 
 
