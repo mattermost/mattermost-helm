@@ -1,6 +1,6 @@
 global:
-  siteUrl: "http://mattermost.example.com" # REQUIRED SETTING, PLEASE UPDATE
-  mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE" # REQUIRED SETTING, PLEASE UPDATE
+  siteUrl: "http://mattermost.example.com"  # REQUIRED SETTING, PLEASE UPDATE
+  mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"  # REQUIRED SETTING, PLEASE UPDATE
 
   # Settings for configuration of Mattermost
   # For more details: https://docs.mattermost.com/administration/config-settings.html
@@ -21,7 +21,7 @@ global:
   smtpPassword: ""
   smtpServer: ""
   smtpPort: ""
-  connectionSecurity: "" # empty, TLS, or STARTTLS
+  connectionSecurity: ""  # empty, TLS, or STARTTLS
 
   features:
     database:
