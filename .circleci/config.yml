@@ -1,9 +1,17 @@
 version: 2.1
 jobs:
   build:
-    machine: true
-    branches:
-      ignore: gh-pages
+    docker:
+      - image: alpine:3.9
     steps:
       - run:
           command: echo "Skipping tests on gh-pages branch"
+
+workflows:
+  version: 2
+  mainbuild:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: gh-pages
