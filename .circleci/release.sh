@@ -41,6 +41,7 @@ main() {
     local changed_charts=()
     readarray -t changed_charts <<< "$(git diff --find-renames --name-only "$latest_tag_rev" -- charts | cut -d '/' -f 2 | uniq)"
 
+
     if [[ -n "${changed_charts[*]}" ]]; then
         for chart in "${changed_charts[@]}"; do
             echo "Packaging chart '$chart'..."
@@ -64,6 +65,7 @@ find_latest_tag() {
 
 package_chart() {
     local chart="$1"
+    helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
     helm dependency build "$chart"
     helm package "$chart" --destination .deploy
 }
