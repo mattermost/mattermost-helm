@@ -33,7 +33,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "fc:46:c3:d1:4b:4f:48:39:74:64:32:ea:86:78:32:e4"
+            - "47:1e:0d:93:8d:b3:ef:2f:56:0a:99:99:21:2a:d9:4e"
       - run:
           command: |
             echo "export GIT_REPO_URL=$CIRCLE_REPOSITORY_URL" >> $BASH_ENV
