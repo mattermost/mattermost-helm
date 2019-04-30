@@ -1,0 +1,47 @@
+apiVersion: v1
+entries:
+  mattermost-enterprise-edition:
+  - apiVersion: v1
+    appVersion: 5.9.0
+    created: "2019-04-30T13:46:46.76602848Z"
+    description: Mattermost Enterprise server with high availitibity.
+    digest: 17339a3b4b19920afb48c8c9cf2ab1ae9ab20ef4be49294a35ecd0dd2a0ef0e5
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - messaging
+    - team colaboration
+    maintainers:
+    - email: carlos@mattermost.com
+      name: cpanato
+    - email: joram@mattermost.com
+      name: jwilander
+    name: mattermost-enterprise-edition
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-enterprise-edition-0.8.2/mattermost-enterprise-edition-0.8.2.tgz
+    version: 0.8.2
+  mattermost-push-proxy:
+  - apiVersion: v1
+    appVersion: 4.4.0
+    created: "2019-04-30T13:46:46.621219499Z"
+    description: Mattermost Push Proxy server
+    digest: 73ee4b4b41434f9236a65dfe21f96dc5382faa3a73b22dd18e983d5578e93c6e
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - messaging
+    - team colaboration
+    maintainers:
+    - email: carlos@mattermost.com
+      name: cpanato
+    - email: joram@mattermost.com
+      name: jwilander
+    name: mattermost-push-proxy
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-push-proxy-0.1.4/mattermost-push-proxy-0.1.4.tgz
+    version: 0.1.4
+generated: "2019-04-30T13:46:46.192856282Z"
