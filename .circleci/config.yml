@@ -6,7 +6,10 @@ jobs:
     steps:
       - checkout
       - run:
-          command: shellcheck -x tests/e2e-kind.sh
+          command: |
+            shellcheck -x tests/e2e-kind.sh
+            shellcheck -x .circleci/install_tools.sh
+            shellcheck -x .circleci/release.sh
 
   lint-charts:
     docker:
@@ -24,6 +27,20 @@ jobs:
           command: tests/e2e-kind.sh
           no_output_timeout: 1h
 
+  release-charts:
+    machine: true
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "47:1e:0d:93:8d:b3:ef:2f:56:0a:99:99:21:2a:d9:4e"
+      - run:
+          command: |
+            echo "export GIT_REPO_URL=$CIRCLE_REPOSITORY_URL" >> $BASH_ENV
+            echo "export GIT_USERNAME=$CIRCLE_PROJECT_USERNAME" >> $BASH_ENV
+            .circleci/install_tools.sh
+            .circleci/release.sh
+
 workflows:
   version: 2
   untagged-build:
@@ -34,3 +51,11 @@ workflows:
           requires:
             - lint-scripts
             - lint-charts
+  release:
+    jobs:
+      - release-charts:
+          filters:
+            tags:
+              ignore: /.*/
+            branches:
+              only: master
