@@ -5,4 +5,5 @@ jobs:
     branches:
       ignore: gh-pages
     steps:
-      - run: echo "Skipping tests on gh-pages branch"
+      - run:
+          command: echo "Skipping tests on gh-pages branch"
