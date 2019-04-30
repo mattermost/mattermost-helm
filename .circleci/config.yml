@@ -1,36 +1,8 @@
 version: 2.1
 jobs:
-  lint-scripts:
-    docker:
-      - image: koalaman/shellcheck-alpine
-    steps:
-      - checkout
-      - run:
-          command: shellcheck -x tests/e2e-kind.sh
-
-  lint-charts:
-    docker:
-      - image: quay.io/helmpack/chart-testing:v2.2.0
-    steps:
-      - checkout
-      - run:
-          command: ct lint --config tests/ct.yaml
-
-  install-charts:
+  build:
     machine: true
+    branches:
+      ignore: gh-pages
     steps:
-      - checkout
-      - run:
-          command: tests/e2e-kind.sh
-          no_output_timeout: 1h
-
-workflows:
-  version: 2
-  untagged-build:
-    jobs:
-      - lint-scripts
-      - lint-charts
-      - install-charts:
-          requires:
-            - lint-scripts
-            - lint-charts
+      - run: echo "Skipping tests on gh-pages branch"

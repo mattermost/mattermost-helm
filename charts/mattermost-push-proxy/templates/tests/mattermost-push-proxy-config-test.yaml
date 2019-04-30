@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ include  "mattermost-push-proxy.fullname" . }}-app-tests
-data:
-  run.sh: |-
-    @test "Testing Mattermost Push Proxy is accessible" {
-      curl --retry 48 --retry-delay 10 {{ include "mattermost-push-proxy.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.service.internalPort }}
-    }
