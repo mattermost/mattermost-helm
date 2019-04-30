@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-: "${CH_TOKEN:?Environment variable CH_TOKEN must be set}"
+: "${CR_TOKEN:?Environment variable CR_TOKEN must be set}"
 : "${GIT_REPO_URL:?Environment variable GIT_REPO_URL must be set}"
 : "${GIT_USERNAME:?Environment variable GIT_USERNAME must be set}"
 : "${GIT_EMAIL:?Environment variable GIT_EMAIL must be set}"
