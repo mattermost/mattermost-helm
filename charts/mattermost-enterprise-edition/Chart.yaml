@@ -17,4 +17,4 @@ maintainers:
     email: joram@mattermost.com
 source:
 - https://github.com/mattermost/mattermost-server
-- https://github.com/mattermost/mattermost-kubernetes
+- https://github.com/mattermost/mattermost-helm
