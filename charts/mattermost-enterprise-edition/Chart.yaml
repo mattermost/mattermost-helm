@@ -1,8 +1,8 @@
 apiVersion: v1
 description: Mattermost Enterprise server with high availitibity.
 name: mattermost-enterprise-edition
-version: 0.8.3
-appVersion: 5.9.0
+version: 0.9.1
+appVersion: 5.10.0
 keywords:
 - mattermost
 - communication
@@ -17,4 +17,4 @@ maintainers:
     email: joram@mattermost.com
 source:
 - https://github.com/mattermost/mattermost-server
-- https://github.com/mattermost/mattermost-kubernetes
+- https://github.com/mattermost/mattermost-helm
