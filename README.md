@@ -2,6 +2,8 @@
 
 This repo collects a set of [Helm](https://helm.sh) charts curated by [mattermost](https://www.mattermost.com).
 
+- [mattermost-enterprise-edition](charts/mattermost-enterprise-edition/README.md)
+
 ## Usage
 
 [Helm](https://helm.sh) must be installed and initialized to use the charts.
