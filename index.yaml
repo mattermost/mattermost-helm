@@ -3,7 +3,28 @@ entries:
   mattermost-enterprise-edition:
   - apiVersion: v1
     appVersion: 5.10.0
-    created: "2019-05-08T07:44:48.521179006Z"
+    created: "2019-05-08T13:31:15.653963635Z"
+    description: Mattermost Enterprise server with high availitibity.
+    digest: 1a9bbc8c42b74601f3e937c77a2687d2ced79997ce934ca32af4cd91cba76dc2
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - messaging
+    - team colaboration
+    maintainers:
+    - email: carlos@mattermost.com
+      name: cpanato
+    - email: joram@mattermost.com
+      name: jwilander
+    name: mattermost-enterprise-edition
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-enterprise-edition-0.9.1/mattermost-enterprise-edition-0.9.1.tgz
+    version: 0.9.1
+  - apiVersion: v1
+    appVersion: 5.10.0
+    created: "2019-05-08T13:31:16.161060946Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: dfb2b10e752bbed7606a7d32b8133258e7b258175223648c7a1a7c063f93e8ed
     home: https://mattermost.com
@@ -24,7 +45,7 @@ entries:
     version: 0.9.0
   - apiVersion: v1
     appVersion: 5.9.0
-    created: "2019-05-08T07:44:48.846970752Z"
+    created: "2019-05-08T13:31:16.537144701Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: 17339a3b4b19920afb48c8c9cf2ab1ae9ab20ef4be49294a35ecd0dd2a0ef0e5
     home: https://mattermost.com
@@ -46,7 +67,7 @@ entries:
   mattermost-push-proxy:
   - apiVersion: v1
     appVersion: 5.9.0
-    created: "2019-05-08T07:44:48.344710184Z"
+    created: "2019-05-08T13:31:16.009450625Z"
     description: Mattermost Push Proxy server
     digest: 7cd6f8bbf9646342690996629ba644d8a530e9a3cd8bd2aa1e5857bd30c22e09
     home: https://mattermost.com
@@ -68,7 +89,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 4.4.0
-    created: "2019-05-08T07:44:48.704243544Z"
+    created: "2019-05-08T13:31:16.319784274Z"
     description: Mattermost Push Proxy server
     digest: 73ee4b4b41434f9236a65dfe21f96dc5382faa3a73b22dd18e983d5578e93c6e
     home: https://mattermost.com
@@ -90,7 +111,7 @@ entries:
   mattermost-team-edition:
   - apiVersion: v1
     appVersion: 5.10.0
-    created: "2019-05-08T07:44:48.184547552Z"
+    created: "2019-05-08T13:31:15.861962535Z"
     description: Mattermost Team Edition server.
     digest: e2f8a9b727b7cb2ad0615b4f22a876279662aa860804a26522343350725f7b75
     home: https://mattermost.com
@@ -108,4 +129,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2019-05-08T07:44:47.745885886Z"
+generated: "2019-05-08T13:31:14.831856052Z"
