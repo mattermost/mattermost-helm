@@ -4,7 +4,7 @@
     "ThrottlePerSec":300,
     "ThrottleMemoryStoreSize":50000,
     "ThrottleVaryByHeader":"X-Forwarded-For",
-    "EnableMetrics": false,
+    "EnableMetrics": true,
     "ApplePushSettings":[
         {
             "Type":"apple",

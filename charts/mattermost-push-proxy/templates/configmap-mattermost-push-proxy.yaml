@@ -8,5 +8,5 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     helm.sh/chart: {{ include "mattermost-push-proxy.chart" . }}
 data:
-  push-config.tpl: |
+  push-config.json: |
 {{include "push-config.tpl" . | printf "%s" | indent 4}}
