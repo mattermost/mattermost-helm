@@ -98,6 +98,9 @@ mysql:
     size: 10Gi
   # existingClaim: ""
 
+## Additional pod annotations
+extraPodAnnotations: {}
+
 ## Additional env vars
 extraEnvVars: []
   # This is an example of extra env vars when using with the deployment with GitLab Helm Charts

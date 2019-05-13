@@ -22,6 +22,9 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/secret-config.yaml") . | sha256sum }}
+        {{- if .Values.extraPodAnnotations }}
+        {{- .Values.extraPodAnnotations | toYaml | nindent 8 }}
+        {{- end }}
       labels:
         app.kubernetes.io/name: {{ include "mattermost-team-edition.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
