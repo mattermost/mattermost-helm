@@ -1,8 +1,10 @@
 # Mattermost Helm Charts ![CircleCI branch](https://img.shields.io/circleci/project/github/mattermost/mattermost-helm/master.svg)
 
-This repo collects a set of [Helm](https://helm.sh) charts curated by [mattermost](https://www.mattermost.com).
+This repo collects a set of [Helm](https://helm.sh) charts curated by [Mattermost](https://www.mattermost.com).
 
-- [mattermost-enterprise-edition](charts/mattermost-enterprise-edition/README.md)
+- [mattermost-team-edition](charts/mattermost-team-edition/)
+- [mattermost-enterprise-edition](charts/mattermost-enterprise-edition/)
+- [mattermost-push-proxy](charts/mattermost-push-proxy/)
 
 ## Usage
 
