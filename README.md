@@ -2,6 +2,8 @@
 
 This repo collects a set of [Helm](https://helm.sh) charts curated by [Mattermost](https://www.mattermost.com).
 
+Click on the following links to see installation instructions for each chart:
+
 - [mattermost-team-edition](charts/mattermost-team-edition/)
 - [mattermost-enterprise-edition](charts/mattermost-enterprise-edition/)
 - [mattermost-push-proxy](charts/mattermost-push-proxy/)
