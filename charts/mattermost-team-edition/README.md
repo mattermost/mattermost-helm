@@ -72,6 +72,7 @@ Parameter                             | Description                             
 `externalDB.enabled`                  | Enables use of an preconfigured external database server                                        | `false`
 `externalDB.externalDriverType`       | `"postgres"` or `"mysql"`                                                                       | ""
 `externalDB.externalConnectionString` | See the section about [external databases](#External-Databases).                                | ""
+`extraPodAnnotations`                 | Extra pod annotations to be used in the deployments                                             | `[]`
 `extraEnvVars`                        | Extra environments variables to be used in the deployments                                      | `[]`
 `extraInitContainers`                 | Additional init containers                                                                      | `[]`
 
