@@ -1,7 +1,7 @@
 Mattermost Push Proxy Helm Chart
 ====================================================
 
-This is the Helm chart for the Mattermost Push Proxy. It is subject to changes, but is used by Mattermost internally by our [community.mattermost.com](https://community.mattermost.com) server to push notifications. To learn more about Helm charts, [see the Helm docs](https://helm.sh/docs/).
+This is the Helm chart for the Mattermost Push Proxy. It is used at Mattermost internally by our [community.mattermost.com](https://community.mattermost.com) server to push notifications. To learn more about Helm charts, [see the Helm docs](https://helm.sh/docs/).
 
 To read an overview of how to migrate Mattermost to Kubernetes, [see this blog post](https://mattermost.com/blog/mattermost-kubernetes/).
 
