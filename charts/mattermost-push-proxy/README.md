@@ -32,7 +32,7 @@ helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.c
 
 # 2. Configuration
 
-To start, copy [mattermost-push-proxy/values.yaml](https://github.com/mattermost/mattermost-kubernetes/blob/master/mattermost-push-proxy/values.yaml) and name it `config.yaml`. This will be your configuration file for the Mattermost Push Proxy Helm chart.
+To start, copy [mattermost-push-proxy/values.yaml](https://github.com/mattermost/mattermost-helm/blob/master/charts/mattermost-push-proxy/values.yaml) and name it `config.yaml`. This will be your configuration file for the Mattermost Push Proxy Helm chart.
 
 
 ## 2.1 Required Settings
