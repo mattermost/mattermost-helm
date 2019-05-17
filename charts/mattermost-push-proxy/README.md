@@ -1,13 +1,9 @@
 Mattermost Push Proxy Helm Chart
 ====================================================
 
-This is the Helm chart for the Mattermost Push Proxy. It is used at Mattermost internally by our [community.mattermost.com](https://community.mattermost.com) server to push notifications. To learn more about Helm charts, [see the Helm docs](https://helm.sh/docs/).
+This is the Helm chart for the Mattermost Push Proxy Notification service. It is used at Mattermost internally by our [community.mattermost.com](https://community.mattermost.com) server to push notifications to iOS and Android devices. To learn more about Helm charts, [see the Helm docs](https://helm.sh/docs/). You can find more information about Mattermost Push Proxy setup [here](https://developers.mattermost.com/contribute/mobile/push-notifications/service/).
 
-To read an overview of how to migrate Mattermost to Kubernetes, [see this blog post](https://mattermost.com/blog/mattermost-kubernetes/).
-
-The Mattermost Team Edition Helm chart can be found [here](https://github.com/helm/charts/tree/master/stable/mattermost-team-edition).
-
-To install the Mattermost Team Edition Helm chart in a GitLab Helm chart deployment, [see this documentation](https://docs.mattermost.com/install/install-mmte-helm-gitlab-helm.html).
+A Mattermost hosted Push Notification service is offered and more details can be found [here](https://docs.mattermost.com/mobile/mobile-hpns.html).
 
 # 1. Prerequisites
 
