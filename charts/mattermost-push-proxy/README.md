@@ -5,6 +5,8 @@ This is the Helm chart for the Mattermost Push Proxy Notification service. It is
 
 A Mattermost hosted Push Notification service is offered and more details can be found [here](https://docs.mattermost.com/mobile/mobile-hpns.html).
 
+The push proxy source code lives [here](https://github.com/mattermost/mattermost-push-proxy).
+
 # 1. Prerequisites
 
 ## 1.1 Kubernetes Cluster
