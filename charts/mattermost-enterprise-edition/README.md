@@ -15,7 +15,7 @@ To install the Mattermost Team Edition Helm chart in a GitLab Helm chart deploym
 
 You need a running Kubernetes cluster v1.8+. If you do not have one, find options and installation instructions here:
 
-https://kubernetes.io/docs/setup/pick-right-solution/ 
+https://kubernetes.io/docs/setup/pick-right-solution/
 
 ## 1.2 Helm
 
@@ -54,7 +54,7 @@ To learn more about the Mattermost configuration file, see https://docs.mattermo
 
 ## 2.1 Required Settings
 
-At minimum there are two settings you must update: 
+At minimum there are two settings you must update:
 
 * `global.siteURL` - set this to the URL your users will use to access Mattermost, e.g. `https://mattermost.example.com`
 * `global.mattermostLicense` - set this to the contents of your license file
@@ -65,7 +65,7 @@ Without these two settings, Mattermost will not run correctly.
 
 To set the Mattermost application version, update:
 
-* `mattermostApp.image.tag` - set this to the Mattermost server version you wish to install (e.g. `5.9.0`)
+* `mattermostApp.image.tag` - set this to the Mattermost server version you wish to install (e.g. `5.11.0`)
 
 ## 2.3 Ingress
 
