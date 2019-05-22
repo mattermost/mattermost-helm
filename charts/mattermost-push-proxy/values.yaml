@@ -37,17 +37,14 @@ resources: {}
   #  memory: 128Mi
 applePushSettings:
   apple:
-    configMap: "apple-cert-path"
     privateCert: ""
     privateCertPassword: ""
     pushTopic: "com.mattermost.Mattermost"
   apple_rn:
-    configMap: "apple-rn-cert-path"
     privateCert: ""
     privateCertPassword: ""
     pushTopic: "com.mattermost.react.native"
   apple_rnbeta:
-    configMap: "apple-rnbeta-cert-path"
     privateCert: ""
     privateCertPassword: ""
     pushTopic: ""
