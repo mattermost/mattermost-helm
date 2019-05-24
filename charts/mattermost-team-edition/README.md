@@ -5,7 +5,8 @@
 ## TL;DR;
 
 ```bash
-$ helm install stable/mattermost-team-edition \
+$ helm repo add mattermost https://helm.mattermost.com
+$ helm install mattermost/mattermost-team-edition \
   --set mysql.mysqlUser=sampleUser \
   --set mysql.mysqlPassword=samplePassword \
 ```
@@ -83,13 +84,13 @@ $ helm install --name my-release \
   --set image.tag=5.11.0 \
   --set mysql.mysqlUser=sampleUser \
   --set mysql.mysqlPassword=samplePassword \
-  stable/mattermost-team-edition
+  mattermost/mattermost-team-edition
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
 ```bash
-$ helm install --name my-release -f values.yaml stable/mattermost-team-edition
+$ helm install --name my-release -f values.yaml mattermost/mattermost-team-edition
 ```
 
 ### Example configuration
