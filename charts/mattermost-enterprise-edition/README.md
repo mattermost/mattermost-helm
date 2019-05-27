@@ -184,7 +184,7 @@ $ helm install -f config.yaml mattermost/mattermost-enterprise-edition
 
 To upgrade an existing release, modify the `config.yaml` with your desired changes and then use:
 ```bash
-$ helm upgrade -f config.yaml <your-release-name> mattertmost/mattermost-enterprise-edition
+$ helm upgrade -f config.yaml <your-release-name> mattermost/mattermost-enterprise-edition
 ```
 
 ## 3.1 Uninstalling Mattermost Enterprise Helm Chart
