@@ -165,24 +165,26 @@ See the [stable/minio configuration settings](https://github.com/helm/charts/tre
 After adding the Mattermost repo (see section 1.2) you can install a version of the preferred chart by running:
 
 ```bash
-helm install --repo https://helm.mattermost.com <chart_name> --version <version_number>
+$ helm repo add mattermost https://helm.mattermost.com
+$ helm install mattermost/mattermost-enterprise-edition --version <version_number>
 ```
 
 For example:
 ```bash
-helm install --repo https://helm.mattermost.com mattermost-enterprise-edition --version v0.8.2
+$ helm repo add mattermost https://helm.mattermost.com
+$ helm install mattermost/mattermost-enterprise-edition --version v0.8.2
 ```
 
 If no Helm Chart version is specified the latest version will be installed.
 
 To run with your custom `config.yaml`, install using:
 ```bash
-helm install -f config.yaml --repo https://helm.mattermost.com mattermost-enterprise-edition
+$ helm install -f config.yaml mattermost/mattermost-enterprise-edition
 ```
 
 To upgrade an existing release, modify the `config.yaml` with your desired changes and then use:
 ```bash
-helm upgrade -f config.yaml <your-release-name> --repo https://helm.mattermost.com mattermost-enterprise-edition
+$ helm upgrade -f config.yaml <your-release-name> mattermost/mattermost-enterprise-edition
 ```
 
 ## 3.1 Uninstalling Mattermost Enterprise Helm Chart
@@ -193,13 +195,14 @@ If you are done with your deployment and want to delete it, use `helm delete <yo
 
 You can launch the Mattermost push proxy chart with:
 ```bash
-helm install --repo https://helm.mattermost.com mattermost-push-proxy
+$ helm repo add mattermost https://helm.mattermost.com
+$ helm install mattermost/mattermost-push-proxy
 ```
 
 To list options for mattermost-push-proxy:
 
 ```bash
-helm inspect values --repo https://helm.mattermost.com mattermost-push-proxy
+$ helm inspect values mattermost/mattermost-push-proxy
 ```
 
 # 4. Developing
