@@ -65,7 +65,7 @@ Without these two settings, Mattermost will not run correctly.
 
 To set the Mattermost application version, update:
 
-* `mattermostApp.image.tag` - set this to the Mattermost server version you wish to install (e.g. `5.11.0`)
+* `mattermostApp.image.tag` - set this to the Mattermost server version you wish to install (e.g. `5.12.0`)
 
 ## 2.3 Ingress
 
