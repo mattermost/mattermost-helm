@@ -30,6 +30,8 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/component: {{ .Values.global.features.jobserver.name }}
         helm.sh/chart: {{ include "mattermost-enterprise-edition.chart" . }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-mattermost-config.yaml") . | sha256sum }}
     spec:
       initContainers:
       - name: "init-mattermost-app"
