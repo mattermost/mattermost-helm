@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mattermost-enterprise-edition.name" .}}-loadtest
+  name: {{ include "mattermost-enterprise-edition.fullname" .}}-loadtest
   labels:
     app.kubernetes.io/name: {{ include "mattermost-enterprise-edition.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -32,7 +32,7 @@ spec:
         helm.sh/chart: {{ include "mattermost-enterprise-edition.chart" . }}
     spec:
       containers:
-        - name: {{template "mattermost-enterprise-edition.name" .}}-loadtest
+        - name: {{ include "mattermost-enterprise-edition.name" .}}-loadtest
           image: "{{ .Values.global.features.loadTest.image.repository }}:{{ .Values.global.features.loadTest.image.tag }}"
           imagePullPolicy: {{ .Values.global.features.loadTest.image.pullPolicy }}
           volumeMounts:
@@ -52,16 +52,16 @@ spec:
       volumes:
         - name: config-json
           configMap:
-            name: {{template "mattermost-enterprise-edition.fullname" .}}-init-config-json
+            name: {{ include "mattermost-enterprise-edition.fullname" .}}-init-config-json
             items:
             - key: config.json
               path: config.json
         - name: mattermost-license
           secret:
-            secretName: {{ template "mattermost-enterprise-edition.fullname" . }}-mattermost-license
+            secretName: {{ include "mattermost-enterprise-edition.fullname" . }}-mattermost-license
         - name: loadtestconfig-json
           configMap:
-            name: {{ template "mattermost-enterprise-edition.fullname" . }}-loadtestconfig-json
+            name: {{ include "mattermost-enterprise-edition.fullname" . }}-loadtestconfig-json
             items:
             - key: loadtestconfig.json
               path: loadtestconfig.json
