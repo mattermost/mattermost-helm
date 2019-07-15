@@ -5,7 +5,7 @@ dependencies:
     condition: global.features.database.useInternal
   - name: minio
     repository: https://kubernetes-charts.storage.googleapis.com
-    version: 1.8.0
+    version: 2.5.0
     condition: minio.enabled
   - name: prometheus
     repository: https://kubernetes-charts.storage.googleapis.com
