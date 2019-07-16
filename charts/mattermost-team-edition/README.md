@@ -56,7 +56,7 @@ Parameter                             | Description                             
 ---                                   | ---                                                                                             | ---
 `configJSON`                          | The `config.json` configuration to be used by the mattermost server. The values you provide will by using Helm's merging behavior override individual default values only. See the [example configuration](#example-configuration) and the [Mattermost documentation](https://docs.mattermost.com/administration/config-settings.html) for details. |  See `configJSON` in [values.yaml](https://github.com/helm/charts/blob/master/stable/mattermost-team-edition/values.yaml)
 `image.repository`                    | Container image repository                                                                      | `mattermost/mattermost-team-edition`
-`image.tag`                           | Container image tag                                                                             | `5.12.0`
+`image.tag`                           | Container image tag                                                                             | `5.12.4`
 `image.imagePullPolicy`               | Container image pull policy                                                                     | `IfNotPresent`
 `initContainerImage.repository`       | Init container image repository                                                                 | `appropriate/curl`
 `initContainerImage.tag`              | Init container image tag                                                                        | `latest`
@@ -81,7 +81,7 @@ Specify each parameter using the `--set key=value[,key=value]` argument to `helm
 
 ```bash
 $ helm install --name my-release \
-  --set image.tag=5.12.0 \
+  --set image.tag=5.12.4 \
   --set mysql.mysqlUser=sampleUser \
   --set mysql.mysqlPassword=samplePassword \
   mattermost/mattermost-team-edition
