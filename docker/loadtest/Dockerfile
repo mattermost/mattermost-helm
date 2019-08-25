@@ -13,7 +13,7 @@ RUN apt-get update \
       jq \
       netcat \
       net-tools \
-      iproute \
+      iproute2 \
       dnsutils \
       graphviz
 
