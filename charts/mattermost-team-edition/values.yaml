@@ -195,6 +195,8 @@ configJSON: {
     "EnableOnlyAdminIntegrations": false,
     "EnablePostUsernameOverride": false,
     "EnablePostIconOverride": false,
+    "EnableBotAccountCreation": false,
+    "EnableUserAccessTokens": false,
     "EnableLinkPreviews": false,
     "EnableTesting": false,
     "EnableDeveloper": false,
