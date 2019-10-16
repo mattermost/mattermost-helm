@@ -207,9 +207,9 @@ $ helm inspect values mattermost/mattermost-push-proxy
 
 # 4. Upgrading to Mattermost Chart Version 1.0.0
 
-This Chart version uses the configuration in the database and environment variables for non changing configuration.
+This chart version uses the configuration in the database and environment variables for non-changing configuration.
 
-To upgrade from previous Helm Chart version to 1.0.0 you need to do some steps before applying the new chart
+To upgrade from a previous chart version to 1.0.0 you need to follow theses steps before applying the new chart:
 
 - Get the existing configuration from your Mattermost instance. For that you can use the CLI command. You need to connect to the running pod and run the Mattermost CLI to get the existing config
 
