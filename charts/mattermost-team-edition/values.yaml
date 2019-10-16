@@ -30,6 +30,15 @@ persistence:
     # storageClass:
     accessMode: ReadWriteOnce
   # existingClaim: ""
+  plugins:
+    enabled: true
+    size: 1Gi
+    ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
+    ## Default: volume.alpha.kubernetes.io/storage-class: default
+    ##
+    # storageClass:
+    accessMode: ReadWriteOnce
+  # existingClaim: ""
 
 service:
   type: ClusterIP
@@ -186,6 +195,8 @@ configJSON: {
     "EnableOnlyAdminIntegrations": false,
     "EnablePostUsernameOverride": false,
     "EnablePostIconOverride": false,
+    "EnableBotAccountCreation": false,
+    "EnableUserAccessTokens": false,
     "EnableLinkPreviews": false,
     "EnableTesting": false,
     "EnableDeveloper": false,
