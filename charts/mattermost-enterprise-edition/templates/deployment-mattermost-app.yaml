@@ -92,6 +92,7 @@ spec:
         - name: MM_ELASTICSEARCHSETTINGS_ENABLESEARCHING
           value: "true"
 {{- end }}
+{{- if .Values.minio.enabled }}
         - name: MM_FILESETTINGS_AMAZONS3ACCESSKEYID
           value: "{{ .Values.minio.accessKey }}"
         - name: MM_FILESETTINGS_AMAZONS3SECRETACCESSKEY
@@ -100,6 +101,7 @@ spec:
           value: "{{ .Values.minio.defaultBucket.name }}"
         - name: MM_FILESETTINGS_AMAZONS3ENDPOINT
           value: "{{ .Release.Name }}-minio:9000"
+{{- end }}
 {{- if .Values.global.features.jobserver.enabled }}
         - name: MM_JOBSETTINGS_RUNJOBS
           value: "false"

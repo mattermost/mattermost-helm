@@ -205,7 +205,35 @@ To list options for mattermost-push-proxy:
 $ helm inspect values mattermost/mattermost-push-proxy
 ```
 
-# 4. Developing
+# 4. Upgrading to Mattermost Chart Version 1.0.0
+
+This Chart version uses the configuration in the database and environment variables for non changing configuration.
+
+To upgrade from previous Helm Chart version to 1.0.0 you need to do some steps before applying the new chart
+
+- Get the existing configuration from your Mattermost instance. For that you can use the CLI command. You need to connect to the running pod and run the Mattermost CLI to get the existing config
+
+```bash
+$ kubectl exec -it -n <YOUR_MATTERMOST_NAMESPACE> <MATTERMOST_APP_POD> -- /bin/sh
+
+in the pod:
+$ ./bin/mattermost config show --json
+```
+
+- Save this config in your local file system
+- Perform the Helm Chart upgrade
+- Copy the config you saved before to the new pod
+- Perform the config migration
+
+```bash
+$ ./bin/mattermost config migrate <CONFIG_THAT_YOU_COPY_TO_THE_POD.json> $MM_CONFIG
+...
+{"level":"info","msg":"Successfully migrated config."}
+```
+
+- Kill the pods to apply the configs
+
+# 5. Developing
 
 If you are going to modify the helm charts, it is helpful to use `--dry-run` (doesn't do an actual deployment) and `--debug` (print the generated config files) when running `helm install`.
 
