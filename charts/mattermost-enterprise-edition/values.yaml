@@ -105,8 +105,8 @@ mattermostApp:
   service:
     name: mattermost-app
     type: ClusterIP
-    externalPort: 8000
-    internalPort: 8000
+    externalPort: 8065
+    internalPort: 8065
     metricsPort: 8067
     clusterPort: 8075
     gossipPort: 8074
@@ -169,6 +169,14 @@ mattermostApp:
     # - name: varlog
     #   mountPath: /host/var/log
     #   readOnly: true
+  ## Allows the specification of additional environment variables for Mattermost
+  extraEnv: []
+    # See more environments variables that you can set here: https://docs.mattermost.com/administration/config-settings.html#configuration-settings
+    # for example
+    # - name: MM_SERVICESETTINGS_ENABLEMULTIFACTORAUTHENTICATION
+    #   value: "true"
+    # - name: MM_SERVICESETTINGS_ENABLECUSTOMEMOJI
+    #   value: "true"
 
 # MySQL HA Section. Use this to configure MySQL.
 # If you are using an external DB, disable this.

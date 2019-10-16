@@ -30,7 +30,6 @@ spec:
         app.kubernetes.io/component: server
         helm.sh/chart: {{ include "mattermost-enterprise-edition.chart" . }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap-mattermost-config.yaml") . | sha256sum }}
         prometheus.io/scrape: "true"
         prometheus.io/port: "{{ .Values.mattermostApp.service.metricsPort }}"
         prometheus.io/path: "/metrics"
@@ -53,23 +52,7 @@ spec:
           "sh",
           "-c",
           "until curl --max-time 5 http://{{ .Release.Name }}-mysqlha-readonly:3306; do echo waiting for {{ .Release.Name }}-mysqlha; sleep 5; done;"]
-       {{- end }}
-      - name: init-config
-        image: busybox
-        imagePullPolicy: IfNotPresent
-        command:
-          - sh
-          - "-c"
-          - |
-            set -ex
-            rm -rfv /mattermost/config/lost+found
-            cp /tmp/config/config.json /mattermost/config/config.json
-        volumeMounts:
-        - mountPath: /tmp/config/config.json
-          name: mattermost-init-config-json
-          subPath: config.json
-        - mountPath: /mattermost/config/
-          name: mattermost-config
+      {{- end }}
       {{- if .Values.mattermostApp.extraInitContainers }}
       {{- .Values.mattermostApp.extraInitContainers | toYaml | nindent 6 }}
       {{- end }}
@@ -86,6 +69,48 @@ spec:
           name: cluster
         - containerPort: {{ .Values.mattermostApp.service.gossipPort }}
           name: gossip
+        env:
+        - name: MM_CONFIG
+{{- if .Values.global.features.database.useInternal }}
+          value: "mysql://{{ .Values.mysqlha.mysqlha.mysqlUser }}:{{ .Values.mysqlha.mysqlha.mysqlPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.mysqlha.mysqlha.mysqlDatabase }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
+{{- else }}
+          value: "{{ .Values.global.features.database.external.driver }}://{{ .Values.global.features.database.external.dataSource }}"
+{{- end }}
+        - name: MM_SERVICESETTINGS_SITEURL
+          value: "{{ .Values.global.siteUrl }}"
+        - name: MM_SERVICESETTINGS_LISTENADDRESS
+          value: ":{{ .Values.mattermostApp.service.internalPort }}"
+        - name: MM_SERVICESETTINGS_ENABLELINKPREVIEWS
+          value: "{{ .Values.global.enableLinkPreviews }}"
+        - name: MM_SERVICESETTINGS_ENABLECUSTOMEMOJI
+          value: "{{ .Values.global.enableCustomEmoji }}"
+{{- if .Values.global.features.elasticsearch.enabled }}
+        - name: MM_ELASTICSEARCHSETTINGS_CONNECTIONURL
+          value: "http://{{ .Release.Name }}-mattermost-elasticsearch:9200"
+        - name: MM_ELASTICSEARCHSETTINGS_ENABLEINDEXING
+          value: "true"
+        - name: MM_ELASTICSEARCHSETTINGS_ENABLESEARCHING
+          value: "true"
+{{- end }}
+{{- if .Values.minio.enabled }}
+        - name: MM_FILESETTINGS_AMAZONS3ACCESSKEYID
+          value: "{{ .Values.minio.accessKey }}"
+        - name: MM_FILESETTINGS_AMAZONS3SECRETACCESSKEY
+          value: "{{ .Values.minio.secretKey }}"
+        - name: MM_FILESETTINGS_AMAZONS3BUCKET
+          value: "{{ .Values.minio.defaultBucket.name }}"
+        - name: MM_FILESETTINGS_AMAZONS3ENDPOINT
+          value: "{{ .Release.Name }}-minio:9000"
+{{- end }}
+{{- if .Values.global.features.jobserver.enabled }}
+        - name: MM_JOBSETTINGS_RUNJOBS
+          value: "false"
+        - name: MM_JOBSETTINGS_RUNSCHEDULER
+          value: "false"
+{{- end }}
+{{- with .Values.mattermostApp.extraEnv }}
+{{ toYaml . | indent 8 }}
+{{- end }}
         livenessProbe:
           initialDelaySeconds: 90
           timeoutSeconds: 5
@@ -108,20 +133,12 @@ spec:
           name: mattermost-plugins
         - mountPath: /mattermost/client/plugins/
           name: mattermost-plugins-client
-        - mountPath: /mattermost/config/
-          name: mattermost-config
 {{- if .Values.mattermostApp.extraVolumeMounts }}
 {{ toYaml .Values.mattermostApp.extraVolumeMounts | indent 8 }}
 {{- end }}
         resources:
 {{ toYaml .Values.mattermostApp.resources | indent 10 }}
       volumes:
-      - name: mattermost-init-config-json
-        configMap:
-          name: {{ include "mattermost-enterprise-edition.fullname" . }}-init-config-json
-          items:
-          - key: config.json
-            path: config.json
       - name: mattermost-plugins
         emptyDir: {}
       - name: mattermost-plugins-client
