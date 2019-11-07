@@ -30,8 +30,6 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/component: {{ .Values.global.features.jobserver.name }}
         helm.sh/chart: {{ include "mattermost-enterprise-edition.chart" . }}
-      annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap-mattermost-config.yaml") . | sha256sum }}
     spec:
       initContainers:
       - name: "init-mattermost-app"
@@ -47,20 +45,18 @@ spec:
         image: "{{ .Values.mattermostApp.image.repository }}:{{ .Values.mattermostApp.image.tag }}"
         imagePullPolicy: {{ .Values.mattermostApp.image.pullPolicy }}
         command: ["mattermost", "jobserver"]
+        env:
+        - name: MM_CONFIG
+{{- if .Values.global.features.database.useInternal }}
+          value: "mysql://{{ .Values.mysqlha.mysqlha.mysqlUser }}:{{ .Values.mysqlha.mysqlha.mysqlPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.mysqlha.mysqlha.mysqlDatabase }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
+{{- else }}
+          value: "{{ .Values.global.features.database.external.driver }}://{{ .Values.global.features.database.external.dataSource }}"
+{{- end }}
         volumeMounts:
-        - mountPath: /mattermost/config/config.json
-          name: config-json
-          subPath: config.json
         - mountPath: /mattermost/mattermost.mattermost-license
           name: mattermost-license
           subPath: mattermost.mattermost-license
       volumes:
-      - name: config-json
-        configMap:
-          name: {{ include "mattermost-enterprise-edition.fullname" . }}-init-config-json
-          items:
-          - key: config.json
-            path: config.json
       - name: mattermost-license
         secret:
           secretName: {{ include "mattermost-enterprise-edition.fullname" . }}-mattermost-license

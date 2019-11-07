@@ -73,6 +73,8 @@ spec:
           subPath: config.json
         - mountPath: /mattermost/data
           name: mattermost-data
+        - mountPath: /mattermost/{{ trimPrefix "./" .Values.configJSON.PluginSettings.Directory }}
+          name: mattermost-plugins
         resources:
           {{- .Values.resources | toYaml | nindent 12 }}
       volumes:
@@ -83,6 +85,17 @@ spec:
       {{ if .Values.persistence.data.enabled }}
         persistentVolumeClaim:
           claimName: {{ .Values.persistence.data.existingClaim | default (include "mattermost-team-edition.fullname" .) }}
+      {{ else }}
+        emptyDir: {}
+      {{ end }}
+      - name: mattermost-plugins
+      {{ if .Values.persistence.plugins.enabled }}
+        persistentVolumeClaim:
+          {{ if .Values.persistence.plugins.existingClaim }}
+          claimName: {{.Values.persistence.data.existingClaim }}
+          {{ else }}
+          claimName: {{ default (include "mattermost-team-edition.fullname" .) }}-plugins
+          {{ end }}
       {{ else }}
         emptyDir: {}
       {{ end }}
