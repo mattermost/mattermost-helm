@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Mattermost Enterprise server with high availitibity.
 name: mattermost-enterprise-edition
-version: 1.0.0
+version: 1.0.1
 appVersion: 5.15.0
 keywords:
 - mattermost
