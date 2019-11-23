@@ -52,6 +52,8 @@ spec:
 {{- else }}
           value: "{{ .Values.global.features.database.external.driver }}://{{ .Values.global.features.database.external.dataSource }}"
 {{- end }}
+        resources:
+{{ toYaml .Values.global.features.jobserver.resources | indent 10 }}
         volumeMounts:
         - mountPath: /mattermost/mattermost.mattermost-license
           name: mattermost-license
