@@ -92,7 +92,7 @@ spec:
       {{ if .Values.persistence.plugins.enabled }}
         persistentVolumeClaim:
           {{ if .Values.persistence.plugins.existingClaim }}
-          claimName: {{.Values.persistence.data.existingClaim }}
+          claimName: {{.Values.persistence.plugins.existingClaim }}
           {{ else }}
           claimName: {{ default (include "mattermost-team-edition.fullname" .) }}-plugins
           {{ end }}
