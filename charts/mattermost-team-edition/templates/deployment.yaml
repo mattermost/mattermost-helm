@@ -21,7 +21,6 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/secret-config.yaml") . | sha256sum }}
         {{- if .Values.extraPodAnnotations }}
         {{- .Values.extraPodAnnotations | toYaml | nindent 8 }}
         {{- end }}
@@ -46,9 +45,15 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.imagePullPolicy }}
         env:
-        {{- if .Values.extraEnvVars }}
-          {{- .Values.extraEnvVars | toYaml | nindent 10 }}
-        {{- end }}
+          - name: MM_CONFIG
+          {{- if not .Values.externalDB.enabled }}
+            value: "mysql://{{ .Values.mysql.mysqlUser }}:{{ .Values.mysql.mysqlPassword }}@tcp({{ .Release.Name }}-mysql:3306)/{{ .Values.mysql.mysqlDatabase }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
+          {{- else }}
+            value: "{{ .Values.externalDB.externalDriverType }}://{{ .Values.externalDB.externalConnectionString }}"
+          {{- end }}
+          {{- if .Values.extraEnvVars }}
+            {{- .Values.extraEnvVars | toYaml | nindent 10 }}
+          {{- end }}
         ports:
         - name: http
           containerPort: {{ .Values.service.internalPort }}
@@ -68,19 +73,13 @@ spec:
             path: /api/v4/system/ping
             port: http
         volumeMounts:
-        - mountPath: /mattermost/config/config.json
-          name: config-json
-          subPath: config.json
         - mountPath: /mattermost/data
           name: mattermost-data
-        - mountPath: /mattermost/{{ trimPrefix "./" .Values.configJSON.PluginSettings.Directory }}
+        - mountPath: /mattermost/{{ trimPrefix "./" .Values.pluginSettings.directory }}
           name: mattermost-plugins
         resources:
           {{- .Values.resources | toYaml | nindent 12 }}
       volumes:
-      - name: config-json
-        secret:
-          secretName: {{ include "mattermost-team-edition.fullname" . }}-config-json
       - name: mattermost-data
       {{ if .Values.persistence.data.enabled }}
         persistentVolumeClaim:
