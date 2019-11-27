@@ -18,7 +18,7 @@ cluster using the [Helm](https://helm.sh) package manager.
 
 ## Prerequisites
 
-- Kubernetes 1.8+ with Beta APIs enabled
+- Kubernetes 1.14+ with Beta APIs enabled
 - Helm v2
 - [Tiller](https://rancher.com/docs/rancher/v2.x/en/installation/ha/helm-init/) (the Helm server-side component) installed on the cluster
 
