@@ -19,6 +19,8 @@ cluster using the [Helm](https://helm.sh) package manager.
 ## Prerequisites
 
 - Kubernetes 1.8+ with Beta APIs enabled
+- Helm v2
+- [Tiller](https://rancher.com/docs/rancher/v2.x/en/installation/ha/helm-init/) (the Helm server-side component) installed on the cluster
 
 ## Installing the Chart
 
@@ -46,6 +48,7 @@ To uninstall/delete the `my-release` deployment:
 ```bash
 $ helm delete my-release
 ```
+
 The command removes all the Kubernetes components associated with the chart and deletes the release.
 
 ## Configuration
@@ -115,7 +118,7 @@ configJSON:
 There is an option to use external database services (PostgreSQL or MySQL) for your Mattermost installation.
 If you use an external Database you will need to disable the MySQL chart in the `values.yaml`
 
-```Bash
+```yaml
 mysql:
   enabled: false
 ```
@@ -125,7 +128,7 @@ To use an external **PostgreSQL**, You need to set Mattermost **externalDB** con
 
 **IMPORTANT:** Make sure the DB is already created before deploying Mattermost services
 
-```Bash
+```yaml
 externalDB:
   enabled: true
   externalDriverType: "postgres"
@@ -137,11 +140,42 @@ To use an external **MySQL**, You need to set Mattermost **externalDB** config
 
 **IMPORTANT:** Make sure the DB is already created before deploying Mattermost services
 
-```Bash
+```yaml
 externalDB:
   enabled: true
   externalDriverType: "mysql"
   externalConnectionString: "<USERNAME>:<PASSWORD>@tcp(<HOST>:3306)/<DATABASE_NAME>?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
+```
+
+### Local development
+
+For local testing use [minikube](https://github.com/kubernetes/minikube)
+
+Create local cluster using with specified Kubernetes version (e.g. `1.15.6`)
+
+```bash
+$ minikube start --kubernetes-version v1.15.6
+```
+
+Initialize helm
+
+```bash
+$ helm init
+```
+
+Get dependencies
+
+```bash
+$ helm dependency update
+```
+
+Perform local installation
+
+```bash
+$ helm install . \
+    --set image.tag=5.12.4 \
+    --set mysql.mysqlUser=sampleUser \
+    --set mysql.mysqlPassword=samplePassword
 ```
 
 #### Limitations
