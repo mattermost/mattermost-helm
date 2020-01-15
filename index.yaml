@@ -3,7 +3,7 @@ entries:
   mattermost-enterprise-edition:
   - apiVersion: v1
     appVersion: 5.15.0
-    created: "2019-11-26T09:47:24.514523748Z"
+    created: "2020-01-15T09:14:13.315607571Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: a6e0e1ac17d8cc5fa01d222d6f2a7e0197cf8ea0f2b53c40ca3e52b74a96763c
     home: https://mattermost.com
@@ -26,7 +26,7 @@ entries:
     version: 1.0.1
   - apiVersion: v1
     appVersion: 5.15.0
-    created: "2019-11-26T09:47:24.941684584Z"
+    created: "2020-01-15T09:14:13.69972802Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: 7c9a77cb91325dd6dbba1bdc14957e34377350df8a284b7ea93a6b100cc752e0
     home: https://mattermost.com
@@ -49,7 +49,7 @@ entries:
     version: 1.0.0
   - apiVersion: v1
     appVersion: 5.15.0
-    created: "2019-11-26T09:47:25.247413592Z"
+    created: "2020-01-15T09:14:14.094530368Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: 10c8901525d9882a95571cebaa72022e92e08a63a390a119cfc567f3838c64e3
     home: https://mattermost.com
@@ -70,7 +70,7 @@ entries:
     version: 0.14.0
   - apiVersion: v1
     appVersion: 5.13.2
-    created: "2019-11-26T09:47:25.715153129Z"
+    created: "2020-01-15T09:14:14.410958778Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: da3a92266c23f19d44d3ba99582982769807b0b273f9c1f8533346e4c1a45723
     home: https://mattermost.com
@@ -91,7 +91,7 @@ entries:
     version: 0.13.1
   - apiVersion: v1
     appVersion: 5.12.4
-    created: "2019-11-26T09:47:26.233493865Z"
+    created: "2020-01-15T09:14:14.973615387Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: c3cc8261ec5360aec615c41e92a91fc15147bcb21304b8b42430777643f2eb4a
     home: https://mattermost.com
@@ -112,7 +112,7 @@ entries:
     version: 0.12.0
   - apiVersion: v1
     appVersion: 5.12.0
-    created: "2019-11-26T09:47:26.414306129Z"
+    created: "2020-01-15T09:14:15.160210669Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: a45d944f9974ff1959f35e577b329489905bddb4264c6cd3a7e5631f4122397d
     home: https://mattermost.com
@@ -133,7 +133,7 @@ entries:
     version: 0.11.2
   - apiVersion: v1
     appVersion: 5.12.0
-    created: "2019-11-26T09:47:26.619841741Z"
+    created: "2020-01-15T09:14:15.318785144Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: 2028a15bfd237383f36f184c019f479c756c04f2d0e4d2e797f1cea06c61df50
     home: https://mattermost.com
@@ -154,7 +154,7 @@ entries:
     version: 0.11.1
   - apiVersion: v1
     appVersion: 5.12.0
-    created: "2019-11-26T09:47:26.808052531Z"
+    created: "2020-01-15T09:14:15.521249549Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: 6584ffbc10a6efdb3d1885ac8b21c02ac3dbdfaf391e2f05a88cf150d315b992
     home: https://mattermost.com
@@ -175,7 +175,7 @@ entries:
     version: 0.11.0
   - apiVersion: v1
     appVersion: 5.11.0
-    created: "2019-11-26T09:47:26.984019158Z"
+    created: "2020-01-15T09:14:15.976029382Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: e90c2dd70a1e8e0c80c22264c3c1eb1eca7238510d03624effd803080d4a1981
     home: https://mattermost.com
@@ -196,7 +196,7 @@ entries:
     version: 0.10.1
   - apiVersion: v1
     appVersion: 5.11.0
-    created: "2019-11-26T09:47:27.764801193Z"
+    created: "2020-01-15T09:14:16.666897323Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: c622f427405c9497c50f84ac7a17742cbc9f38b3265f15c9ca6d419a2d7268a4
     home: https://mattermost.com
@@ -217,7 +217,7 @@ entries:
     version: 0.10.0
   - apiVersion: v1
     appVersion: 5.10.0
-    created: "2019-11-26T09:47:28.492976378Z"
+    created: "2020-01-15T09:14:17.37437727Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: 1a9bbc8c42b74601f3e937c77a2687d2ced79997ce934ca32af4cd91cba76dc2
     home: https://mattermost.com
@@ -238,7 +238,7 @@ entries:
     version: 0.9.1
   - apiVersion: v1
     appVersion: 5.10.0
-    created: "2019-11-26T09:47:29.186223525Z"
+    created: "2020-01-15T09:14:17.874234277Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: dfb2b10e752bbed7606a7d32b8133258e7b258175223648c7a1a7c063f93e8ed
     home: https://mattermost.com
@@ -259,7 +259,7 @@ entries:
     version: 0.9.0
   - apiVersion: v1
     appVersion: 5.9.0
-    created: "2019-11-26T09:47:29.937925377Z"
+    created: "2020-01-15T09:14:18.221547371Z"
     description: Mattermost Enterprise server with high availitibity.
     digest: 17339a3b4b19920afb48c8c9cf2ab1ae9ab20ef4be49294a35ecd0dd2a0ef0e5
     home: https://mattermost.com
@@ -281,7 +281,7 @@ entries:
   mattermost-push-proxy:
   - apiVersion: v1
     appVersion: 5.9.0
-    created: "2019-11-26T09:47:27.339187604Z"
+    created: "2020-01-15T09:14:16.308182355Z"
     description: Mattermost Push Proxy server
     digest: 00326a2cef21e88b89448c66ed54fd8cdad764d2457a8dc5b660bfbf27ef8b10
     home: https://mattermost.com
@@ -303,7 +303,7 @@ entries:
     version: 0.2.3
   - apiVersion: v1
     appVersion: 5.9.0
-    created: "2019-11-26T09:47:27.950253642Z"
+    created: "2020-01-15T09:14:16.825972452Z"
     description: Mattermost Push Proxy server
     digest: 7357bfb450fe67bd834d299b730689cc745dd5e30b71d4927418dc7ed389d15f
     home: https://mattermost.com
@@ -325,7 +325,7 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: 5.9.0
-    created: "2019-11-26T09:47:28.337613423Z"
+    created: "2020-01-15T09:14:17.160236834Z"
     description: Mattermost Push Proxy server
     digest: 7d27260383808a343f303cd8a7889a45e206e53beca86dd51a8052000799be22
     home: https://mattermost.com
@@ -347,7 +347,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: 5.9.0
-    created: "2019-11-26T09:47:29.008247214Z"
+    created: "2020-01-15T09:14:17.711269789Z"
     description: Mattermost Push Proxy server
     digest: 7cd6f8bbf9646342690996629ba644d8a530e9a3cd8bd2aa1e5857bd30c22e09
     home: https://mattermost.com
@@ -369,7 +369,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 4.4.0
-    created: "2019-11-26T09:47:29.705753068Z"
+    created: "2020-01-15T09:14:18.066936495Z"
     description: Mattermost Push Proxy server
     digest: 73ee4b4b41434f9236a65dfe21f96dc5382faa3a73b22dd18e983d5578e93c6e
     home: https://mattermost.com
@@ -391,7 +391,27 @@ entries:
   mattermost-team-edition:
   - apiVersion: v1
     appVersion: 5.13.2
-    created: "2019-11-26T09:47:23.949045876Z"
+    created: "2020-01-15T09:14:12.690000668Z"
+    description: Mattermost Team Edition server.
+    digest: b9de51e82aaaa6c3da4b7b07b010104f05143642ed219108a375f8746d9a464a
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - team collaboration
+    maintainers:
+    - email: carlos@mattermost.com
+      name: cpanato
+    - email: joram@mattermost.com
+      name: jwilander
+    name: mattermost-team-edition
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.8.3/mattermost-team-edition-3.8.3.tgz
+    version: 3.8.3
+  - apiVersion: v1
+    appVersion: 5.13.2
+    created: "2020-01-15T09:14:12.91268613Z"
     description: Mattermost Team Edition server.
     digest: 058c866c8e5cc1b75f39e9692aa79cb8d11f936813488fc70813634ccc243dee
     home: https://mattermost.com
@@ -411,7 +431,7 @@ entries:
     version: 3.8.2
   - apiVersion: v1
     appVersion: 5.13.2
-    created: "2019-11-26T09:47:24.298371556Z"
+    created: "2020-01-15T09:14:13.131413845Z"
     description: Mattermost Team Edition server.
     digest: 20bf0b6e31a1230f8eb45bd802ee59ca7fd636eaad7509ffcd9acf945d3e3c02
     home: https://mattermost.com
@@ -431,7 +451,7 @@ entries:
     version: 3.8.1
   - apiVersion: v1
     appVersion: 5.13.2
-    created: "2019-11-26T09:47:24.766258695Z"
+    created: "2020-01-15T09:14:13.500945388Z"
     description: Mattermost Team Edition server.
     digest: 19abbb16d1260c83c88daac02956e9596eded80c4a6afd3d10fe5763282df3e7
     home: https://mattermost.com
@@ -451,7 +471,7 @@ entries:
     version: 3.8.0
   - apiVersion: v1
     appVersion: 5.13.2
-    created: "2019-11-26T09:47:25.096545924Z"
+    created: "2020-01-15T09:14:13.916128766Z"
     description: Mattermost Team Edition server.
     digest: b69903a0227406da46d08247092490a6c3c0deefa4fa99a03309d7949a24fd05
     home: https://mattermost.com
@@ -471,7 +491,7 @@ entries:
     version: 3.7.0
   - apiVersion: v1
     appVersion: 5.13.2
-    created: "2019-11-26T09:47:25.448757255Z"
+    created: "2020-01-15T09:14:14.250976497Z"
     description: Mattermost Team Edition server.
     digest: 78a0d32cd3f4a90d83aba8c99f5102a27b2cf0d81a0a72b9e2df471464a93aab
     home: https://mattermost.com
@@ -491,7 +511,7 @@ entries:
     version: 3.6.2
   - apiVersion: v1
     appVersion: 5.13.0
-    created: "2019-11-26T09:47:25.861225584Z"
+    created: "2020-01-15T09:14:14.58420129Z"
     description: Mattermost Team Edition server.
     digest: b4ed7715c86b59737bea59a90ce412d7b6f7e92eb90b7ee25833d1cf91028f52
     home: https://mattermost.com
@@ -511,7 +531,7 @@ entries:
     version: 3.6.0
   - apiVersion: v1
     appVersion: 5.12.4
-    created: "2019-11-26T09:47:26.02509604Z"
+    created: "2020-01-15T09:14:14.786415038Z"
     description: Mattermost Team Edition server.
     digest: 455188b4f4681267cc6f90179d2108f81bbc11dd28dd5fcf9fb19697952fdd37
     home: https://mattermost.com
@@ -531,7 +551,7 @@ entries:
     version: 3.5.1
   - apiVersion: v1
     appVersion: 5.11.0
-    created: "2019-11-26T09:47:27.136763021Z"
+    created: "2020-01-15T09:14:16.156376458Z"
     description: Mattermost Team Edition server.
     digest: 47ece0b0b458365b3f323dd6c9683d0a7a96aed1e7612e31029acf83545e41e2
     home: https://mattermost.com
@@ -551,7 +571,7 @@ entries:
     version: 3.4.1
   - apiVersion: v1
     appVersion: 5.11.0
-    created: "2019-11-26T09:47:27.572150061Z"
+    created: "2020-01-15T09:14:16.474496256Z"
     description: Mattermost Team Edition server.
     digest: 8813a7dc9032548e405cc2d3abcfb88512673d846c743e405e8414550e2a0f74
     home: https://mattermost.com
@@ -571,7 +591,7 @@ entries:
     version: 3.4.0
   - apiVersion: v1
     appVersion: 5.10.0
-    created: "2019-11-26T09:47:28.169880391Z"
+    created: "2020-01-15T09:14:16.995091745Z"
     description: Mattermost Team Edition server.
     digest: 936d50a75796fcfdefad904fd253e051d3f2bf3b0638dbf6022e29e0c93bee4b
     home: https://mattermost.com
@@ -591,7 +611,7 @@ entries:
     version: 3.3.0
   - apiVersion: v1
     appVersion: 5.10.0
-    created: "2019-11-26T09:47:28.707269698Z"
+    created: "2020-01-15T09:14:17.542636859Z"
     description: Mattermost Team Edition server.
     digest: e2f8a9b727b7cb2ad0615b4f22a876279662aa860804a26522343350725f7b75
     home: https://mattermost.com
@@ -609,4 +629,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2019-11-26T09:47:23.426928274Z"
+generated: "2020-01-15T09:14:12.004614552Z"
