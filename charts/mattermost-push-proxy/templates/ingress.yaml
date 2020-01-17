@@ -1,6 +1,6 @@
 {{- $serviceName := include "mattermost-push-proxy.fullname" . -}}
 {{- $servicePort := .Values.service.externalPort -}}
-apiVersion: extensions/v1beta1
+apiVersion: {{ include "mattermost-push-proxy.ingress.apiVersion" . }}
 kind: Ingress
 metadata:
   name: {{ include "mattermost-push-proxy.fullname" . }}

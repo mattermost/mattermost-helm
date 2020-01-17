@@ -41,4 +41,23 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-%s-%s" .Release.Name $name .Values.global.features.jobserver.name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-
+{{/*
+Return the appropriate apiVersion for ingress. Based on
+1) Helm Version (.Capabilities has been changed in v3)
+2) Kubernetes Version
+*/}}
+{{- define "mattermost-enterprise-edition.ingress.apiVersion" -}}
+{{- if .Capabilities.KubeVersion.Version -}}
+{{- if semverCompare ">=1.4-0, <1.14-0" .Capabilities.KubeVersion.Version -}}
+"extensions/v1beta1"
+{{- else if semverCompare "^1.14-0" .Capabilities.KubeVersion.Version -}}
+"networking.k8s.io/v1beta1"
+{{- end -}}
+{{- else -}}
+{{- if semverCompare ">=1.4-0, <1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+"extensions/v1beta1"
+{{- else if semverCompare "^1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+"networking.k8s.io/v1beta1"
+{{- end -}}
+{{- end -}}
+{{- end -}}
