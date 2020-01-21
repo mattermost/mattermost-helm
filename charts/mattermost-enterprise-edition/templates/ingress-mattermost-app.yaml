@@ -1,7 +1,7 @@
 {{- if .Values.mattermostApp.ingress.enabled -}}
 {{- $serviceName := include "mattermost-enterprise-edition.fullname" . -}}
 {{- $servicePort := .Values.mattermostApp.service.externalPort -}}
-apiVersion: extensions/v1beta1
+apiVersion: {{ include "mattermost-enterprise-edition.ingress.apiVersion" . }}
 kind: Ingress
 metadata:
   name: {{ include "mattermost-enterprise-edition.fullname" . }}
