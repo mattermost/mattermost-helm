@@ -168,6 +168,16 @@ extraInitContainers: []
   #       echo "Done"
   #       fi
 
+# Add additional volumes and mounts, for example to add SAML keys in the app or other files the app server may need to access
+extraVolumes: []
+  # - hostPath:
+  #     path: /var/log
+  #   name: varlog
+extraVolumeMounts: []
+  # - name: varlog
+  #   mountPath: /host/var/log
+  #   readOnly: true
+
 # NOTE: These acts as the default values for the config.json file read by the
 # mattermost server itself. You can override the configJSON object just like any
 # Helm template value. Since it is an object, the object you provide will merge
