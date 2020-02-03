@@ -2,7 +2,7 @@
 {{ if $ingress.enabled }}
 {{ $serviceName := include "mattermost-team-edition.name" . }}
 {{ $servicePort := .Values.service.externalPort }}
-apiVersion: extensions/v1beta1
+apiVersion: {{ include "mattermost-team-edition.ingress.apiVersion" . }}
 kind: Ingress
 metadata:
   name: {{ include "mattermost-team-edition.fullname" . }}
