@@ -22,6 +22,9 @@ spec:
     targetPort: http
     protocol: TCP
     name: {{  include "mattermost-team-edition.name" . }}
+{{- if and (.Values.service.nodePort) (eq .Values.service.type "NodePort") }}
+    nodePort: {{ .Values.service.nodePort }}
+{{- end }}
 {{- if .Values.service.loadBalancerSourceRanges }}
   loadBalancerSourceRanges:
 {{ toYaml .Values.service.loadBalancerSourceRanges | indent 4 }}

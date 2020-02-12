@@ -40,11 +40,20 @@ persistence:
     accessMode: ReadWriteOnce
   # existingClaim: ""
 
+assigning:
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
 service:
   type: ClusterIP
   externalPort: 8065
   internalPort: 8065
   annotations: {}
+  ## Port to expose on each node
+  ## Only used if service.type is 'NodePort'
+  ##
+  nodePort: 30065
   loadBalancerSourceRanges: []
 
 ingress:
