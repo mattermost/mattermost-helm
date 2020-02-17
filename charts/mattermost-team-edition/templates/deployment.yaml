@@ -75,9 +75,15 @@ spec:
           name: mattermost-data
         - mountPath: /mattermost/{{ trimPrefix "./" .Values.configJSON.PluginSettings.Directory }}
           name: mattermost-plugins
+        {{- if .Values.extraVolumeMounts -}}
+        {{ .Values.extraVolumeMounts | toYaml | nindent 8 }}
+        {{- end }}
         resources:
           {{- .Values.resources | toYaml | nindent 12 }}
       volumes:
+      {{- if .Values.extraVolumes -}}
+      {{ .Values.extraVolumes | toYaml | nindent 6 }}
+      {{- end }}
       - name: config-json
         secret:
           secretName: {{ include "mattermost-team-edition.fullname" . }}-config-json
@@ -99,3 +105,4 @@ spec:
       {{ else }}
         emptyDir: {}
       {{ end }}
+
