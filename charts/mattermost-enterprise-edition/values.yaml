@@ -149,8 +149,8 @@ mattermostApp:
     #       do
     #         wget ${plugin_tar} -P /mattermost/plugins
     #         cd /mattermost/plugins
-    #         tar -xzvf ${plugin_tar}
-    #         rm -f ${plugin_tar}
+    #         tar -xzvf ${plugin_tar##*/}
+    #         rm -f ${plugin_tar##*/}
     #       done
     #   volumeMounts:
     #   # Need to match the volume mount for plugins volumes
