@@ -73,6 +73,8 @@ ingress:
     #   hosts:
     #     - mattermost.example.com
 
+route:
+  enabled: false
 
 ## If use this please disable the mysql chart by setting mysql.enable to false
 externalDB:
@@ -93,8 +95,9 @@ mysql:
   mysqlDatabase: mattermost
 
   repository: mysql
-  tag: 5.7
-  imagePullPolicy: IfNotPresent
+  imageTag: '8.0.18'
+  testFramework:
+    enabled: false
 
   persistence:
     enabled: true
@@ -362,7 +365,7 @@ configJSON: {
   "GitLabSettings": {
     "Enable": false,
     "Secret": "",
-    "Id": "",
+    "Id": "mattermost",
     "Scope": "",
     "AuthEndpoint": "",
     "TokenEndpoint": "",
