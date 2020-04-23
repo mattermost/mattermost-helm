@@ -365,7 +365,7 @@ configJSON: {
   "GitLabSettings": {
     "Enable": false,
     "Secret": "",
-    "Id": "mattermost",
+    "Id": "",
     "Scope": "",
     "AuthEndpoint": "",
     "TokenEndpoint": "",
