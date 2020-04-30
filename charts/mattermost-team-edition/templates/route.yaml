@@ -1,0 +1,25 @@
+{{- if .Values.route.enabled -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 4m
+    openshift.io/host.generated: "true"
+  labels:
+    app.kubernetes.io/name: {{ include "mattermost-team-edition.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "mattermost-team-edition.chart" . }}
+  name: {{ include "mattermost-team-edition.name" . }}
+spec:
+  port:
+    targetPort: {{ include "mattermost-team-edition.name" . }}
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: {{ include "mattermost-team-edition.name" . }}
+    weight: 100
+  wildcardPolicy: None
+  {{- end }}
+
