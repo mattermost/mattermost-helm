@@ -6,8 +6,10 @@ metadata:
     haproxy.router.openshift.io/timeout: 4m
     openshift.io/host.generated: "true"
   labels:
-    app: {{ include "mattermost-team-edition.name" . }}
-    service: {{ include "mattermost-team-edition.name" . }}
+    app.kubernetes.io/name: {{ include "mattermost-team-edition.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "mattermost-team-edition.chart" . }}
   name: {{ include "mattermost-team-edition.name" . }}
 spec:
   port:
