@@ -177,7 +177,8 @@ mattermostApp:
     #   value: "true"
     # - name: MM_SERVICESETTINGS_ENABLECUSTOMEMOJI
     #   value: "true"
-
+  ## Additional pod annotations
+  extraPodAnnotations: {}
 # MySQL HA Section. Use this to configure MySQL.
 # If you are using an external DB, disable this.
 mysqlha:
