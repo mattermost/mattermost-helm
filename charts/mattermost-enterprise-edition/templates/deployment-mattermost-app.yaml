@@ -35,7 +35,7 @@ spec:
         prometheus.io/path: "/metrics"
     spec:
       {{ if .Values.serviceAccount.create }}
-      serviceAccountName: {{ .Values.serviceAccount.name" }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       {{ end }}
       initContainers:
       {{- if .Values.global.features.elasticsearch.enabled }}
