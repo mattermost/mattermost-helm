@@ -36,7 +36,7 @@ spec:
       - name: "init-mysql"
         image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
         imagePullPolicy: {{ .Values.initContainerImage.imagePullPolicy }}
-        command: ["sh", "-c", "until curl --max-time 5 http://{{ .Release.Name }}-mysql:3306; do echo waiting for {{ .Release.Name }}-mysql; sleep 5; done;"]
+        command: ["sh", "-c", "until curl --max-time 10 http://{{ .Release.Name }}-mysql:3306; do echo waiting for {{ .Release.Name }}-mysql; sleep 5; done;"]
       {{- end }}
       {{- if .Values.extraInitContainers }}
       {{- .Values.extraInitContainers | toYaml | nindent 6 }}
@@ -105,4 +105,3 @@ spec:
       {{ else }}
         emptyDir: {}
       {{ end }}
-
