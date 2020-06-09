@@ -10,23 +10,10 @@ metadata:
   annotations:
     "helm.sh/hook": test-success
 spec:
-  initContainers:
-  - name: test-framework
-    image: bats/bats:v1.1.0
-    command:
-    - "bash"
-    - "-c"
-    - |
-      set -ex
-      # copy bats to tools dir
-      cp -R /usr/local/libexec/ /tools/bats/
-    volumeMounts:
-    - mountPath: /tools
-      name: tools
   containers:
   - name: {{ .Release.Name }}-test
     image: bats/bats:v1.1.0
-    command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
+    command: ["/opt/bats/bin/bats", "-t", "/tests/run.sh"]
     volumeMounts:
     - mountPath: /tests
       name: tests
