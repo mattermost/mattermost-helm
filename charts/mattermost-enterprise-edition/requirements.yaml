@@ -5,9 +5,9 @@ dependencies:
     condition: global.features.database.useInternal
   - name: minio
     repository: https://kubernetes-charts.storage.googleapis.com
-    version: 2.5.0
+    version: 5.0.26
     condition: minio.enabled
   - name: prometheus
     repository: https://kubernetes-charts.storage.googleapis.com
-    version: 7.1.0
+    version: 11.4.0
     condition: global.features.grafana.enabled
