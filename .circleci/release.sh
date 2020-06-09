@@ -77,12 +77,12 @@ package_chart() {
 }
 
 release_charts() {
-    cr upload -o mattermost -r helm-charts
+    cr upload -o mattermost -r mattermost-helm
 }
 
 update_index() {
     chart-releaser index -o mattermost -r mattermost-helm -p .deploy/index.yaml
-    cr index -o mattermost -r helm-charts -c https://helm.mattermost.com
+    cr index -o mattermost -r mattermost-helm -c https://helm.mattermost.com
 
     git config user.email "$GIT_EMAIL"
     git config user.name "$GIT_USERNAME"
