@@ -81,7 +81,6 @@ release_charts() {
 }
 
 update_index() {
-    chart-releaser index -o mattermost -r mattermost-helm -p .deploy/index.yaml
     cr index -o mattermost -r mattermost-helm -c https://helm.mattermost.com
 
     git config user.email "$GIT_EMAIL"
