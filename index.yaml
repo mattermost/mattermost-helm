@@ -385,6 +385,28 @@ entries:
     version: 0.8.2
   mattermost-push-proxy:
   - apiVersion: v1
+    appVersion: 5.21.0
+    created: "2020-06-17T07:09:20.839674286Z"
+    description: Mattermost Push Proxy server
+    digest: 333eca6571b32a4d44869cd951f409f0e4768a3ae99fc07caae664673941cf02
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - notification
+    - messaging
+    - team colaboration
+    maintainers:
+    - email: carlos@mattermost.com
+      name: cpanato
+    - email: joram@mattermost.com
+      name: jwilander
+    name: mattermost-push-proxy
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-push-proxy-0.4.0/mattermost-push-proxy-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v1
     appVersion: 5.9.0
     created: "2020-06-02T12:33:55.086617712Z"
     description: Mattermost Push Proxy server
