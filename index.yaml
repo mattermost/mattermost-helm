@@ -669,6 +669,31 @@ entries:
     version: 0.1.4
   mattermost-team-edition:
   - apiVersion: v1
+    appVersion: 5.24.2
+    created: "2020-06-29T16:05:37.963171798Z"
+    dependencies:
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://kubernetes-charts.storage.googleapis.com
+      version: 1.6.4
+    description: Mattermost Team Edition server.
+    digest: 8250f9784b0111bed84e802c251f0f22c6a5d2ea4bb2fc78d3d031eb80266a91
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - team collaboration
+    maintainers:
+    - email: carlos@mattermost.com
+      name: cpanato
+    - email: joram@mattermost.com
+      name: jwilander
+    name: mattermost-team-edition
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.12.2/mattermost-team-edition-3.12.2.tgz
+    version: 3.12.2
+  - apiVersion: v1
     appVersion: 5.24.1
     created: "2020-06-23T11:35:16.275204493Z"
     dependencies:
