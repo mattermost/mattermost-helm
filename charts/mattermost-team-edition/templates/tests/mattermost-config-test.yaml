@@ -9,6 +9,9 @@ metadata:
     helm.sh/chart: {{ include "mattermost-team-edition.chart" . }}
 data:
   run.sh: |-
+    #!/usr/bin/env bats
     @test "Testing Mattermost is accessible" {
-      curl --retry 48 --retry-delay 10 {{ include "mattermost-team-edition.name" . }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.service.internalPort }}
+      url="http://{{ include "mattermost-team-edition.name" . }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.service.internalPort }}"
+      code=$(wget --server-response --spider --timeout 10 --tries 1 ${url} 2>&1 | awk '/^  HTTP/{print $2}')
+      [ "$code" == "200" ]
     }

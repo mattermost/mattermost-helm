@@ -4,8 +4,8 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-: "${CH_TOKEN:?Environment variable CH_TOKEN must be set}"
-: "${GIT_REPO_URL:?Environment variable GIT_REPO_URL must be set}"
+: "${CR_TOKEN:?Environment variable CR_TOKEN must be set}"
+: "${GIT_REPOSITORY_URL:?Environment variable GIT_REPOSITORY_URL must be set}"
 : "${GIT_USERNAME:?Environment variable GIT_USERNAME must be set}"
 : "${GIT_EMAIL:?Environment variable GIT_EMAIL must be set}"
 
@@ -33,16 +33,20 @@ main() {
         exit
     fi
 
-    rm -rf .deploy
-    mkdir -p .deploy
+    rm -rf .cr-release-packages
+    mkdir -p .cr-release-packages
+
+    rm -rf .cr-index
+    mkdir -p .cr-index
 
     echo "Identifying changed charts since tag '$latest_tag'..."
 
     local changed_charts=()
     readarray -t changed_charts <<< "$(git diff --find-renames --name-only "$latest_tag_rev" -- charts | cut -d '/' -f 2 | uniq)"
 
-
     if [[ -n "${changed_charts[*]}" ]]; then
+        add_chart_repos
+
         for chart in "${changed_charts[@]}"; do
             echo "Packaging chart '$chart'..."
             package_chart "charts/$chart"
@@ -63,28 +67,30 @@ find_latest_tag() {
     fi
 }
 
+add_chart_repos() {
+    helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
+}
+
 package_chart() {
     local chart="$1"
-    helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
-    helm dependency build "$chart"
-    helm package "$chart" --destination .deploy
+    helm package "$chart" --destination .cr-release-packages --dependency-update
 }
 
 release_charts() {
-    chart-releaser upload -o mattermost -r mattermost-helm -p .deploy
+    cr upload -o mattermost -r mattermost-helm
 }
 
 update_index() {
-    chart-releaser index -o mattermost -r mattermost-helm -p .deploy/index.yaml
+    cr index -o mattermost -r mattermost-helm -c https://helm.mattermost.com
 
     git config user.email "$GIT_EMAIL"
     git config user.name "$GIT_USERNAME"
 
     git checkout gh-pages
-    cp --force .deploy/index.yaml index.yaml
+    cp --force .cr-index/index.yaml index.yaml
     git add index.yaml
     git commit --message="Update index.yaml" --signoff
-    git push "$GIT_REPO_URL" gh-pages
+    git push "$GIT_REPOSITORY_URL" gh-pages
 }
 
 main

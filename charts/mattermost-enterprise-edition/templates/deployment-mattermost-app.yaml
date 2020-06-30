@@ -37,6 +37,9 @@ spec:
         {{- .Values.mattermostApp.extraPodAnnotations | toYaml | nindent 8 }}
         {{- end }}
     spec:
+      {{ if .Values.serviceAccount.create }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{ end }}
       initContainers:
       {{- if .Values.global.features.elasticsearch.enabled }}
       - name: init-elasticsearch

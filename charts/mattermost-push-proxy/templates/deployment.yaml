@@ -34,24 +34,25 @@ spec:
         - name: {{ include "mattermost-push-proxy.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["--config", "/mattermost-push-proxy/config/config.json"]
           ports:
             - containerPort: {{ .Values.service.internalPort }}
           volumeMounts:
-            - mountPath: /config/config.json
+            - mountPath: /mattermost-push-proxy/config/config.json
               name: push-config-template
               subPath: push-config.json
           {{- if .Values.applePushSettings.apple.privateCert }}
-            - mountPath: /certs/apple-push-cert.pem
+            - mountPath: /mattermost-push-proxy/certs/apple-push-cert.pem
               name: apple-push-cert
               subPath: apple-push-cert.pem
           {{- end }}
           {{- if .Values.applePushSettings.apple_rn.privateCert }}
-            - mountPath: /certs/apple-rn-push-cert.pem
+            - mountPath: /mattermost-push-proxy/certs/apple-rn-push-cert.pem
               name: apple-rn-push-cert
               subPath: apple-rn-push-cert.pem
           {{- end }}
           {{- if .Values.applePushSettings.apple_rnbeta.privateCert }}
-            - mountPath: /certs/apple-rnbeta-push-cert.pem
+            - mountPath: /mattermost-push-proxy/certs/apple-rnbeta-push-cert.pem
               name: apple-rnbeta-push-cert
               subPath: apple-rnbeta-push-cert.pem
           {{- end }}
