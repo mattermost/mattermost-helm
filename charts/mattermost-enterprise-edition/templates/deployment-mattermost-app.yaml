@@ -33,6 +33,9 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "{{ .Values.mattermostApp.service.metricsPort }}"
         prometheus.io/path: "/metrics"
+        {{- if .Values.mattermostApp.extraPodAnnotations }}
+        {{- .Values.mattermostApp.extraPodAnnotations | toYaml | nindent 8 }}
+        {{- end }}
     spec:
       {{ if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
