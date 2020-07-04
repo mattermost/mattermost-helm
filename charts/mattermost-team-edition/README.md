@@ -7,6 +7,7 @@
 ```bash
 $ helm repo add mattermost https://helm.mattermost.com
 $ helm install mattermost/mattermost-team-edition \
+  --generate-name \
   --set mysql.mysqlUser=sampleUser \
   --set mysql.mysqlPassword=samplePassword \
 ```
@@ -19,15 +20,15 @@ cluster using the [Helm](https://helm.sh) package manager.
 ## Prerequisites
 
 - Kubernetes 1.9+ with Beta APIs enabled
-- Helm v2
-- [Tiller](https://rancher.com/docs/rancher/v2.x/en/installation/ha/helm-init/) (the Helm server-side component) installed on the cluster
+- Helm v3
+- [Migrate from Helm v2 to Helm v3](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/)
 
 ## Installing the Chart
 
 To install the chart with the release name `my-release`:
 
 ```bash
-$ helm install --name my-release stable/mattermost-team-edition
+$ helm install my-release stable/mattermost-team-edition
 ```
 
 The command deploys Mattermost on the Kubernetes cluster in the default configuration. The [configuration](#configuration)
@@ -85,7 +86,7 @@ Parameter                             | Description                             
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```bash
-$ helm install --name my-release \
+$ helm install my-release \
   --set image.tag=5.12.4 \
   --set mysql.mysqlUser=sampleUser \
   --set mysql.mysqlPassword=samplePassword \
@@ -95,7 +96,7 @@ $ helm install --name my-release \
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
 ```bash
-$ helm install --name my-release -f values.yaml mattermost/mattermost-team-edition
+$ helm install my-release -f values.yaml mattermost/mattermost-team-edition
 ```
 
 ### Example configuration
@@ -159,12 +160,6 @@ Create local cluster using with specified Kubernetes version (e.g. `1.15.6`)
 $ minikube start --kubernetes-version v1.15.6
 ```
 
-Initialize helm
-
-```bash
-$ helm init
-```
-
 Get dependencies
 
 ```bash
@@ -175,6 +170,7 @@ Perform local installation
 
 ```bash
 $ helm install . \
+    --generate-name \
     --set image.tag=5.12.4 \
     --set mysql.mysqlUser=sampleUser \
     --set mysql.mysqlPassword=samplePassword
