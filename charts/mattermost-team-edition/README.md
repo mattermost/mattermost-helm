@@ -31,7 +31,7 @@ To install the chart with the release name `my-release`:
 ```bash
 $ helm install --name my-release stable/mattermost-team-edition
 ```
-**Helm v3 command**
+ **Helm v3 command**
 ```bash
 $ helm install my-release stable/mattermost-team-edition
 ```
@@ -187,7 +187,7 @@ $ helm install . \
     --set mysql.mysqlPassword=samplePassword
 ```
 
-**Helm v3 command**
+ **Helm v3 command**
 ```bash
 $ helm install . \
     --generate-name \
