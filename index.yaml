@@ -2,6 +2,42 @@ apiVersion: v1
 entries:
   mattermost-enterprise-edition:
   - apiVersion: v1
+    appVersion: 5.25.0
+    created: "2020-07-15T18:13:46.062892946Z"
+    dependencies:
+    - condition: global.features.database.useInternal
+      name: mysqlha
+      repository: https://kubernetes-charts-incubator.storage.googleapis.com
+      version: 2.0.0
+    - condition: minio.enabled
+      name: minio
+      repository: https://kubernetes-charts.storage.googleapis.com
+      version: 5.0.26
+    - condition: global.features.grafana.enabled
+      name: prometheus
+      repository: https://kubernetes-charts.storage.googleapis.com
+      version: 11.4.0
+    description: Mattermost Enterprise server with high availitibity.
+    digest: 491753ad788dcffb126d846a42f6a187859525acc648c5fab6991caa3fd89827
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - messaging
+    - team colaboration
+    maintainers:
+    - email: carlos@mattermost.com
+      name: cpanato
+    - email: joram@mattermost.com
+      name: jwilander
+    - email: stylianos@mattermost.com
+      name: stylianosrigas
+    name: mattermost-enterprise-edition
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-enterprise-edition-1.6.0/mattermost-enterprise-edition-1.6.0.tgz
+    version: 1.6.0
+  - apiVersion: v1
     appVersion: 5.24.2
     created: "2020-07-01T14:52:50.361458495Z"
     dependencies:
