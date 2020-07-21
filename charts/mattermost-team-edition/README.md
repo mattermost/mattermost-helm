@@ -91,7 +91,7 @@ Parameter                             | Description                             
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```bash
-$ helm install my-release \
+$ helm install --name my-release \
   --set image.tag=5.12.4 \
   --set mysql.mysqlUser=sampleUser \
   --set mysql.mysqlPassword=samplePassword \
