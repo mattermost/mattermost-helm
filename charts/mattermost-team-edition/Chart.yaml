@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Mattermost Team Edition server.
 name: mattermost-team-edition
-version: 3.13.1
+version: 3.13.2
 appVersion: 5.25.1
 keywords:
 - mattermost

@@ -19,8 +19,9 @@ cluster using the [Helm](https://helm.sh) package manager.
 ## Prerequisites
 
 - Kubernetes 1.9+ with Beta APIs enabled
-- Helm v2
-- [Tiller](https://rancher.com/docs/rancher/v2.x/en/installation/ha/helm-init/) (the Helm server-side component) installed on the cluster
+- Helm v2/v3
+- [Tiller](https://rancher.com/docs/rancher/v2.x/en/installation/ha/helm-init/) (the Helm v2 server-side component) installed on the cluster
+- [Migrate from Helm v2 to Helm v3](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/)
 
 ## Installing the Chart
 
@@ -28,6 +29,10 @@ To install the chart with the release name `my-release`:
 
 ```bash
 $ helm install --name my-release stable/mattermost-team-edition
+```
+ **Helm v3 command**
+```bash
+$ helm install my-release stable/mattermost-team-edition
 ```
 
 The command deploys Mattermost on the Kubernetes cluster in the default configuration. The [configuration](#configuration)
@@ -164,6 +169,7 @@ Initialize helm
 ```bash
 $ helm init
 ```
+Above command is not required for Helm v3
 
 Get dependencies
 
@@ -175,6 +181,15 @@ Perform local installation
 
 ```bash
 $ helm install . \
+    --set image.tag=5.12.4 \
+    --set mysql.mysqlUser=sampleUser \
+    --set mysql.mysqlPassword=samplePassword
+```
+
+ **Helm v3 command**
+```bash
+$ helm install . \
+    --generate-name \
     --set image.tag=5.12.4 \
     --set mysql.mysqlUser=sampleUser \
     --set mysql.mysqlPassword=samplePassword
