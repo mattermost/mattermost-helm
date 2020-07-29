@@ -2,6 +2,21 @@ You can easily connect to the remote instance from your browser. Forward the web
 
 - kubectl port-forward --namespace {{ .Release.Namespace }} $(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "mattermost-team-edition.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath='{ .items[0].metadata.name }') 8080:8065
 
+{{ if eq .Values.service.type "LoadBalancer"}}
+{{- if .Values.service.loadBalancerIP }}
+Mattermost will be available at:
+
+  {{ .Values.service.loadBalancerIP }}:{{ .Values.service.externalPort }}
+
+{{ else }}
+You can connect to Mattermost by using the IP printed by this commmand on port {{ .Values.service.externalPort }}:
+
+  MATTERMOST_IP=`kubectl get --namespace {{ .Release.Namespace }} service {{  include "mattermost-team-edition.name" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+  echo $MATTERMOST_IP
+
+{{ end }}
+{{ end }}
+
 {{ if .Values.ingress.enabled }}
 
 Mattermost will be available at the URL, if you setup the nginx-ingress or other type of ingress:

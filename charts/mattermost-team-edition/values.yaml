@@ -45,6 +45,7 @@ service:
   externalPort: 8065
   internalPort: 8065
   annotations: {}
+  # loadBalancerIP:
   loadBalancerSourceRanges: []
 
 ingress:

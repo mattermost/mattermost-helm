@@ -85,6 +85,7 @@ Parameter                             | Description                             
 `extraEnvVars`                        | Extra environments variables to be used in the deployments                                      | `[]`
 `extraInitContainers`                 | Additional init containers                                                                      | `[]`
 `service.annotations`                 | Service annotations                                                                             | `{}`
+`service.loadBalancerIP`              | A user-specified IP address for service type LoadBalancer to use as External IP (if supported)  | `nil`
 `service.loadBalancerSourceRanges`    | list of IP CIDRs allowed access to load balancer (if supported)                                 | `[]`
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
