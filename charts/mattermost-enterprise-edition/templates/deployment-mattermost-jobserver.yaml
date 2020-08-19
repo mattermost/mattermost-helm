@@ -37,8 +37,8 @@ spec:
     spec:
       initContainers:
       - name: "init-mattermost-app"
-        image: "appropriate/curl:latest"
-        imagePullPolicy: "IfNotPresent"
+        image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
+        imagePullPolicy: {{ .Values.initContainerImage.imagePullPolicy }}
         command: [
           "sh",
           "-c",

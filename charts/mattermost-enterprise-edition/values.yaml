@@ -23,6 +23,11 @@ global:
   smtpPort: ""
   connectionSecurity: ""  # empty, TLS, or STARTTLS
 
+initContainerImage:
+  repository: appropriate/curl
+  tag: latest
+  imagePullPolicy: IfNotPresent
+
   features:
     database:
       # If using an internal DB, update the passwords in the "mysqlha" section
