@@ -80,7 +80,7 @@ spec:
         {{- end }}
         resources:
           {{- .Values.resources | toYaml | nindent 12 }}
-      {{ if and (lt ((.Values.image.tag | semver) | (semver "5.14").Compare) 1) (or .Values.persistence.data.enabled .Values.persistence.plugins.enabled) }}
+      {{ if and (semverCompare ">= 5.14" .Values.image.tag) (or .Values.persistence.data.enabled .Values.persistence.plugins.enabled) }}
       securityContext:
         fsGroup: 2000
         runAsGroup: 2000
