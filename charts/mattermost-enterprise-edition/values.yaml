@@ -90,7 +90,7 @@ initContainerImage:
   repository: appropriate/curl
   tag: latest
   imagePullPolicy: IfNotPresent
-  
+
 # Mattermost deployment section.
 # Use to configure the deploymento the Mattermost app servers.
 mattermostApp:
