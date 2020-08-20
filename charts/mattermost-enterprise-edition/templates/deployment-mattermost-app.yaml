@@ -43,8 +43,8 @@ spec:
       initContainers:
       {{- if .Values.global.features.elasticsearch.enabled }}
       - name: init-elasticsearch
-        image: appropriate/curl:latest
-        imagePullPolicy: IfNotPresent
+        image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
+        imagePullPolicy: {{ .Values.initContainerImage.imagePullPolicy }}
         command: [
           "sh",
           "-c",
@@ -52,8 +52,8 @@ spec:
       {{- end }}
       {{- if .Values.global.features.database.useInternal }}
       - name: init-mysql
-        image: appropriate/curl:latest
-        imagePullPolicy: IfNotPresent
+        image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
+        imagePullPolicy: {{ .Values.initContainerImage.imagePullPolicy }}
         command: [
           "sh",
           "-c",
