@@ -40,6 +40,15 @@ persistence:
     accessMode: ReadWriteOnce
   # existingClaim: ""
 
+## Enable securityContext for process and volume mounting ownership
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+securityContext: {}
+  # Default values are 2000 if with the official Mattermost image >=5.14 or root (not set) below
+  # fsGroup:
+  # runAsGroup:
+  # runAsUser:
+
 service:
   type: ClusterIP
   externalPort: 8065
