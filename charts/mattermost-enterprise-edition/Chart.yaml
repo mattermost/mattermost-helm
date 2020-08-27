@@ -1,8 +1,8 @@
 apiVersion: v1
 description: Mattermost Enterprise server with high availitibity.
 name: mattermost-enterprise-edition
-version: 1.7.1
-appVersion: 5.26.0
+version: 1.7.2
+appVersion: 5.26.1
 keywords:
 - mattermost
 - communication
