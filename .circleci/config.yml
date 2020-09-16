@@ -54,6 +54,7 @@ workflows:
   release:
     jobs:
       - release-charts:
+          context: mattermost-helm
           filters:
             tags:
               ignore: /.*/
