@@ -149,7 +149,8 @@ mattermostApp:
   
   antiAffinity:
     enabled: false
-    mode: "" # can be hard/soft
+    # can be hard/soft
+    mode: ""
 
   resources: {}
     # limits:
