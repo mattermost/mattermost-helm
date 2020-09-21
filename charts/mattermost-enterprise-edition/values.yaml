@@ -146,7 +146,7 @@ mattermostApp:
     maxReplicas: 2
     targetMemoryUtilizationPercentage: 50
     targetCPUUtilizationPercentage: 50
-  
+
   antiAffinity:
     enabled: false
     # can be hard/soft
