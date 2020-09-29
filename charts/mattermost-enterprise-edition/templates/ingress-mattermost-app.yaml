@@ -13,7 +13,7 @@ metadata:
   annotations:
     {{- if .Values.mattermostApp.ingress.annotations }}
 {{ toYaml .Values.mattermostApp.ingress.annotations | indent 4 }}
-{{- end }}
+    {{- end }}
     {{- if .Values.mattermostApp.ingress.tls }}
     kubernetes.io/tls-acme: 'true'
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
