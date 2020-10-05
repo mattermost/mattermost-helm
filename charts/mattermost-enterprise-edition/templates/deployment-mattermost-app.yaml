@@ -39,7 +39,7 @@ spec:
     spec:
       {{- if .Values.mattermostApp.antiAffinity.custom.enabled}}
       affinity:
-{{ - .Values.mattermostApp.antiAffinity.custom.affinity | toYaml | indent 8 }}
+{{- .Values.mattermostApp.antiAffinity.custom.affinity | toYaml | indent 8 }}
       {{- else if .Values.mattermostApp.antiAffinity.enabled}}
       {{- if eq .Values.mattermostApp.antiAffinity.mode "hard" }}
       affinity:
