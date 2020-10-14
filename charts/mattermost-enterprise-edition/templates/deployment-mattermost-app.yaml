@@ -37,6 +37,30 @@ spec:
         {{- .Values.mattermostApp.extraPodAnnotations | toYaml | nindent 8 }}
         {{- end }}
     spec:
+      {{- if .Values.mattermostApp.antiAffinity.enabled}}
+      {{- if eq .Values.mattermostApp.antiAffinity.mode "hard" }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: {{ include "mattermost-enterprise-edition.name" . }}
+                  app.kubernetes.io/instance: {{ .Release.Name }}
+                  app.kubernetes.io/managed-by: {{ .Release.Service }}
+      {{- else if eq .Values.mattermostApp.antiAffinity.mode "soft" }}ר
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                app.kubernetes.io/name: {{ include "mattermost-enterprise-edition.name" . }}
+                app.kubernetes.io/instance: {{ .Release.Name }}
+                app.kubernetes.io/managed-by: {{ .Release.Service }}
+      {{- end }}
+      {{- end }}
       {{ if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       {{ end }}
