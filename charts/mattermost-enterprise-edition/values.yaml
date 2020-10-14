@@ -152,9 +152,6 @@ mattermostApp:
     # can be hard/soft, affects weight
     mode: ""
     # can implement self affinty, add affinity at the correct location
-    custom:
-      enabled: false
-      affinity: {}
 
     resources: {}
     # limits:
