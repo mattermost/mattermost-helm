@@ -97,7 +97,7 @@ mattermostApp:
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
-    tag: 5.28.0
+    tag: 5.28.1
     pullPolicy: IfNotPresent
 
   strategy:
