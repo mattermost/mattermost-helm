@@ -54,6 +54,6 @@ Return the appropriate apiVersion for ingress. Based on
 {{- end -}}
 {{- end -}}
 
-{{-define "mattermost-enterprise-edition.deployment.apiVersion" -}}
+{{- define "mattermost-enterprise-edition.deployment.apiVersion" -}}
 "apps/v1"
 {{- end -}}
