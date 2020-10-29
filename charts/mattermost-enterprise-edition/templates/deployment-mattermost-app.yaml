@@ -48,7 +48,7 @@ spec:
                   app.kubernetes.io/name: {{ include "mattermost-enterprise-edition.name" . }}
                   app.kubernetes.io/instance: {{ .Release.Name }}
                   app.kubernetes.io/managed-by: {{ .Release.Service }}
-      {{- else if eq .Values.mattermostApp.antiAffinity.mode "soft" }}ר
+      {{- else if eq .Values.mattermostApp.antiAffinity.mode "soft" }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
