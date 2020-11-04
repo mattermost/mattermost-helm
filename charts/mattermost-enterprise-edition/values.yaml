@@ -147,11 +147,7 @@ mattermostApp:
     targetMemoryUtilizationPercentage: 50
     targetCPUUtilizationPercentage: 50
 
-  antiAffinity:
-    enabled: false
-    # can be hard/soft, affects weight
-    mode: ""
-    # can implement self affinty, add affinity at the correct location
+  affinity: {} # See https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity.
 
   resources: {}
     # limits:
