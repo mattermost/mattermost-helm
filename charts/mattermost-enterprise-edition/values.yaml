@@ -147,7 +147,8 @@ mattermostApp:
     targetMemoryUtilizationPercentage: 50
     targetCPUUtilizationPercentage: 50
 
-  affinity: {} # See https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity.
+  affinity: {}
+    ## See https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity.
 
   resources: {}
     # limits:
