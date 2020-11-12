@@ -53,6 +53,7 @@ main() {
         done
 
         release_charts
+        sleep 30
         update_index
     else
         echo "Nothing to do. No chart changes detected."
