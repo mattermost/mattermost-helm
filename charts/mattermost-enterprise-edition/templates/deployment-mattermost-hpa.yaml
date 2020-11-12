@@ -7,10 +7,10 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     helm.sh/chart:  {{ include "mattermost-enterprise-edition.chart" . }}
-  name: {{ include "mattermost-enterprise-edition.fullname" . }}}
+  name: {{ include "mattermost-enterprise-edition.fullname" . }}
 spec:
   scaleTargetRef:
-    apiVersion: {{ template "deployment.apiVersion" . }}
+    apiVersion: {{ template "mattermost-enterprise-edition.deployment.apiVersion" . }}
     kind: Deployment
     name: {{ include "mattermost-enterprise-edition.fullname" . }}
   minReplicas: {{ .Values.mattermostApp.autoscaling.minReplicas }}
