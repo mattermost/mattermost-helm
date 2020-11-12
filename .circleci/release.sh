@@ -68,7 +68,8 @@ find_latest_tag() {
 }
 
 add_chart_repos() {
-    helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
+    helm repo add incubator https://charts.helm.sh/incubator
+    helm repo add stable https://charts.helm.sh/stable
 }
 
 package_chart() {
