@@ -80,11 +80,10 @@ spec:
           name: gossip
         env:
         - name: MM_CONFIG
-{{- if .Values.global.features.database.useInternal }}
-          value: "mysql://{{ .Values.mysqlha.mysqlha.mysqlUser }}:{{ .Values.mysqlha.mysqlha.mysqlPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.mysqlha.mysqlha.mysqlDatabase }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
-{{- else }}
-          value: "{{ .Values.global.features.database.external.driver }}://{{ .Values.global.features.database.external.dataSource }}"
-{{- end }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "mattermost-enterprise-edition.fullname" . }}-mattermost-dbsecret
+              key: mattermost.dbsecret
         - name: MM_SERVICESETTINGS_SITEURL
           value: "{{ .Values.global.siteUrl }}"
         - name: MM_SERVICESETTINGS_LISTENADDRESS
