@@ -182,6 +182,19 @@ extraVolumeMounts: []
   #   mountPath: /host/var/log
   #   readOnly: true
 
+## Node selector
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+nodeSelector: {}
+
+## Affinity
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+affinity: {}
+
+## Tolerations for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
 # NOTE: These acts as the default values for the config.json file read by the
 # mattermost server itself. You can override the configJSON object just like any
 # Helm template value. Since it is an object, the object you provide will merge

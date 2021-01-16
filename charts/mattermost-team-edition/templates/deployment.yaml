@@ -31,6 +31,18 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         helm.sh/chart: {{ include "mattermost-team-edition.chart" . }}
     spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+        {{ toYaml .Values.affinity | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}
       initContainers:
       {{- if not .Values.externalDB.enabled }}
       - name: "init-mysql"
