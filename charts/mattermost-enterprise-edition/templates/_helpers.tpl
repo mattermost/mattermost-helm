@@ -53,3 +53,7 @@ Return the appropriate apiVersion for ingress. Based on
 "networking.k8s.io/v1beta1"
 {{- end -}}
 {{- end -}}
+
+{{- define "mattermost-enterprise-edition.deployment.apiVersion" -}}
+"apps/v1"
+{{- end -}}

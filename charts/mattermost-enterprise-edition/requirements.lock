@@ -1,12 +1,12 @@
 dependencies:
 - name: mysqlha
-  repository: https://kubernetes-charts-incubator.storage.googleapis.com
+  repository: https://charts.helm.sh/incubator
   version: 2.0.0
 - name: minio
-  repository: https://kubernetes-charts.storage.googleapis.com
+  repository: https://charts.helm.sh/stable
   version: 5.0.26
 - name: prometheus
-  repository: https://kubernetes-charts.storage.googleapis.com
+  repository: https://charts.helm.sh/stable
   version: 11.4.0
-digest: sha256:c0daace187ec1da07c375a07dbb3d9cb16261d47e6f080ddb2aa744db0d724da
-generated: "2020-06-09T14:19:29.905177+02:00"
+digest: sha256:166598e7cb93d922f76863fb5d11263c596cd3120c868eb6c380fa4d681a4e1a
+generated: "2020-11-12T16:20:05.612311+01:00"
