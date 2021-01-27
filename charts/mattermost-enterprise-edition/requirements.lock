@@ -1,4 +1,10 @@
 dependencies:
+- name: mattermost-elasticsearch
+  repository: ""
+  version: 0.1.0
+- name: mattermost-grafana
+  repository: ""
+  version: 0.3.6
 - name: mysqlha
   repository: https://charts.helm.sh/incubator
   version: 2.0.0
@@ -8,5 +14,5 @@ dependencies:
 - name: prometheus
   repository: https://charts.helm.sh/stable
   version: 11.4.0
-digest: sha256:166598e7cb93d922f76863fb5d11263c596cd3120c868eb6c380fa4d681a4e1a
-generated: "2020-11-12T16:20:05.612311+01:00"
+digest: sha256:fa90782b768ec2654b9763569f86aab463052b1877feff8a05e5b04e364c5582
+generated: "2021-01-27T14:11:21.326738823-05:00"
