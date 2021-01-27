@@ -3,4 +3,4 @@ target-branch: master
 chart-repos:
   - incubator=https://charts.helm.sh/incubator
   - stable=https://charts.helm.sh/stable
-helm-extra-args: --timeout 800
+helm-extra-args: --timeout 5m0s

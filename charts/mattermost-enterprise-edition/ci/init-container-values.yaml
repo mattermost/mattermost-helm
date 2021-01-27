@@ -24,11 +24,11 @@ mattermostApp:
   extraVolumeMounts:
     - mountPath: /tmp/test-tmp
       name: varlog
+      readOnly: true
 
   extraVolumes:
     - name: varlog
       emptyDir: {}
-      readOnly: true
 
 mysqlha:
   mysqlha:
