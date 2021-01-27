@@ -16,6 +16,6 @@ maintainers:
     email: carlos@mattermost.com
   - name: jwilander
     email: joram@mattermost.com
-source:
+sources:
 - https://github.com/mattermost/mattermost-helm
 - https://github.com/mattermost/mattermost-push-proxy

@@ -17,6 +17,6 @@ maintainers:
     email: joram@mattermost.com
   - name: stylianosrigas
     email: stylianos@mattermost.com
-source:
+sources:
 - https://github.com/mattermost/mattermost-server
 - https://github.com/mattermost/mattermost-helm
