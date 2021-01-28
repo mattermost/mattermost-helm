@@ -1,4 +1,8 @@
 dependencies:
+  - name: mattermost-elasticsearch
+    version: 0.1.0
+  - name: mattermost-grafana
+    version: 0.3.6
   - name: mysqlha
     repository: https://charts.helm.sh/incubator
     version: 2.0.0

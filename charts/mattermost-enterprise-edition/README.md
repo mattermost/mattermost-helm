@@ -27,7 +27,7 @@ Once Helm is installed and initialized, run the following:
 
 ```bash
 helm repo add mattermost https://helm.mattermost.com
-helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+helm repo add incubator https://charts.helm.sh/incubator
 ```
 
 ## 1.3 Ingress
