@@ -37,8 +37,17 @@ spec:
         {{- .Values.mattermostApp.extraPodAnnotations | toYaml | nindent 8 }}
         {{- end }}
     spec:
-      {{- if .Values.mattermostApp.affinity}}
-      {{- .Values.mattermostApp.affinity | toYaml | nindent 6 }}
+      {{- if .Values.mattermostApp.nodeSelector }}
+      nodeSelector:
+        {{ toYaml .Values.mattermostApp.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.mattermostApp.affinity }}
+      affinity:
+        {{ toYaml .Values.mattermostApp.affinity | indent 8 }}
+      {{- end }}
+      {{- if .Values.mattermostApp.tolerations }}
+      tolerations:
+        {{ toYaml .Values.mattermostApp.tolerations | indent 8 }}
       {{- end }}
       {{ if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.serviceAccount.name }}

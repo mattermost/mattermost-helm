@@ -31,6 +31,18 @@ spec:
         app.kubernetes.io/component: loadtest
         helm.sh/chart: {{ include "mattermost-enterprise-edition.chart" . }}
     spec:
+      {{- if .Values.global.features.loadtest.nodeSelector }}
+      nodeSelector:
+        {{ toYaml .Values.global.features.loadtest.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.global.features.loadtest.affinity }}
+      affinity:
+        {{ toYaml .Values.global.features.loadtest.affinity | indent 8 }}
+      {{- end }}
+      {{- if .Values.global.features.loadtest.tolerations }}
+      tolerations:
+        {{ toYaml .Values.global.features.loadtest.tolerations | indent 8 }}
+      {{- end }}
       containers:
         - name: {{ include "mattermost-enterprise-edition.name" .}}-loadtest
           image: "{{ .Values.global.features.loadTest.image.repository }}:{{ .Values.global.features.loadTest.image.tag }}"
