@@ -35,6 +35,18 @@ spec:
         {{- .Values.mattermostApp.extraPodAnnotations | toYaml | nindent 8 }}
         {{- end }}
     spec:
+      {{- if .Values.global.features.jobserver.nodeSelector }}
+      nodeSelector:
+        {{ toYaml .Values.global.features.jobserver.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.global.features.jobserver.affinity }}
+      affinity:
+        {{ toYaml .Values.global.features.jobserver.affinity | indent 8 }}
+      {{- end }}
+      {{- if .Values.global.features.jobserver.tolerations }}
+      tolerations:
+        {{ toYaml .Values.global.features.jobserver.tolerations | indent 8 }}
+      {{- end }}
       initContainers:
       - name: "init-mattermost-app"
         image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
