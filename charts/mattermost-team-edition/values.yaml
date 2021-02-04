@@ -95,8 +95,8 @@ mysql:
   mysqlPassword: ""
   mysqlDatabase: mattermost
 
-  repository: mysql
-  imageTag: '8.0.18'
+  image: mysql
+  tag: '8.0.18'
   testFramework:
     enabled: false
 
