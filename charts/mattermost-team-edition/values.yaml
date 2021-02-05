@@ -96,7 +96,7 @@ mysql:
   mysqlDatabase: mattermost
 
   image: mysql
-  tag: '8.0.18'
+  imageTag: '8.0.18'
   testFramework:
     enabled: false
 
