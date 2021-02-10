@@ -43,6 +43,8 @@ spec:
       tolerations:
         {{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}
+      securityContext:
+        {{- toYaml .Values.securityContext | nindent 8 }}
       initContainers:
       {{- if not .Values.externalDB.enabled }}
       - name: "init-mysql"
