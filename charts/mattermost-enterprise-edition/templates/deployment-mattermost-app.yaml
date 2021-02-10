@@ -49,6 +49,8 @@ spec:
       tolerations:
         {{ toYaml .Values.mattermostApp.tolerations | indent 8 }}
       {{- end }}
+      securityContext:
+        {{- toYaml .Values.mattermostApp.securityContext | nindent 8 }}
       {{ if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       {{ end }}
