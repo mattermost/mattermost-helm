@@ -55,6 +55,27 @@ spec:
       {{- if .Values.extraInitContainers }}
       {{- .Values.extraInitContainers | toYaml | nindent 6 }}
       {{- end }}
+      {{- if .Values.persistence.config.enabled }}
+      - name: "init-config"
+        image: "{{ .Values.persistence.config.initContainerImage.repository }}:{{ .Values.persistence.config.initContainerImage.tag }}"
+        imagePullPolicy: {{ .Values.persistence.config.initContainerImage.imagePullPolicy }}
+        command:
+          - sh
+          - -c
+          - |
+            if test -f /persist-config/config.json; then
+              echo "config exists"
+            else
+              echo "creating initial config"
+              cp /init-config/config.json /persist-config/
+              chmod 0664 /persist-config/config.json
+            fi
+        volumeMounts:
+          - mountPath: "/init-config"
+            name: config-json
+          - mountPath: "/persist-config"
+            name: persistent-config
+      {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -82,9 +103,14 @@ spec:
             path: /api/v4/system/ping
             port: http
         volumeMounts:
+        {{- if .Values.persistence.config.enabled }}
+        - mountPath: /mattermost/config
+          name: persistent-config
+        {{- else }}
         - mountPath: /mattermost/config/config.json
           name: config-json
           subPath: config.json
+        {{- end }}
         - mountPath: /mattermost/data
           name: mattermost-data
         - mountPath: /mattermost/{{ trimPrefix "./" .Values.configJSON.PluginSettings.Directory }}
@@ -101,6 +127,11 @@ spec:
       - name: config-json
         secret:
           secretName: {{ include "mattermost-team-edition.fullname" . }}-config-json
+      {{- if .Values.persistence.config.enabled }}
+      - name: persistent-config
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.config.existingClaim | default (include "mattermost-team-edition.fullname" .) }}-config
+      {{- end }}
       - name: mattermost-data
       {{ if .Values.persistence.data.enabled }}
         persistentVolumeClaim:

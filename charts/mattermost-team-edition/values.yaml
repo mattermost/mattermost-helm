@@ -39,6 +39,25 @@ persistence:
     # storageClass:
     accessMode: ReadWriteOnce
   # existingClaim: ""
+  ## This volume persists the Mattermost configuration to a volume, so the application itself can make configuration changes
+  ## Note that if `persistence.config.enabled` is `true`, the `configJSON` value will only be respected on initial install
+  ##
+  config:
+    enabled: true
+    size: 50Mi
+    ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
+    ## Default: volume.alpha.kubernetes.io/storage-class: default
+    ##
+    # storageClass:
+    accessMode: ReadWriteOnce
+  # existingClaim: ""
+
+    ## The init container used for seeding the initial configJSON
+    ##
+    initContainerImage:
+      repository: alpine
+      tag: 3.13.1
+      imagePullPolicy: IfNotPresent
 
 service:
   type: ClusterIP
