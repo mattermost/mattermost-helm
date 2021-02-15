@@ -84,7 +84,9 @@ Parameter                             | Description                             
 `extraPodAnnotations`                 | Extra pod annotations to be used in the deployments                                             | `[]`
 `extraEnvVars`                        | Extra environments variables to be used in the deployments                                      | `[]`
 `extraInitContainers`                 | Additional init containers                                                                      | `[]`
-`securityContext.fsGroup`             | Sets the pod's filesystem group ID                                                              | `1000`
+`securityContext.fsGroup`             | Sets the pod's filesystem group ID                                                              | `2000`
+`securityContext.runAsUser`           | Sets the user ID for the pod                                                                    | `2000`
+`securityContext.runAsGroup`          | Sets the group ID for the pod                                                                   | `2000`
 `service.annotations`                 | Service annotations                                                                             | `{}`
 `service.loadBalancerIP`              | A user-specified IP address for service type LoadBalancer to use as External IP (if supported)  | `nil`
 `service.loadBalancerSourceRanges`    | list of IP CIDRs allowed access to load balancer (if supported)                                 | `[]`
