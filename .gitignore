@@ -21,3 +21,4 @@ tags
 .init
 
 charts/mattermost-enterprise-edition/charts/*.tgz
+charts/mattermost-team-edition/charts/*.tgz

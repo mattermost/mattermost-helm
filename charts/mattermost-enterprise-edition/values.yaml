@@ -47,6 +47,15 @@ global:
       service:
         name: mattermost-app-jobserver
         type: ClusterIP
+      # jobserver Node selector
+      # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+      nodeSelector: {}
+      # jobserver Affinity
+      # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+      affinity: {}
+      # jobserver Tolerations for pod assignment
+      # Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+      tolerations: []
     notifications:
       # Push proxy must be configured or useHPNS must be true for push noticiations to work.
       push:
@@ -85,6 +94,15 @@ global:
       resultsChannelId: ""
       resultsUsername: ""
       resultsPassword: ""
+      # loadTest Node selector
+      # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+      nodeSelector: {}
+      # loadTest Affinity
+      # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+      affinity: {}
+      # loadTest Tolerations for pod assignment
+      # Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+      tolerations: []
 
 initContainerImage:
   repository: appropriate/curl
@@ -147,8 +165,17 @@ mattermostApp:
     targetMemoryUtilizationPercentage: 50
     targetCPUUtilizationPercentage: 50
 
+  # mattermostApp Node selector
+  # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+  nodeSelector: {}
+
+  # mattermostApp Affinity
+  # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
   affinity: {}
-    ## See https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity.
+
+  # mattermostApp Tolerations for pod assignment
+  # Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+  tolerations: []
 
   resources: {}
     # limits:
