@@ -13,7 +13,7 @@ sources:
 - https://github.com/mattermost/mattermost-server
 - https://github.com/mattermost/mattermost-helm
 maintainers:
-  - name: cpanato
-    email: carlos@mattermost.com
+  - name: khos2ow
+    email: khosrow.moossavi@mattermost.com
   - name: jwilander
     email: joram@mattermost.com
