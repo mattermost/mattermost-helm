@@ -12,8 +12,3 @@ icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
 sources:
 - https://github.com/mattermost/mattermost-server
 - https://github.com/mattermost/mattermost-helm
-maintainers:
-  - name: cpanato
-    email: carlos@mattermost.com
-  - name: jwilander
-    email: joram@mattermost.com
