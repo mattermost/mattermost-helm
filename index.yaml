@@ -1217,6 +1217,30 @@ entries:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-push-proxy-0.1.4/mattermost-push-proxy-0.1.4.tgz
     version: 0.1.4
   mattermost-team-edition:
+  - apiVersion: v2
+    appVersion: 5.32.1
+    created: "2021-02-24T13:25:52.862904669Z"
+    dependencies:
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://charts.helm.sh/stable
+      version: 1.6.4
+    description: Mattermost Team Edition server.
+    digest: b292aacd53a99ac2f6df49c85c007726e2a87c5561db987ccdb01589ced6c8b8
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - team collaboration
+    name: mattermost-team-edition
+    sources:
+    - https://github.com/mattermost/mattermost-server
+    - https://github.com/mattermost/mattermost-helm
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-4.0.0/mattermost-team-edition-4.0.0.tgz
+    version: 4.0.0
   - apiVersion: v1
     appVersion: 5.29.0
     created: "2021-02-01T18:45:26.122541079Z"
