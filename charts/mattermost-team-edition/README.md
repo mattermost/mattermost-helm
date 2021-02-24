@@ -28,11 +28,11 @@ cluster using the [Helm](https://helm.sh) package manager.
 To install the chart with the release name `my-release`:
 
 ```bash
-$ helm install --name my-release stable/mattermost-team-edition
+$ helm install --name my-release mattermost/mattermost-team-edition
 ```
  **Helm v3 command**
 ```bash
-$ helm install my-release stable/mattermost-team-edition
+$ helm install my-release mattermost/mattermost-team-edition
 ```
 
 The command deploys Mattermost on the Kubernetes cluster in the default configuration. The [configuration](#configuration)
@@ -45,6 +45,10 @@ method of resolving them is to simply upgrade the chart and let it fail with and
 provide you with a custom message on what you need to change in your
 configuration. Note that this failure will occur before any changes have been
 made to the k8s cluster.
+
+## Upgrading  the Chart to 4.0.0+
+
+The Chart version 4.0.0+ supports only Helm v3, follow the [guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/)
 
 ## Uninstalling the Chart
 
