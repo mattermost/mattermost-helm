@@ -1,8 +1,9 @@
-apiVersion: v1
+apiVersion: v2
 description: Mattermost Team Edition server.
+type: application
 name: mattermost-team-edition
-version: 3.23.0
-appVersion: 5.29.0
+version: 4.1.0
+appVersion: 5.32.1
 keywords:
 - mattermost
 - communication
@@ -12,8 +13,8 @@ icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
 sources:
 - https://github.com/mattermost/mattermost-server
 - https://github.com/mattermost/mattermost-helm
-maintainers:
-  - name: cpanato
-    email: carlos@mattermost.com
-  - name: jwilander
-    email: joram@mattermost.com
+dependencies:
+- name: mysql
+  version: 1.6.4
+  repository: https://charts.helm.sh/stable
+  condition: mysql.enabled
