@@ -50,6 +50,16 @@ spec:
         imagePullPolicy: {{ .Values.initContainerImage.imagePullPolicy }}
         command: ["sh", "-c", "until curl --max-time 10 http://{{ .Release.Name }}-mysql:3306; do echo waiting for {{ .Release.Name }}-mysql; sleep 5; done;"]
       {{- end }}
+      - name: "init-copy-config-json"
+        image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
+        imagePullPolicy: {{ .Values.initContainerImage.imagePullPolicy }}
+        command: [ "sh", "-c", "cp /tmp/config.json /tmp/config/config.json && chmod go+rw /tmp/config/config.json" ]
+        volumeMounts:
+          - mountPath: /tmp/config.json
+            name: config-json
+            subPath: config.json
+          - mountPath: /tmp/config
+            name: mattermost-config
       {{- if .Values.extraInitContainers }}
       {{- .Values.extraInitContainers | toYaml | nindent 6 }}
       {{- end }}
@@ -80,9 +90,8 @@ spec:
             path: /api/v4/system/ping
             port: http
         volumeMounts:
-        - mountPath: /mattermost/config/config.json
-          name: config-json
-          subPath: config.json
+        - mountPath: /mattermost/config
+          name: mattermost-config
         - mountPath: /mattermost/data
           name: mattermost-data
         - mountPath: /mattermost/{{ trimPrefix "./" .Values.configJSON.PluginSettings.Directory }}
@@ -99,6 +108,8 @@ spec:
       - name: config-json
         secret:
           secretName: {{ include "mattermost-team-edition.fullname" . }}-config-json
+      - name: mattermost-config
+        emptyDir: {}
       - name: mattermost-data
       {{ if .Values.persistence.data.enabled }}
         persistentVolumeClaim:
