@@ -1,6 +1,6 @@
 {{- if and .Values.minioOperator.enabled .Values.minioOperator.rbac.create }}
 kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ template "minio-operator.name" . }}-binding
   namespace: {{ template "minio-operator.namespace" . }}

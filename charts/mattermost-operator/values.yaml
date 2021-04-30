@@ -134,7 +134,7 @@ mysqlOperator:
   ## Configuration for Mysql operator persistent volume
   ##
   persistentVolume:
-    accessModes: [ ReadWriteOnce ]
+    accessModes: [ReadWriteOnce]
     size: 10Gi
 
   topology:
