@@ -1,0 +1,17 @@
+{{- if and .Values.mysqlOperator.enabled .Values.mysqlOperator.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ template "mysql-operator.name" . }}
+  labels:
+    app: {{ template "mysql-operator.name" . }}
+    release: {{ template "mysql-operator.name" . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ template "mysql-operator.name" . }}
+subjects:
+  - name: {{ template "mysql-operator.name" . }}
+    namespace: {{ template "mysql-operator.namespace" . }}
+    kind: ServiceAccount
+{{- end }}
