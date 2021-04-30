@@ -29,17 +29,6 @@ helm repo add mattermost https://helm.mattermost.com
 
 To start, copy [mattermost-operator/charts/mattermost-operator/values.yaml](https://github.com/mattermost/mattermost-operator/blob/master/charts/mattermost-operator/values.yaml) and name it `config.yaml`. This will be your configuration file for the Mattermost Operator chart. You can used the default values that will deploy Mattermost-Operator, Mysql-Operator and Minio-Operator together (use of mysql and minio operators is not suggested for production environments) or update accordingly.
 
-## 2.1 Prerequisites
-
-Before you install the Mattermost Operator Helm chart the respective k8s namespaces need to be created. To create all required namespaces you should run:
-
-```
-kubectl create namespace mattermost-operator
-kubectl create namespace mysql-operator
-kubectl create namespace minio-operator
-```
-
-In case, you are not planning to deploy mysql or minio operators via the Helm chart the namespace creation is not required for those.
 
 # 3. Install
 
@@ -67,6 +56,8 @@ To upgrade an existing release, modify the `config.yaml` with your desired chang
 ```bash
 helm upgrade -f config.yaml <your-release-name> mattermost/mattermost-operator -n mattermost-operator
 ```
+
+If the `mysql-operator` and `minio-operator` are enabled their namespaces will be automatically created.
 
 ## 3.1 Uninstalling Mattermost Operator Helm Chart
 

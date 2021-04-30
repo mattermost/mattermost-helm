@@ -1,0 +1,14 @@
+{{- if and .Values.mysqlOperator.enabled }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    name: {{ template "mysql-operator.namespace" . }}
+  name: {{ template "mysql-operator.namespace" . }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-delete-policy" : post-delete
+spec:
+  finalizers:
+  - kubernetes
+{{- end }}

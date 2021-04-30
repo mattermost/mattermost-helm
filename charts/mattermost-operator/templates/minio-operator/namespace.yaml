@@ -1,0 +1,14 @@
+{{- if and .Values.minioOperator.enabled }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    name: {{ template "minio-operator.namespace" . }}
+  name: {{ template "minio-operator.namespace" . }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-delete-policy" : post-delete
+spec:
+  finalizers:
+  - kubernetes
+{{- end }}
