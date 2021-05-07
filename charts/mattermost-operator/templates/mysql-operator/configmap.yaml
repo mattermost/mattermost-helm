@@ -10,6 +10,10 @@ metadata:
   name: {{ template "mysql-operator.name" . }}-orc
   namespace: {{ template "mysql-operator.namespace" . }}
   labels:
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/name: {{ template "mysql-operator.name" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     app: {{ template "mysql-operator.name" . }}
     release: {{ template "mysql-operator.name" . }}
 data:
