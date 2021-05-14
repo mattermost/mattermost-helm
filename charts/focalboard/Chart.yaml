@@ -1,0 +1,11 @@
+apiVersion: v2
+name: focalboard
+description: Focalboard Server
+type: application
+version: 0.1.0
+appVersion: "0.6.5"
+keywords:
+  - focalboard
+  - mattermost
+maintainers:
+  - name: stafot
