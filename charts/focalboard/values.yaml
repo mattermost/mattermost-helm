@@ -56,6 +56,15 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+## Persist data to a persitent volume
+persistence:
+  enabled: false
+  ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
+  ## Default: volume.alpha.kubernetes.io/storage-class: default
+  ##
+  # storageClass:
+  # accessMode: ReadWriteOnce
+  # size: 8Gi
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
