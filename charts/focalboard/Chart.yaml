@@ -2,7 +2,7 @@ apiVersion: v2
 name: focalboard
 description: Focalboard Server
 type: application
-version: 0.2.0
+version: 0.3.0
 appVersion: "0.6.5"
 keywords:
   - focalboard

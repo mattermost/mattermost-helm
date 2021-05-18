@@ -50,7 +50,7 @@ ingress:
       paths:
       - path: /
         backend:
-          serviceName: chart-example.local
+          serviceName: focalboard
           servicePort: 80
   tls: []
   #  - secretName: chart-example-tls
@@ -78,16 +78,8 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-
 nodeSelector: {}
 
 tolerations: []
 
 affinity: {}
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 2
-  targetMemoryUtilizationPercentage: 50
-  targetCPUUtilizationPercentage: 50

@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "focalboard.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "focalboard.selectorLabels" . | nindent 6 }}
@@ -37,19 +35,11 @@ spec:
             - name: http
               containerPort: 8000
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
           - name: data
-            mountPath: /var/lib/mysql
+            mountPath: /data
       volumes:
         - name: data
           {{- if .Values.persistence.enabled }}
