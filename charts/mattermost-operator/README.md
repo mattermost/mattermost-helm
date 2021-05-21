@@ -27,7 +27,7 @@ helm repo add mattermost https://helm.mattermost.com
 
 # 2. Configuration
 
-To start, copy [mattermost-operator/charts/mattermost-operator/values.yaml](https://github.com/mattermost/mattermost-operator/blob/master/charts/mattermost-operator/values.yaml) and name it `config.yaml`. This will be your configuration file for the Mattermost Operator chart. You can used the default values that will deploy Mattermost-Operator, Mysql-Operator and Minio-Operator together (use of mysql and minio operators is not suggested for production environments) or update accordingly.
+To start, copy [mattermost-operator/charts/mattermost-operator/values.yaml](https://github.com/mattermost/mattermost-operator/blob/master/charts/mattermost-operator/values.yaml) and name it `config.yaml`. This will be your configuration file for the Mattermost Operator chart. You can use the default values that will deploy Mattermost-Operator, Mysql-Operator and Minio-Operator together (use of mysql and minio operators is not suggested for production environments) or update accordingly.
 
 
 # 3. Install
@@ -61,7 +61,7 @@ If the `mysql-operator` and `minio-operator` are enabled their namespaces will b
 
 ## 3.1 Uninstalling Mattermost Operator Helm Chart
 
-If you are done with your deployment and want to delete it, use `helm delete <your-release-name>`. If you don't know the name of your release, use `helm ls` to find it. Make sure to pass the namespace in the helm delete command.
+If you are done with your deployment and want to delete it, use `helm delete <your-release-name>`. If you don't know the name of your release, use `helm ls -A` to find it across all namespaces. Make sure to pass the namespace in the helm delete command.
 
 
 # 4. Developing
