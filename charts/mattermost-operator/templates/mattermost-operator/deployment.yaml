@@ -1,0 +1,46 @@
+{{- if .Values.mattermostOperator.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "mattermost-operator.name" . }}
+  namespace: {{ template "mattermost-operator.namespace" . }}
+  labels:
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/name: {{ template "mattermost-operator.name" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.mattermostOperator.replicas }}
+  selector:
+    matchLabels:
+      name: {{ template "mattermost-operator.name" . }}
+      helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+      app.kubernetes.io/name: {{ template "mattermost-operator.name" . }}
+      app.kubernetes.io/managed-by: {{ .Release.Service }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        name: {{ template "mattermost-operator.name" . }}
+        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        app.kubernetes.io/name: {{ template "mattermost-operator.name" . }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+      - args:
+        {{- if .Values.mattermostOperator.args }}
+{{ toYaml .Values.mattermostOperator.args | indent 10 }}
+        {{- end }}
+        command:
+        - /mattermost-operator
+        env:
+        - name: MAX_RECONCILING_INSTALLATIONS
+          value: "{{ .Values.mattermostOperator.env.maxReconcilingInstallations }}"
+        - name: REQUEUE_ON_LIMIT_DELAY
+          value: "{{ .Values.mattermostOperator.env.requeuOnLimitDelay }}"
+        image: "{{ .Values.mattermostOperator.image.repository }}:{{ .Values.mattermostOperator.image.tag }}"
+        imagePullPolicy: "{{ .Values.mattermostOperator.image.pullPolicy }}"
+        name: {{ template "mattermost-operator.name" . }}
+      serviceAccountName: {{ template "mattermost-operator.name" . }}
+{{- end }}
