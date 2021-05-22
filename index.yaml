@@ -1085,6 +1085,22 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-enterprise-edition-0.8.2/mattermost-enterprise-edition-0.8.2.tgz
     version: 0.8.2
+  mattermost-operator:
+  - apiVersion: v2
+    appVersion: 1.13.0
+    created: "2021-05-22T07:53:52.107790705Z"
+    description: A Helm chart for Mattermost Operator
+    digest: 71769bc3d61d32d958ec2a8f614199ffb7367a0fb441609c8f99a9bc88811442
+    keywords:
+    - operator
+    - mattermost
+    maintainers:
+    - name: stylianosrigas
+    name: mattermost-operator
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-operator-0.1.0/mattermost-operator-0.1.0.tgz
+    version: 0.1.0
   mattermost-push-proxy:
   - apiVersion: v1
     appVersion: 5.22.4
