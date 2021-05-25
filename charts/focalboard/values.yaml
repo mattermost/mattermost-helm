@@ -2,13 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# NOTE: At the moment focalboard supports only 1 replica deployment.
 replicaCount: 1
 
 image:
   repository: mattermost/focalboard
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.6.5"
+  tag: "0.6.7"
 
 imagePullSecrets: []
 nameOverride: ""
