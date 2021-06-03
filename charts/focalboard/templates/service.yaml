@@ -11,9 +11,5 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
-    - port: 9092
-      targetPort: metrics
-      protocol: TCP
-      name: http
   selector:
     {{- include "focalboard.selectorLabels" . | nindent 4 }}

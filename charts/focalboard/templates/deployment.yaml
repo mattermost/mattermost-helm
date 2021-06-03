@@ -35,9 +35,6 @@ spec:
             - name: http
               containerPort: 8000
               protocol: TCP
-            - name: metrics
-              containerPort: 9092
-              protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
