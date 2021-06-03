@@ -1,5 +1,21 @@
 apiVersion: v1
 entries:
+  focalboard:
+  - apiVersion: v2
+    appVersion: 0.6.7
+    created: "2021-06-03T11:52:28.551273857Z"
+    description: Focalboard Server
+    digest: 3950aafe7760cd6a825bc61f53d8c249fbc33bec6d0c01fb2fb7f80dfc99a808
+    keywords:
+    - focalboard
+    - mattermost
+    maintainers:
+    - name: stafot
+    name: focalboard
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/focalboard-0.4.0/focalboard-0.4.0.tgz
+    version: 0.4.0
   mattermost-enterprise-edition:
   - apiVersion: v1
     appVersion: 5.33.3
