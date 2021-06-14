@@ -47,6 +47,10 @@ spec:
       tolerations:
         {{ toYaml .Values.global.features.jobserver.tolerations | indent 8 }}
       {{- end }}
+      {{- if .Values.mattermostApp.securityContext }}
+      securityContext:
+        {{- toYaml .Values.mattermostApp.securityContext | nindent 8 }}
+      {{- end }}
       initContainers:
       - name: "init-mattermost-app"
         image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
