@@ -49,9 +49,13 @@ spec:
       tolerations:
         {{ toYaml .Values.mattermostApp.tolerations | indent 8 }}
       {{- end }}
-      {{ if .Values.serviceAccount.create }}
+      {{- if .Values.mattermostApp.securityContext }}
+      securityContext:
+        {{- toYaml .Values.mattermostApp.securityContext | nindent 8 }}
+      {{- end }}
+      {{- if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
-      {{ end }}
+      {{- end }}
       initContainers:
       {{- if .Values.global.features.elasticsearch.enabled }}
       - name: init-elasticsearch
