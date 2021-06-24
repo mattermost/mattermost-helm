@@ -58,9 +58,17 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.imagePullPolicy }}
         env:
+        - name: MM_CONFIG
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "mattermost-team-edition.fullname" . }}-mattermost-dbsecret
+              key: mattermost.dbsecret
         {{- if .Values.extraEnvVars }}
-          {{- .Values.extraEnvVars | toYaml | nindent 10 }}
+          {{- .Values.extraEnvVars | toYaml | nindent 8 }}
         {{- end }}
+        envFrom:
+        - secretRef:
+            name:  {{ include "mattermost-team-edition.fullname" . }}-config
         ports:
         - name: http
           containerPort: {{ .Values.service.internalPort }}
@@ -80,12 +88,11 @@ spec:
             path: /api/v4/system/ping
             port: http
         volumeMounts:
-        - mountPath: /mattermost/config/config.json
-          name: config-json
-          subPath: config.json
+        - mountPath: /mattermost/config
+          name: mattermost-config
         - mountPath: /mattermost/data
           name: mattermost-data
-        - mountPath: /mattermost/{{ trimPrefix "./" .Values.configJSON.PluginSettings.Directory }}
+        - mountPath: /mattermost/{{ trimPrefix "./" .Values.config.MM_PLUGINSETTINGS_CLIENTDIRECTORY }}
           name: mattermost-plugins
         {{- if .Values.extraVolumeMounts -}}
         {{ .Values.extraVolumeMounts | toYaml | nindent 8 }}
@@ -96,9 +103,8 @@ spec:
       {{- if .Values.extraVolumes -}}
       {{ .Values.extraVolumes | toYaml | nindent 6 }}
       {{- end }}
-      - name: config-json
-        secret:
-          secretName: {{ include "mattermost-team-edition.fullname" . }}-config-json
+      - name: mattermost-config
+        emptyDir: {}
       - name: mattermost-data
       {{ if .Values.persistence.data.enabled }}
         persistentVolumeClaim:

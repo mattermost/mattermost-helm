@@ -7,7 +7,7 @@ mysql:
 
 extraEnvVars:
   - name: TEST_SAMPLE
-    value: blablabal
+    value: honk
 
 extraInitContainers:
   - name: test-init
@@ -17,5 +17,5 @@ extraInitContainers:
       - sh
       - "-c"
       - |
-        echo "TEST blablabla"
+        echo "honk the planet"
         exit 0
