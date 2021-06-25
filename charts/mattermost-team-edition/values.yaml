@@ -11,6 +11,12 @@ initContainerImage:
   tag: latest
   imagePullPolicy: IfNotPresent
 
+## Deployment Strategy
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+deploymentStrategy:
+  type: RollingUpdate
+  rollingUpdate: null
+
 ## How many old ReplicaSets for Mattermost Deployment you want to retain
 revisionHistoryLimit: 1
 
