@@ -9,9 +9,7 @@ metadata:
     helm.sh/chart: {{ include "mattermost-team-edition.chart" . }}
 spec:
   replicas: 1
-  strategy:
-    type: RollingUpdate
-    rollingUpdate: null
+  strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
