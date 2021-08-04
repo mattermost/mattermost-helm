@@ -77,7 +77,7 @@ $ cp config/config.json /tmp
 4 - Migrate the config.json to the database (run inside the container that you accessed in the Item 2)
 
 ```
-~ $ ./bin/mattermost config migrate /tmp/config-mm.json "mysql://mmuser:mmuser123@tcp(mm-te-mysql:3306)/mattermost?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
+~ $ ./bin/mattermost config migrate /tmp/config.json "mysql://mmuser:mmuser123@tcp(mm-te-mysql:3306)/mattermost?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
 {"level":"warn","msg":"DefaultServerLocale must be one of the supported locales. Setting DefaultServerLocale to en as default value."}
 {"level":"warn","msg":"DefaultClientLocale must be one of the supported locales. Setting DefaultClientLocale to en as default value."}
 {"level":"warn","msg":"DefaultServerLocale must be one of the supported locales. Setting DefaultServerLocale to en as default value."}
@@ -202,7 +202,7 @@ To use an external **PostgreSQL**, You need to set Mattermost **externalDB** con
 externalDB:
   enabled: true
   externalDriverType: "postgres"
-  externalConnectionString: "postgres://<USERNAME>:<PASSWORD>@<HOST>:5432/<DATABASE_NAME>?sslmode=disable&connect_timeout=10"
+  externalConnectionString: "<USERNAME>:<PASSWORD>@<HOST>:5432/<DATABASE_NAME>?sslmode=disable&connect_timeout=10"
 ```
 
 #### MySQL
