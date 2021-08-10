@@ -24,3 +24,5 @@ $ helm repo add mattermost https://helm.mattermost.com
 
 We welcome contributions.
 Please refer to our [contribution guidelines](CONTRIBUTING.md) for details.
+
+TEST
