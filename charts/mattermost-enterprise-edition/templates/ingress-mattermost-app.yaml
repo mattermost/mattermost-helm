@@ -22,6 +22,20 @@ metadata:
     {{- end }}
 spec:
   rules:
+  {{- if eq (include "mattermost-enterprise-edition.ingress.apiVersion" .) "\"networking.k8s.io/v1\"" }}
+  {{- range $host := .Values.mattermostApp.ingress.hosts }}
+  - host: {{ $host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: {{ $serviceName }}
+            port:
+              number: {{ $servicePort }}
+  {{- end -}}
+  {{- else }}
   {{- range $host := .Values.mattermostApp.ingress.hosts }}
   - host: {{ $host }}
     http:
@@ -30,6 +44,7 @@ spec:
         backend:
           serviceName: {{ $serviceName }}
           servicePort: {{ $servicePort }}
+  {{- end -}}
   {{- end -}}
   {{- if .Values.mattermostApp.ingress.tls }}
   tls:
