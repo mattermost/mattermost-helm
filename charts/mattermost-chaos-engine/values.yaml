@@ -8,7 +8,7 @@ image:
   repository: mattermost/mattermost-app-chaosengine
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "c153e43"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -39,7 +39,7 @@ securityContext: {}
 # Containers ports exposed
 containers:
   ports:
-    - name: api
+    - name: http
       containerPort: 3000
       protocol: TCP
 
