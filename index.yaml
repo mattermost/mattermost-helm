@@ -16,6 +16,17 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/focalboard-0.4.0/focalboard-0.4.0.tgz
     version: 0.4.0
+  mattermost-chaos-engine:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-10-01T05:39:25.411533724Z"
+    description: A Helm chart for Kubernetes
+    digest: 27b9e0a7e075d9bc32572a6c714bfd5787147ba72efb636e2d60ad89db37b900
+    name: mattermost-chaos-engine
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-chaos-engine-0.1.0/mattermost-chaos-engine-0.1.0.tgz
+    version: 0.1.0
   mattermost-enterprise-edition:
   - apiVersion: v1
     appVersion: 5.38.0
