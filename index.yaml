@@ -18,6 +18,15 @@ entries:
     version: 0.4.0
   mattermost-chaos-engine:
   - apiVersion: v2
+    created: "2021-10-08T11:00:25.801222289Z"
+    description: A Helm chart for Kubernetes and Mattermost Application Chaos Engine
+    digest: c0784b5cf26646028469042e6c4363ad3e3be69420b99c8bcbf31016a91cac0f
+    name: mattermost-chaos-engine
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-chaos-engine-0.1.1/mattermost-chaos-engine-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: 1.16.0
     created: "2021-10-01T05:39:25.411533724Z"
     description: A Helm chart for Kubernetes
