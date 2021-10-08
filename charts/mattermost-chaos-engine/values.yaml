@@ -36,12 +36,18 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-# Containers ports exposed
 containers:
+  # containers.ports -- The ports which needed to be exposed
   ports:
     - name: http
       containerPort: 3000
       protocol: TCP
+  # containers.envVars -- The environment variables to be used in Deployment
+  envVars: {}
+  # containers.secrets -- The secrets environment variables to be used in Deployment
+  secrets:
+    data: {}
+    stringData: {}
 
 service:
   type: ClusterIP
