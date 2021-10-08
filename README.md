@@ -1,4 +1,4 @@
-gc# Mattermost Helm Charts ![CircleCI branch](https://img.shields.io/circleci/project/github/mattermost/mattermost-helm/master.svg)
+# Mattermost Helm Charts ![CircleCI branch](https://img.shields.io/circleci/project/github/mattermost/mattermost-helm/master.svg)
 
 This repository collects a set of [Helm](https://helm.sh) charts curated by [Mattermost](https://www.mattermost.com).
 
