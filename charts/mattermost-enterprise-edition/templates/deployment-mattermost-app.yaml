@@ -39,15 +39,15 @@ spec:
     spec:
       {{- if .Values.mattermostApp.nodeSelector }}
       nodeSelector:
-        {{ toYaml .Values.mattermostApp.nodeSelector | indent 8 }}
+        {{- toYaml .Values.mattermostApp.nodeSelector | nindent 8 }}
       {{- end }}
       {{- if .Values.mattermostApp.affinity }}
       affinity:
-        {{ toYaml .Values.mattermostApp.affinity | indent 8 }}
+        {{- toYaml .Values.mattermostApp.affinity | nindent 8 }}
       {{- end }}
       {{- if .Values.mattermostApp.tolerations }}
       tolerations:
-        {{ toYaml .Values.mattermostApp.tolerations | indent 8 }}
+      {{- toYaml .Values.mattermostApp.tolerations | nindent 6 }}
       {{- end }}
       {{- if .Values.mattermostApp.securityContext }}
       securityContext:

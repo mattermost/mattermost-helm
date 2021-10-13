@@ -37,15 +37,15 @@ spec:
     spec:
       {{- if .Values.global.features.jobserver.nodeSelector }}
       nodeSelector:
-        {{ toYaml .Values.global.features.jobserver.nodeSelector | indent 8 }}
+        {{- toYaml .Values.global.features.jobserver.nodeSelector | nindent 8 }}
       {{- end }}
       {{- if .Values.global.features.jobserver.affinity }}
       affinity:
-        {{ toYaml .Values.global.features.jobserver.affinity | indent 8 }}
+        {{- toYaml .Values.global.features.jobserver.affinity | nindent 8 }}
       {{- end }}
       {{- if .Values.global.features.jobserver.tolerations }}
       tolerations:
-        {{ toYaml .Values.global.features.jobserver.tolerations | indent 8 }}
+      {{- toYaml .Values.global.features.jobserver.tolerations | nindent 6 }}
       {{- end }}
       {{- if .Values.mattermostApp.securityContext }}
       securityContext:
