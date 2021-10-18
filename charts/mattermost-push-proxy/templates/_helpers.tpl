@@ -19,7 +19,6 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 {{- end -}}
 
-
 {{/*
 Create chart name and version as used by the chart label.
 */}}
@@ -28,14 +27,28 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
-Return the appropriate apiVersion for ingress. Based on
-1) Helm Version (.Capabilities has been changed in v3)
-2) Kubernetes Version
+Return the appropriate apiVersion for ingress.
 */}}
 {{- define "mattermost-push-proxy.ingress.apiVersion" -}}
-{{- if semverCompare ">=1.4-0, <1.14-0" .Capabilities.KubeVersion.GitVersion -}}
-"extensions/v1beta1"
-{{- else if semverCompare "^1.14-0" .Capabilities.KubeVersion.GitVersion -}}
-"networking.k8s.io/v1beta1"
+  {{- if and (.Capabilities.APIVersions.Has "networking.k8s.io/v1") (semverCompare ">= 1.19-0" .Capabilities.KubeVersion.Version) -}}
+      {{- print "networking.k8s.io/v1" -}}
+  {{- else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" -}}
+    {{- print "networking.k8s.io/v1beta1" -}}
+  {{- else -}}
+    {{- print "extensions/v1beta1" -}}
+  {{- end -}}
 {{- end -}}
+
+{{/*
+Return if ingress is stable.
+*/}}
+{{- define "mattermost-push-proxy.ingress.isStable" -}}
+  {{- eq (include "mattermost-push-proxy.ingress.apiVersion" .) "networking.k8s.io/v1" -}}
+{{- end -}}
+
+{{/*
+Return if ingress supports pathType.
+*/}}
+{{- define "mattermost-push-proxy.ingress.supportsPathType" -}}
+  {{- or (eq (include "mattermost-push-proxy.ingress.isStable" .) "true") (and (eq (include "mattermost-push-proxy.ingress.apiVersion" .) "networking.k8s.io/v1beta1") (semverCompare ">= 1.18-0" .Capabilities.KubeVersion.Version)) -}}
 {{- end -}}
