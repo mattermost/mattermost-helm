@@ -48,7 +48,7 @@ To run with HTTPS you will need to add a Kubernetes secret for your SSL/TLS cert
 
 # 2. Configuration
 
-To start, copy [mattermost-enterprise-edition/values.yaml](https://github.com/mattermost/mattermost-kubernetes/blob/master/mattermost-enterprise-edition/values.yaml) and name it `config.yaml`. This will be your configuration file for the Mattermost Helm chart.
+To start, copy [mattermost-enterprise-edition/values.yaml](https://github.com/mattermost/mattermost-helm/blob/master/charts/mattermost-enterprise-edition/values.yaml) and name it `config.yaml`. This will be your configuration file for the Mattermost Helm chart.
 
 To learn more about the Mattermost configuration file, see https://docs.mattermost.com/administration/config-settings.html.
 
