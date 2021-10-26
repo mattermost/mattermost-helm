@@ -79,6 +79,7 @@ ingress:
     # - secretName: mattermost.example.com-tls
     #   hosts:
     #     - mattermost.example.com
+  # ingressClassName: 
 
 route:
   enabled: false

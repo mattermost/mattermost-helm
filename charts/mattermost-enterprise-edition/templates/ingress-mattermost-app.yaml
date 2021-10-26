@@ -21,6 +21,9 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     {{- end }}
 spec:
+  {{- if .Values.mattermostApp.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.mattermostApp.ingress.ingressClassName }}
+  {{- end }}
   rules:
   {{- range $host := .Values.mattermostApp.ingress.hosts }}
   - host: {{ $host }}
