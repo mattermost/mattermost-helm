@@ -1,7 +1,11 @@
 global:
   siteUrl: "http://mattermost.example.com"  # REQUIRED SETTING, PLEASE UPDATE
-  mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"  # REQUIRED SETTING, PLEASE UPDATE
-
+  # Use an existing secret for License credential (see secret-mattermost-license.yaml for required fields)
+  existingLicenseSecret:
+    name:
+    key:
+  # REQUIRED SETTING, if no existing secret is provided.
+  mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
   # Settings for configuration of Mattermost
   # For more details: https://docs.mattermost.com/administration/config-settings.html
   siteName: "Mattermost"
@@ -32,6 +36,10 @@ global:
         driver: "mysql"
         dataSource: ""
         dataSourceReplicas:
+       # Use an existing secret for License credential (see secret-mattermost-dbsecret.yaml for required fields)
+      existingDatabaseSecret:
+        name:
+        key:
     elasticsearch:
       enabled: false
     grafana:

@@ -9,7 +9,9 @@ metadata:
     app.kubernetes.io/component: server
     helm.sh/chart:  {{ include "mattermost-enterprise-edition.chart" . }}
 spec:
+  {{- if not .Values.mattermostApp.autoscaling.enabled }}
   replicas: {{ .Values.mattermostApp.replicaCount }}
+  {{- end }}
   {{- with .Values.mattermostApp.strategy }}
   strategy:
     {{- . | toYaml | nindent 4 }}
@@ -95,8 +97,13 @@ spec:
         - name: MM_CONFIG
           valueFrom:
             secretKeyRef:
+           {{- if .Values.global.features.database.existingDatabaseSecret }}
+              name: {{ .Values.global.features.database.existingDatabaseSecret.name }}
+              key: {{ .Values.global.features.database.existingDatabaseSecret.key }}
+           {{- else }}
               name: {{ include "mattermost-enterprise-edition.fullname" . }}-mattermost-dbsecret
               key: mattermost.dbsecret
+           {{- end }}
         - name: MM_SERVICESETTINGS_SITEURL
           value: "{{ .Values.global.siteUrl }}"
         - name: MM_SERVICESETTINGS_LISTENADDRESS
@@ -151,9 +158,15 @@ spec:
             path: /api/v4/system/ping
             port: {{ .Values.mattermostApp.service.internalPort }}
         volumeMounts:
+        {{- if .Values.global.existingLicenseSecret.name }}
+        - mountPath: /mattermost/{{.Values.global.existingLicenseSecret.key }}
+          name: mattermost-license
+          subPath: {{.Values.global.existingLicenseSecret.key }}
+        {{- else }}
         - mountPath: /mattermost/mattermost.mattermost-license
           name: mattermost-license
           subPath: mattermost.mattermost-license
+        {{- end }}
         - mountPath: /mattermost/plugins/
           name: mattermost-plugins
         - mountPath: /mattermost/client/plugins/
@@ -172,7 +185,11 @@ spec:
         emptyDir: {}
       - name: mattermost-license
         secret:
+          {{- if .Values.global.existingLicenseSecret.name }}
+          secretName: {{ .Values.global.existingLicenseSecret.name }}
+          {{- else }}
           secretName: {{ include "mattermost-enterprise-edition.fullname" . }}-mattermost-license
+          {{- end }}
 {{- if .Values.mattermostApp.extraVolumes }}
 {{ toYaml .Values.mattermostApp.extraVolumes | indent 6 }}
 {{- end }}
