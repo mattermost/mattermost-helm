@@ -40,6 +40,7 @@ spec:
           volumeMounts:
           - name: data
             mountPath: /data
+      enableServiceLinks: false      
       volumes:
         - name: data
           {{- if .Values.persistence.enabled }}

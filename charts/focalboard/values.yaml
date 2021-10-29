@@ -9,7 +9,7 @@ image:
   repository: mattermost/focalboard
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.6.7"
+  tag: "0.9.2"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -26,19 +26,19 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 2000
 
-securityContext: {}
+securityContext:
   # capabilities:
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
-  # runAsUser: 1000
+  runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 80
 
 ingress:
@@ -59,13 +59,13 @@ ingress:
   #      - chart-example.local
 ## Persist data to a persitent volume
 persistence:
-  enabled: false
+  enabled: true
   ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
   ## Default: volume.alpha.kubernetes.io/storage-class: default
   ##
   # storageClass:
-  # accessMode: ReadWriteOnce
-  # size: 8Gi
+  accessMode: ReadWriteOnce
+  size: 8Gi
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
