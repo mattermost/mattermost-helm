@@ -42,7 +42,7 @@ To get the nginx cache to work, adjust the ConfigMap and Deployment from the abo
 
 ## 1.4 Certificate Manager
 
-If you do not want to manually add SSL/TLS certificates, install [cert-manager](https://github.com/jetstack/cert-manager). You can follow [this documentation](https://cert-manager.readthedocs.io/en/latest/) or install the [helm charts](https://github.com/helm/charts/tree/master/stable/cert-manager).
+If you do not want to manually add SSL/TLS certificates, install [cert-manager](https://github.com/jetstack/cert-manager). You can follow [this documentation](https://cert-manager.io/docs/) or install the [helm charts](https://github.com/helm/charts/tree/master/stable/cert-manager).
 
 To run with HTTPS you will need to add a Kubernetes secret for your SSL/TLS certificate, whether you use cert-manager or not.
 
