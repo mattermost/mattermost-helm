@@ -39,6 +39,51 @@ entries:
   mattermost-enterprise-edition:
   - apiVersion: v1
     appVersion: 5.39.0
+    created: "2021-11-04T12:28:16.535314115Z"
+    dependencies:
+    - name: mattermost-elasticsearch
+      repository: ""
+      version: 0.1.0
+    - name: mattermost-grafana
+      repository: ""
+      version: 0.3.6
+    - condition: global.features.database.useInternal
+      name: mysqlha
+      repository: https://charts.helm.sh/incubator
+      version: 2.0.0
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.helm.sh/stable
+      version: 5.0.26
+    - condition: global.features.grafana.enabled
+      name: prometheus
+      repository: https://charts.helm.sh/stable
+      version: 11.4.0
+    description: Mattermost Enterprise server with high availitibity.
+    digest: 7e2d315d6608a7dc467d8f75dcf293e6232df334f9964728c4b2670ee5888b64
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - messaging
+    - team colaboration
+    maintainers:
+    - email: carlos@mattermost.com
+      name: cpanato
+    - email: joram@mattermost.com
+      name: jwilander
+    - email: stylianos@mattermost.com
+      name: stylianosrigas
+    name: mattermost-enterprise-edition
+    sources:
+    - https://github.com/mattermost/mattermost-server
+    - https://github.com/mattermost/mattermost-helm
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-enterprise-edition-1.20.1/mattermost-enterprise-edition-1.20.1.tgz
+    version: 1.20.1
+  - apiVersion: v1
+    appVersion: 5.39.0
     created: "2021-10-26T09:19:15.379792992Z"
     dependencies:
     - name: mattermost-elasticsearch
@@ -2730,4 +2775,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2021-11-03T08:50:06.566259804Z"
+generated: "2021-11-04T12:28:16.536982071Z"
