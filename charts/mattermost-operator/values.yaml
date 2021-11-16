@@ -19,7 +19,7 @@ mattermostOperator:
   args:
     - --enable-leader-election
 
-### IMPORTANT: Below operators should be deployed separatedly in production environments. ###
+### IMPORTANT: Below operators should be deployed separately in production environments. ###
 minioOperator:
   enabled: false
   replicas: 1
