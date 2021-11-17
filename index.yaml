@@ -37,6 +37,52 @@ entries:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-chaos-engine-0.1.0/mattermost-chaos-engine-0.1.0.tgz
     version: 0.1.0
   mattermost-enterprise-edition:
+  - apiVersion: v2
+    appVersion: 6.0.2
+    created: "2021-11-17T10:37:00.960558717Z"
+    dependencies:
+    - name: mattermost-elasticsearch
+      repository: ""
+      version: 0.1.0
+    - name: mattermost-grafana
+      repository: ""
+      version: 0.3.6
+    - condition: global.features.database.useInternal
+      name: mysqlha
+      repository: https://charts.helm.sh/incubator
+      version: 2.0.0
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.helm.sh/stable
+      version: 5.0.26
+    - condition: global.features.grafana.enabled
+      name: prometheus
+      repository: https://charts.helm.sh/stable
+      version: 11.4.0
+    description: Mattermost Enterprise server with high availitibity.
+    digest: 8bc55503711633204b4c403fea79b551c90199f2f12da3a27b029856905ceeca
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - messaging
+    - team colaboration
+    maintainers:
+    - email: carlos@mattermost.com
+      name: cpanato
+    - email: joram@mattermost.com
+      name: jwilander
+    - email: stylianos@mattermost.com
+      name: stylianosrigas
+    name: mattermost-enterprise-edition
+    sources:
+    - https://github.com/mattermost/mattermost-server
+    - https://github.com/mattermost/mattermost-helm
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-enterprise-edition-2.0.0/mattermost-enterprise-edition-2.0.0.tgz
+    version: 2.0.0
   - apiVersion: v1
     appVersion: 5.39.0
     created: "2021-11-04T12:28:16.535314115Z"
@@ -2799,4 +2845,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2021-11-05T07:50:59.596117737Z"
+generated: "2021-11-17T10:37:00.962004081Z"
