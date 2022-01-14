@@ -19,6 +19,12 @@ mattermostOperator:
   args:
     - --enable-leader-election
 
+  ## Specify image pull secret for private repository
+  ##
+  privateRegistry:
+    enabled: false
+    imagePullSecret: <name of the secret>
+
 ### IMPORTANT: Below operators should be deployed separately in production environments. ###
 minioOperator:
   enabled: false
