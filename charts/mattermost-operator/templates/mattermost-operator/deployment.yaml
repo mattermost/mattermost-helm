@@ -43,4 +43,8 @@ spec:
         imagePullPolicy: "{{ .Values.mattermostOperator.image.pullPolicy }}"
         name: {{ template "mattermost-operator.name" . }}
       serviceAccountName: {{ template "mattermost-operator.name" . }}
+      {{- if .Values.mattermostOperator.privateRegistry.enabled }}
+      imagePullSecrets:
+        - name: {{ .Values.mattermostOperator.privateRegistry.imagePullSecret}}
+      {{- end}}
 {{- end }}

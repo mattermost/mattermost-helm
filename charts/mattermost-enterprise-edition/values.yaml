@@ -123,7 +123,7 @@ mattermostApp:
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
-    tag: 5.39.0
+    tag: 6.3.0@sha256:d342799ed05fcfbc88dbc327051531f82ca4a4f0d3f80575303190788ab73dd5
     pullPolicy: IfNotPresent
 
   strategy:
@@ -165,6 +165,7 @@ mattermostApp:
       #   proxy_cache_min_uses 2;
       #   proxy_cache_use_stale timeout;
       #   proxy_cache_lock on;
+    # ingressClassName:
 
   autoscaling:
     enabled: false
