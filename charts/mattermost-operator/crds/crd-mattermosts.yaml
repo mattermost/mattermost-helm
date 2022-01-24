@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   name: mattermosts.installation.mattermost.com
 spec:
@@ -56,6 +56,11 @@ spec:
               database:
                 description: External Services
                 properties:
+                  disableReadinessCheck:
+                    description: DisableReadinessCheck instructs Operator to not add
+                      init container responsible for checking DB access. Can be used
+                      to define custom init containers specified in `spec.PodExtensions.InitContainers`.
+                    type: boolean
                   external:
                     description: Defines the configuration of and external database.
                     properties:
@@ -67,7 +72,8 @@ spec:
                           Key: MM_SQLSETTINGS_DATASOURCEREPLICAS | Value: Connection
                           string to read replicas of the database.   - Key: DB_CONNECTION_CHECK_URL
                           | Value: The URL used for checking that the database is
-                          accessible.'
+                          accessible.     Omitting this value in the secret will cause
+                          Operator to skip adding init container for database check.'
                         type: string
                     type: object
                   operatorManaged:
@@ -116,7 +122,7 @@ spec:
                               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                               x-kubernetes-int-or-string: true
                             description: 'Limits describes the maximum amount of compute
-                              resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                              resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                             type: object
                           requests:
                             additionalProperties:
@@ -129,7 +135,7 @@ spec:
                               compute resources required. If Requests is omitted for
                               a container, it defaults to Limits if that is explicitly
                               specified, otherwise to an implementation-defined value.
-                              More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                              More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                             type: object
                         type: object
                       storageSize:
@@ -143,6 +149,45 @@ spec:
                         type: string
                     type: object
                 type: object
+              dnsConfig:
+                description: Custom DNS configuration to use for the Mattermost Installation
+                  pods.
+                properties:
+                  nameservers:
+                    description: A list of DNS name server IP addresses. This will
+                      be appended to the base nameservers generated from DNSPolicy.
+                      Duplicated nameservers will be removed.
+                    items:
+                      type: string
+                    type: array
+                  options:
+                    description: A list of DNS resolver options. This will be merged
+                      with the base options generated from DNSPolicy. Duplicated entries
+                      will be removed. Resolution options given in Options will override
+                      those that appear in the base DNSPolicy.
+                    items:
+                      description: PodDNSConfigOption defines DNS resolver options
+                        of a pod.
+                      properties:
+                        name:
+                          description: Required.
+                          type: string
+                        value:
+                          type: string
+                      type: object
+                    type: array
+                  searches:
+                    description: A list of DNS search domains for host-name lookup.
+                      This will be appended to the base search paths generated from
+                      DNSPolicy. Duplicated search paths will be removed.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              dnsPolicy:
+                description: Custom DNS policy to use for the Mattermost Installation
+                  pods.
+                type: string
               elasticSearch:
                 description: ElasticSearch defines the ElasticSearch configuration
                   for Mattermost.
@@ -197,7 +242,7 @@ spec:
                               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                               x-kubernetes-int-or-string: true
                             description: 'Limits describes the maximum amount of compute
-                              resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                              resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                             type: object
                           requests:
                             additionalProperties:
@@ -210,7 +255,7 @@ spec:
                               compute resources required. If Requests is omitted for
                               a container, it defaults to Limits if that is explicitly
                               specified, otherwise to an implementation-defined value.
-                              More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                              More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                             type: object
                         type: object
                       storageSize:
@@ -237,13 +282,45 @@ spec:
                       type: string
                   type: object
                 type: array
+              ingress:
+                description: Ingress defines configuration for Ingress resource created
+                  by the Operator.
+                properties:
+                  annotations:
+                    additionalProperties:
+                      type: string
+                    description: Annotations defines annotations passed to the Ingress
+                      associated with Mattermost.
+                    type: object
+                  enabled:
+                    description: Enabled determines whether the Operator should create
+                      Ingress resource or not. Disabling ingress on existing installation
+                      will cause Operator to remove it.
+                    type: boolean
+                  host:
+                    description: Host defines the Ingress host to be used when creating
+                      the ingress rules.
+                    type: string
+                  ingressClass:
+                    description: IngressClass will be set on Ingress resource to associate
+                      it with specified IngressClass resource.
+                    type: string
+                  tlsSecret:
+                    description: TLSSecret specifies secret used for configuring TLS
+                      for Ingress. If empty TLS will not be configured.
+                    type: string
+                required:
+                - enabled
+                type: object
               ingressAnnotations:
                 additionalProperties:
                   type: string
+                description: 'IngressAnnotations defines annotations passed to the
+                  Ingress associated with Mattermost. Deprecated: Use Spec.Ingress.Annotations.'
                 type: object
               ingressName:
-                description: IngressName defines the name to be used when creating
-                  the ingress rules
+                description: 'IngressName defines the host to be used when creating
+                  the ingress rules. Deprecated: Use Spec.Ingress.Host instead.'
                 type: string
               licenseSecret:
                 description: LicenseSecret is the name of the secret containing a
@@ -261,12 +338,14 @@ spec:
                       type: string
                     value:
                       description: 'Variable references $(VAR_NAME) are expanded using
-                        the previous defined environment variables in the container
+                        the previously defined environment variables in the container
                         and any service environment variables. If a variable cannot
                         be resolved, the reference in the input string will be unchanged.
-                        The $(VAR_NAME) syntax can be escaped with a double $$, ie:
-                        $$(VAR_NAME). Escaped references will never be expanded, regardless
-                        of whether the variable exists or not. Defaults to "".'
+                        Double $$ are reduced to a single $, which allows for escaping
+                        the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce the
+                        string literal "$(VAR_NAME)". Escaped references will never
+                        be expanded, regardless of whether the variable exists or
+                        not. Defaults to "".'
                       type: string
                     valueFrom:
                       description: Source for the environment variable's value. Cannot
@@ -353,6 +432,1194 @@ spec:
                   - name
                   type: object
                 type: array
+              podExtensions:
+                description: PodExtensions specify custom extensions for Mattermost
+                  pods. This can be used for custom readiness checks etc. These settings
+                  generally don't need to be changed.
+                properties:
+                  initContainers:
+                    description: Additional InitContainers injected to pods. The setting
+                      does not override InitContainers defined by the Operator.
+                    items:
+                      description: A single application container that you want to
+                        run within a pod.
+                      properties:
+                        args:
+                          description: 'Arguments to the entrypoint. The docker image''s
+                            CMD is used if this is not provided. Variable references
+                            $(VAR_NAME) are expanded using the container''s environment.
+                            If a variable cannot be resolved, the reference in the
+                            input string will be unchanged. Double $$ are reduced
+                            to a single $, which allows for escaping the $(VAR_NAME)
+                            syntax: i.e. "$$(VAR_NAME)" will produce the string literal
+                            "$(VAR_NAME)". Escaped references will never be expanded,
+                            regardless of whether the variable exists or not. Cannot
+                            be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell'
+                          items:
+                            type: string
+                          type: array
+                        command:
+                          description: 'Entrypoint array. Not executed within a shell.
+                            The docker image''s ENTRYPOINT is used if this is not
+                            provided. Variable references $(VAR_NAME) are expanded
+                            using the container''s environment. If a variable cannot
+                            be resolved, the reference in the input string will be
+                            unchanged. Double $$ are reduced to a single $, which
+                            allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)"
+                            will produce the string literal "$(VAR_NAME)". Escaped
+                            references will never be expanded, regardless of whether
+                            the variable exists or not. Cannot be updated. More info:
+                            https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell'
+                          items:
+                            type: string
+                          type: array
+                        env:
+                          description: List of environment variables to set in the
+                            container. Cannot be updated.
+                          items:
+                            description: EnvVar represents an environment variable
+                              present in a Container.
+                            properties:
+                              name:
+                                description: Name of the environment variable. Must
+                                  be a C_IDENTIFIER.
+                                type: string
+                              value:
+                                description: 'Variable references $(VAR_NAME) are
+                                  expanded using the previously defined environment
+                                  variables in the container and any service environment
+                                  variables. If a variable cannot be resolved, the
+                                  reference in the input string will be unchanged.
+                                  Double $$ are reduced to a single $, which allows
+                                  for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)"
+                                  will produce the string literal "$(VAR_NAME)". Escaped
+                                  references will never be expanded, regardless of
+                                  whether the variable exists or not. Defaults to
+                                  "".'
+                                type: string
+                              valueFrom:
+                                description: Source for the environment variable's
+                                  value. Cannot be used if value is not empty.
+                                properties:
+                                  configMapKeyRef:
+                                    description: Selects a key of a ConfigMap.
+                                    properties:
+                                      key:
+                                        description: The key to select.
+                                        type: string
+                                      name:
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion,
+                                          kind, uid?'
+                                        type: string
+                                      optional:
+                                        description: Specify whether the ConfigMap
+                                          or its key must be defined
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                  fieldRef:
+                                    description: 'Selects a field of the pod: supports
+                                      metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`,
+                                      `metadata.annotations[''<KEY>'']`, spec.nodeName,
+                                      spec.serviceAccountName, status.hostIP, status.podIP,
+                                      status.podIPs.'
+                                    properties:
+                                      apiVersion:
+                                        description: Version of the schema the FieldPath
+                                          is written in terms of, defaults to "v1".
+                                        type: string
+                                      fieldPath:
+                                        description: Path of the field to select in
+                                          the specified API version.
+                                        type: string
+                                    required:
+                                    - fieldPath
+                                    type: object
+                                  resourceFieldRef:
+                                    description: 'Selects a resource of the container:
+                                      only resources limits and requests (limits.cpu,
+                                      limits.memory, limits.ephemeral-storage, requests.cpu,
+                                      requests.memory and requests.ephemeral-storage)
+                                      are currently supported.'
+                                    properties:
+                                      containerName:
+                                        description: 'Container name: required for
+                                          volumes, optional for env vars'
+                                        type: string
+                                      divisor:
+                                        anyOf:
+                                        - type: integer
+                                        - type: string
+                                        description: Specifies the output format of
+                                          the exposed resources, defaults to "1"
+                                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                        x-kubernetes-int-or-string: true
+                                      resource:
+                                        description: 'Required: resource to select'
+                                        type: string
+                                    required:
+                                    - resource
+                                    type: object
+                                  secretKeyRef:
+                                    description: Selects a key of a secret in the
+                                      pod's namespace
+                                    properties:
+                                      key:
+                                        description: The key of the secret to select
+                                          from.  Must be a valid secret key.
+                                        type: string
+                                      name:
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion,
+                                          kind, uid?'
+                                        type: string
+                                      optional:
+                                        description: Specify whether the Secret or
+                                          its key must be defined
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                type: object
+                            required:
+                            - name
+                            type: object
+                          type: array
+                        envFrom:
+                          description: List of sources to populate environment variables
+                            in the container. The keys defined within a source must
+                            be a C_IDENTIFIER. All invalid keys will be reported as
+                            an event when the container is starting. When a key exists
+                            in multiple sources, the value associated with the last
+                            source will take precedence. Values defined by an Env
+                            with a duplicate key will take precedence. Cannot be updated.
+                          items:
+                            description: EnvFromSource represents the source of a
+                              set of ConfigMaps
+                            properties:
+                              configMapRef:
+                                description: The ConfigMap to select from
+                                properties:
+                                  name:
+                                    description: 'Name of the referent. More info:
+                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind,
+                                      uid?'
+                                    type: string
+                                  optional:
+                                    description: Specify whether the ConfigMap must
+                                      be defined
+                                    type: boolean
+                                type: object
+                              prefix:
+                                description: An optional identifier to prepend to
+                                  each key in the ConfigMap. Must be a C_IDENTIFIER.
+                                type: string
+                              secretRef:
+                                description: The Secret to select from
+                                properties:
+                                  name:
+                                    description: 'Name of the referent. More info:
+                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind,
+                                      uid?'
+                                    type: string
+                                  optional:
+                                    description: Specify whether the Secret must be
+                                      defined
+                                    type: boolean
+                                type: object
+                            type: object
+                          type: array
+                        image:
+                          description: 'Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images
+                            This field is optional to allow higher level config management
+                            to default or override container images in workload controllers
+                            like Deployments and StatefulSets.'
+                          type: string
+                        imagePullPolicy:
+                          description: 'Image pull policy. One of Always, Never, IfNotPresent.
+                            Defaults to Always if :latest tag is specified, or IfNotPresent
+                            otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images'
+                          type: string
+                        lifecycle:
+                          description: Actions that the management system should take
+                            in response to container lifecycle events. Cannot be updated.
+                          properties:
+                            postStart:
+                              description: 'PostStart is called immediately after
+                                a container is created. If the handler fails, the
+                                container is terminated and restarted according to
+                                its restart policy. Other management of the container
+                                blocks until the hook completes. More info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks'
+                              properties:
+                                exec:
+                                  description: One and only one of the following should
+                                    be specified. Exec specifies the action to take.
+                                  properties:
+                                    command:
+                                      description: Command is the command line to
+                                        execute inside the container, the working
+                                        directory for the command  is root ('/') in
+                                        the container's filesystem. The command is
+                                        simply exec'd, it is not run inside a shell,
+                                        so traditional shell instructions ('|', etc)
+                                        won't work. To use a shell, you need to explicitly
+                                        call out to that shell. Exit status of 0 is
+                                        treated as live/healthy and non-zero is unhealthy.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                httpGet:
+                                  description: HTTPGet specifies the http request
+                                    to perform.
+                                  properties:
+                                    host:
+                                      description: Host name to connect to, defaults
+                                        to the pod IP. You probably want to set "Host"
+                                        in httpHeaders instead.
+                                      type: string
+                                    httpHeaders:
+                                      description: Custom headers to set in the request.
+                                        HTTP allows repeated headers.
+                                      items:
+                                        description: HTTPHeader describes a custom
+                                          header to be used in HTTP probes
+                                        properties:
+                                          name:
+                                            description: The header field name
+                                            type: string
+                                          value:
+                                            description: The header field value
+                                            type: string
+                                        required:
+                                        - name
+                                        - value
+                                        type: object
+                                      type: array
+                                    path:
+                                      description: Path to access on the HTTP server.
+                                      type: string
+                                    port:
+                                      anyOf:
+                                      - type: integer
+                                      - type: string
+                                      description: Name or number of the port to access
+                                        on the container. Number must be in the range
+                                        1 to 65535. Name must be an IANA_SVC_NAME.
+                                      x-kubernetes-int-or-string: true
+                                    scheme:
+                                      description: Scheme to use for connecting to
+                                        the host. Defaults to HTTP.
+                                      type: string
+                                  required:
+                                  - port
+                                  type: object
+                                tcpSocket:
+                                  description: 'TCPSocket specifies an action involving
+                                    a TCP port. TCP hooks not yet supported TODO:
+                                    implement a realistic TCP lifecycle hook'
+                                  properties:
+                                    host:
+                                      description: 'Optional: Host name to connect
+                                        to, defaults to the pod IP.'
+                                      type: string
+                                    port:
+                                      anyOf:
+                                      - type: integer
+                                      - type: string
+                                      description: Number or name of the port to access
+                                        on the container. Number must be in the range
+                                        1 to 65535. Name must be an IANA_SVC_NAME.
+                                      x-kubernetes-int-or-string: true
+                                  required:
+                                  - port
+                                  type: object
+                              type: object
+                            preStop:
+                              description: 'PreStop is called immediately before a
+                                container is terminated due to an API request or management
+                                event such as liveness/startup probe failure, preemption,
+                                resource contention, etc. The handler is not called
+                                if the container crashes or exits. The reason for
+                                termination is passed to the handler. The Pod''s termination
+                                grace period countdown begins before the PreStop hooked
+                                is executed. Regardless of the outcome of the handler,
+                                the container will eventually terminate within the
+                                Pod''s termination grace period. Other management
+                                of the container blocks until the hook completes or
+                                until the termination grace period is reached. More
+                                info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks'
+                              properties:
+                                exec:
+                                  description: One and only one of the following should
+                                    be specified. Exec specifies the action to take.
+                                  properties:
+                                    command:
+                                      description: Command is the command line to
+                                        execute inside the container, the working
+                                        directory for the command  is root ('/') in
+                                        the container's filesystem. The command is
+                                        simply exec'd, it is not run inside a shell,
+                                        so traditional shell instructions ('|', etc)
+                                        won't work. To use a shell, you need to explicitly
+                                        call out to that shell. Exit status of 0 is
+                                        treated as live/healthy and non-zero is unhealthy.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                httpGet:
+                                  description: HTTPGet specifies the http request
+                                    to perform.
+                                  properties:
+                                    host:
+                                      description: Host name to connect to, defaults
+                                        to the pod IP. You probably want to set "Host"
+                                        in httpHeaders instead.
+                                      type: string
+                                    httpHeaders:
+                                      description: Custom headers to set in the request.
+                                        HTTP allows repeated headers.
+                                      items:
+                                        description: HTTPHeader describes a custom
+                                          header to be used in HTTP probes
+                                        properties:
+                                          name:
+                                            description: The header field name
+                                            type: string
+                                          value:
+                                            description: The header field value
+                                            type: string
+                                        required:
+                                        - name
+                                        - value
+                                        type: object
+                                      type: array
+                                    path:
+                                      description: Path to access on the HTTP server.
+                                      type: string
+                                    port:
+                                      anyOf:
+                                      - type: integer
+                                      - type: string
+                                      description: Name or number of the port to access
+                                        on the container. Number must be in the range
+                                        1 to 65535. Name must be an IANA_SVC_NAME.
+                                      x-kubernetes-int-or-string: true
+                                    scheme:
+                                      description: Scheme to use for connecting to
+                                        the host. Defaults to HTTP.
+                                      type: string
+                                  required:
+                                  - port
+                                  type: object
+                                tcpSocket:
+                                  description: 'TCPSocket specifies an action involving
+                                    a TCP port. TCP hooks not yet supported TODO:
+                                    implement a realistic TCP lifecycle hook'
+                                  properties:
+                                    host:
+                                      description: 'Optional: Host name to connect
+                                        to, defaults to the pod IP.'
+                                      type: string
+                                    port:
+                                      anyOf:
+                                      - type: integer
+                                      - type: string
+                                      description: Number or name of the port to access
+                                        on the container. Number must be in the range
+                                        1 to 65535. Name must be an IANA_SVC_NAME.
+                                      x-kubernetes-int-or-string: true
+                                  required:
+                                  - port
+                                  type: object
+                              type: object
+                          type: object
+                        livenessProbe:
+                          description: 'Periodic probe of container liveness. Container
+                            will be restarted if the probe fails. Cannot be updated.
+                            More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                          properties:
+                            exec:
+                              description: One and only one of the following should
+                                be specified. Exec specifies the action to take.
+                              properties:
+                                command:
+                                  description: Command is the command line to execute
+                                    inside the container, the working directory for
+                                    the command  is root ('/') in the container's
+                                    filesystem. The command is simply exec'd, it is
+                                    not run inside a shell, so traditional shell instructions
+                                    ('|', etc) won't work. To use a shell, you need
+                                    to explicitly call out to that shell. Exit status
+                                    of 0 is treated as live/healthy and non-zero is
+                                    unhealthy.
+                                  items:
+                                    type: string
+                                  type: array
+                              type: object
+                            failureThreshold:
+                              description: Minimum consecutive failures for the probe
+                                to be considered failed after having succeeded. Defaults
+                                to 3. Minimum value is 1.
+                              format: int32
+                              type: integer
+                            httpGet:
+                              description: HTTPGet specifies the http request to perform.
+                              properties:
+                                host:
+                                  description: Host name to connect to, defaults to
+                                    the pod IP. You probably want to set "Host" in
+                                    httpHeaders instead.
+                                  type: string
+                                httpHeaders:
+                                  description: Custom headers to set in the request.
+                                    HTTP allows repeated headers.
+                                  items:
+                                    description: HTTPHeader describes a custom header
+                                      to be used in HTTP probes
+                                    properties:
+                                      name:
+                                        description: The header field name
+                                        type: string
+                                      value:
+                                        description: The header field value
+                                        type: string
+                                    required:
+                                    - name
+                                    - value
+                                    type: object
+                                  type: array
+                                path:
+                                  description: Path to access on the HTTP server.
+                                  type: string
+                                port:
+                                  anyOf:
+                                  - type: integer
+                                  - type: string
+                                  description: Name or number of the port to access
+                                    on the container. Number must be in the range
+                                    1 to 65535. Name must be an IANA_SVC_NAME.
+                                  x-kubernetes-int-or-string: true
+                                scheme:
+                                  description: Scheme to use for connecting to the
+                                    host. Defaults to HTTP.
+                                  type: string
+                              required:
+                              - port
+                              type: object
+                            initialDelaySeconds:
+                              description: 'Number of seconds after the container
+                                has started before liveness probes are initiated.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                              format: int32
+                              type: integer
+                            periodSeconds:
+                              description: How often (in seconds) to perform the probe.
+                                Default to 10 seconds. Minimum value is 1.
+                              format: int32
+                              type: integer
+                            successThreshold:
+                              description: Minimum consecutive successes for the probe
+                                to be considered successful after having failed. Defaults
+                                to 1. Must be 1 for liveness and startup. Minimum
+                                value is 1.
+                              format: int32
+                              type: integer
+                            tcpSocket:
+                              description: 'TCPSocket specifies an action involving
+                                a TCP port. TCP hooks not yet supported TODO: implement
+                                a realistic TCP lifecycle hook'
+                              properties:
+                                host:
+                                  description: 'Optional: Host name to connect to,
+                                    defaults to the pod IP.'
+                                  type: string
+                                port:
+                                  anyOf:
+                                  - type: integer
+                                  - type: string
+                                  description: Number or name of the port to access
+                                    on the container. Number must be in the range
+                                    1 to 65535. Name must be an IANA_SVC_NAME.
+                                  x-kubernetes-int-or-string: true
+                              required:
+                              - port
+                              type: object
+                            terminationGracePeriodSeconds:
+                              description: Optional duration in seconds the pod needs
+                                to terminate gracefully upon probe failure. The grace
+                                period is the duration in seconds after the processes
+                                running in the pod are sent a termination signal and
+                                the time when the processes are forcibly halted with
+                                a kill signal. Set this value longer than the expected
+                                cleanup time for your process. If this value is nil,
+                                the pod's terminationGracePeriodSeconds will be used.
+                                Otherwise, this value overrides the value provided
+                                by the pod spec. Value must be non-negative integer.
+                                The value zero indicates stop immediately via the
+                                kill signal (no opportunity to shut down). This is
+                                a beta field and requires enabling ProbeTerminationGracePeriod
+                                feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds
+                                is used if unset.
+                              format: int64
+                              type: integer
+                            timeoutSeconds:
+                              description: 'Number of seconds after which the probe
+                                times out. Defaults to 1 second. Minimum value is
+                                1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                              format: int32
+                              type: integer
+                          type: object
+                        name:
+                          description: Name of the container specified as a DNS_LABEL.
+                            Each container in a pod must have a unique name (DNS_LABEL).
+                            Cannot be updated.
+                          type: string
+                        ports:
+                          description: List of ports to expose from the container.
+                            Exposing a port here gives the system additional information
+                            about the network connections a container uses, but is
+                            primarily informational. Not specifying a port here DOES
+                            NOT prevent that port from being exposed. Any port which
+                            is listening on the default "0.0.0.0" address inside a
+                            container will be accessible from the network. Cannot
+                            be updated.
+                          items:
+                            description: ContainerPort represents a network port in
+                              a single container.
+                            properties:
+                              containerPort:
+                                description: Number of port to expose on the pod's
+                                  IP address. This must be a valid port number, 0
+                                  < x < 65536.
+                                format: int32
+                                type: integer
+                              hostIP:
+                                description: What host IP to bind the external port
+                                  to.
+                                type: string
+                              hostPort:
+                                description: Number of port to expose on the host.
+                                  If specified, this must be a valid port number,
+                                  0 < x < 65536. If HostNetwork is specified, this
+                                  must match ContainerPort. Most containers do not
+                                  need this.
+                                format: int32
+                                type: integer
+                              name:
+                                description: If specified, this must be an IANA_SVC_NAME
+                                  and unique within the pod. Each named port in a
+                                  pod must have a unique name. Name for the port that
+                                  can be referred to by services.
+                                type: string
+                              protocol:
+                                default: TCP
+                                description: Protocol for port. Must be UDP, TCP,
+                                  or SCTP. Defaults to "TCP".
+                                type: string
+                            required:
+                            - containerPort
+                            type: object
+                          type: array
+                          x-kubernetes-list-map-keys:
+                          - containerPort
+                          - protocol
+                          x-kubernetes-list-type: map
+                        readinessProbe:
+                          description: 'Periodic probe of container service readiness.
+                            Container will be removed from service endpoints if the
+                            probe fails. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                          properties:
+                            exec:
+                              description: One and only one of the following should
+                                be specified. Exec specifies the action to take.
+                              properties:
+                                command:
+                                  description: Command is the command line to execute
+                                    inside the container, the working directory for
+                                    the command  is root ('/') in the container's
+                                    filesystem. The command is simply exec'd, it is
+                                    not run inside a shell, so traditional shell instructions
+                                    ('|', etc) won't work. To use a shell, you need
+                                    to explicitly call out to that shell. Exit status
+                                    of 0 is treated as live/healthy and non-zero is
+                                    unhealthy.
+                                  items:
+                                    type: string
+                                  type: array
+                              type: object
+                            failureThreshold:
+                              description: Minimum consecutive failures for the probe
+                                to be considered failed after having succeeded. Defaults
+                                to 3. Minimum value is 1.
+                              format: int32
+                              type: integer
+                            httpGet:
+                              description: HTTPGet specifies the http request to perform.
+                              properties:
+                                host:
+                                  description: Host name to connect to, defaults to
+                                    the pod IP. You probably want to set "Host" in
+                                    httpHeaders instead.
+                                  type: string
+                                httpHeaders:
+                                  description: Custom headers to set in the request.
+                                    HTTP allows repeated headers.
+                                  items:
+                                    description: HTTPHeader describes a custom header
+                                      to be used in HTTP probes
+                                    properties:
+                                      name:
+                                        description: The header field name
+                                        type: string
+                                      value:
+                                        description: The header field value
+                                        type: string
+                                    required:
+                                    - name
+                                    - value
+                                    type: object
+                                  type: array
+                                path:
+                                  description: Path to access on the HTTP server.
+                                  type: string
+                                port:
+                                  anyOf:
+                                  - type: integer
+                                  - type: string
+                                  description: Name or number of the port to access
+                                    on the container. Number must be in the range
+                                    1 to 65535. Name must be an IANA_SVC_NAME.
+                                  x-kubernetes-int-or-string: true
+                                scheme:
+                                  description: Scheme to use for connecting to the
+                                    host. Defaults to HTTP.
+                                  type: string
+                              required:
+                              - port
+                              type: object
+                            initialDelaySeconds:
+                              description: 'Number of seconds after the container
+                                has started before liveness probes are initiated.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                              format: int32
+                              type: integer
+                            periodSeconds:
+                              description: How often (in seconds) to perform the probe.
+                                Default to 10 seconds. Minimum value is 1.
+                              format: int32
+                              type: integer
+                            successThreshold:
+                              description: Minimum consecutive successes for the probe
+                                to be considered successful after having failed. Defaults
+                                to 1. Must be 1 for liveness and startup. Minimum
+                                value is 1.
+                              format: int32
+                              type: integer
+                            tcpSocket:
+                              description: 'TCPSocket specifies an action involving
+                                a TCP port. TCP hooks not yet supported TODO: implement
+                                a realistic TCP lifecycle hook'
+                              properties:
+                                host:
+                                  description: 'Optional: Host name to connect to,
+                                    defaults to the pod IP.'
+                                  type: string
+                                port:
+                                  anyOf:
+                                  - type: integer
+                                  - type: string
+                                  description: Number or name of the port to access
+                                    on the container. Number must be in the range
+                                    1 to 65535. Name must be an IANA_SVC_NAME.
+                                  x-kubernetes-int-or-string: true
+                              required:
+                              - port
+                              type: object
+                            terminationGracePeriodSeconds:
+                              description: Optional duration in seconds the pod needs
+                                to terminate gracefully upon probe failure. The grace
+                                period is the duration in seconds after the processes
+                                running in the pod are sent a termination signal and
+                                the time when the processes are forcibly halted with
+                                a kill signal. Set this value longer than the expected
+                                cleanup time for your process. If this value is nil,
+                                the pod's terminationGracePeriodSeconds will be used.
+                                Otherwise, this value overrides the value provided
+                                by the pod spec. Value must be non-negative integer.
+                                The value zero indicates stop immediately via the
+                                kill signal (no opportunity to shut down). This is
+                                a beta field and requires enabling ProbeTerminationGracePeriod
+                                feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds
+                                is used if unset.
+                              format: int64
+                              type: integer
+                            timeoutSeconds:
+                              description: 'Number of seconds after which the probe
+                                times out. Defaults to 1 second. Minimum value is
+                                1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                              format: int32
+                              type: integer
+                          type: object
+                        resources:
+                          description: 'Compute Resources required by this container.
+                            Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                          properties:
+                            limits:
+                              additionalProperties:
+                                anyOf:
+                                - type: integer
+                                - type: string
+                                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                x-kubernetes-int-or-string: true
+                              description: 'Limits describes the maximum amount of
+                                compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                              type: object
+                            requests:
+                              additionalProperties:
+                                anyOf:
+                                - type: integer
+                                - type: string
+                                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                x-kubernetes-int-or-string: true
+                              description: 'Requests describes the minimum amount
+                                of compute resources required. If Requests is omitted
+                                for a container, it defaults to Limits if that is
+                                explicitly specified, otherwise to an implementation-defined
+                                value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                              type: object
+                          type: object
+                        securityContext:
+                          description: 'SecurityContext defines the security options
+                            the container should be run with. If set, the fields of
+                            SecurityContext override the equivalent fields of PodSecurityContext.
+                            More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/'
+                          properties:
+                            allowPrivilegeEscalation:
+                              description: 'AllowPrivilegeEscalation controls whether
+                                a process can gain more privileges than its parent
+                                process. This bool directly controls if the no_new_privs
+                                flag will be set on the container process. AllowPrivilegeEscalation
+                                is true always when the container is: 1) run as Privileged
+                                2) has CAP_SYS_ADMIN'
+                              type: boolean
+                            capabilities:
+                              description: The capabilities to add/drop when running
+                                containers. Defaults to the default set of capabilities
+                                granted by the container runtime.
+                              properties:
+                                add:
+                                  description: Added capabilities
+                                  items:
+                                    description: Capability represent POSIX capabilities
+                                      type
+                                    type: string
+                                  type: array
+                                drop:
+                                  description: Removed capabilities
+                                  items:
+                                    description: Capability represent POSIX capabilities
+                                      type
+                                    type: string
+                                  type: array
+                              type: object
+                            privileged:
+                              description: Run container in privileged mode. Processes
+                                in privileged containers are essentially equivalent
+                                to root on the host. Defaults to false.
+                              type: boolean
+                            procMount:
+                              description: procMount denotes the type of proc mount
+                                to use for the containers. The default is DefaultProcMount
+                                which uses the container runtime defaults for readonly
+                                paths and masked paths. This requires the ProcMountType
+                                feature flag to be enabled.
+                              type: string
+                            readOnlyRootFilesystem:
+                              description: Whether this container has a read-only
+                                root filesystem. Default is false.
+                              type: boolean
+                            runAsGroup:
+                              description: The GID to run the entrypoint of the container
+                                process. Uses runtime default if unset. May also be
+                                set in PodSecurityContext.  If set in both SecurityContext
+                                and PodSecurityContext, the value specified in SecurityContext
+                                takes precedence.
+                              format: int64
+                              type: integer
+                            runAsNonRoot:
+                              description: Indicates that the container must run as
+                                a non-root user. If true, the Kubelet will validate
+                                the image at runtime to ensure that it does not run
+                                as UID 0 (root) and fail to start the container if
+                                it does. If unset or false, no such validation will
+                                be performed. May also be set in PodSecurityContext.  If
+                                set in both SecurityContext and PodSecurityContext,
+                                the value specified in SecurityContext takes precedence.
+                              type: boolean
+                            runAsUser:
+                              description: The UID to run the entrypoint of the container
+                                process. Defaults to user specified in image metadata
+                                if unspecified. May also be set in PodSecurityContext.  If
+                                set in both SecurityContext and PodSecurityContext,
+                                the value specified in SecurityContext takes precedence.
+                              format: int64
+                              type: integer
+                            seLinuxOptions:
+                              description: The SELinux context to be applied to the
+                                container. If unspecified, the container runtime will
+                                allocate a random SELinux context for each container.  May
+                                also be set in PodSecurityContext.  If set in both
+                                SecurityContext and PodSecurityContext, the value
+                                specified in SecurityContext takes precedence.
+                              properties:
+                                level:
+                                  description: Level is SELinux level label that applies
+                                    to the container.
+                                  type: string
+                                role:
+                                  description: Role is a SELinux role label that applies
+                                    to the container.
+                                  type: string
+                                type:
+                                  description: Type is a SELinux type label that applies
+                                    to the container.
+                                  type: string
+                                user:
+                                  description: User is a SELinux user label that applies
+                                    to the container.
+                                  type: string
+                              type: object
+                            seccompProfile:
+                              description: The seccomp options to use by this container.
+                                If seccomp options are provided at both the pod &
+                                container level, the container options override the
+                                pod options.
+                              properties:
+                                localhostProfile:
+                                  description: localhostProfile indicates a profile
+                                    defined in a file on the node should be used.
+                                    The profile must be preconfigured on the node
+                                    to work. Must be a descending path, relative to
+                                    the kubelet's configured seccomp profile location.
+                                    Must only be set if type is "Localhost".
+                                  type: string
+                                type:
+                                  description: "type indicates which kind of seccomp
+                                    profile will be applied. Valid options are: \n
+                                    Localhost - a profile defined in a file on the
+                                    node should be used. RuntimeDefault - the container
+                                    runtime default profile should be used. Unconfined
+                                    - no profile should be applied."
+                                  type: string
+                              required:
+                              - type
+                              type: object
+                            windowsOptions:
+                              description: The Windows specific settings applied to
+                                all containers. If unspecified, the options from the
+                                PodSecurityContext will be used. If set in both SecurityContext
+                                and PodSecurityContext, the value specified in SecurityContext
+                                takes precedence.
+                              properties:
+                                gmsaCredentialSpec:
+                                  description: GMSACredentialSpec is where the GMSA
+                                    admission webhook (https://github.com/kubernetes-sigs/windows-gmsa)
+                                    inlines the contents of the GMSA credential spec
+                                    named by the GMSACredentialSpecName field.
+                                  type: string
+                                gmsaCredentialSpecName:
+                                  description: GMSACredentialSpecName is the name
+                                    of the GMSA credential spec to use.
+                                  type: string
+                                hostProcess:
+                                  description: HostProcess determines if a container
+                                    should be run as a 'Host Process' container. This
+                                    field is alpha-level and will only be honored
+                                    by components that enable the WindowsHostProcessContainers
+                                    feature flag. Setting this field without the feature
+                                    flag will result in errors when validating the
+                                    Pod. All of a Pod's containers must have the same
+                                    effective HostProcess value (it is not allowed
+                                    to have a mix of HostProcess containers and non-HostProcess
+                                    containers).  In addition, if HostProcess is true
+                                    then HostNetwork must also be set to true.
+                                  type: boolean
+                                runAsUserName:
+                                  description: The UserName in Windows to run the
+                                    entrypoint of the container process. Defaults
+                                    to the user specified in image metadata if unspecified.
+                                    May also be set in PodSecurityContext. If set
+                                    in both SecurityContext and PodSecurityContext,
+                                    the value specified in SecurityContext takes precedence.
+                                  type: string
+                              type: object
+                          type: object
+                        startupProbe:
+                          description: 'StartupProbe indicates that the Pod has successfully
+                            initialized. If specified, no other probes are executed
+                            until this completes successfully. If this probe fails,
+                            the Pod will be restarted, just as if the livenessProbe
+                            failed. This can be used to provide different probe parameters
+                            at the beginning of a Pod''s lifecycle, when it might
+                            take a long time to load data or warm a cache, than during
+                            steady-state operation. This cannot be updated. More info:
+                            https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                          properties:
+                            exec:
+                              description: One and only one of the following should
+                                be specified. Exec specifies the action to take.
+                              properties:
+                                command:
+                                  description: Command is the command line to execute
+                                    inside the container, the working directory for
+                                    the command  is root ('/') in the container's
+                                    filesystem. The command is simply exec'd, it is
+                                    not run inside a shell, so traditional shell instructions
+                                    ('|', etc) won't work. To use a shell, you need
+                                    to explicitly call out to that shell. Exit status
+                                    of 0 is treated as live/healthy and non-zero is
+                                    unhealthy.
+                                  items:
+                                    type: string
+                                  type: array
+                              type: object
+                            failureThreshold:
+                              description: Minimum consecutive failures for the probe
+                                to be considered failed after having succeeded. Defaults
+                                to 3. Minimum value is 1.
+                              format: int32
+                              type: integer
+                            httpGet:
+                              description: HTTPGet specifies the http request to perform.
+                              properties:
+                                host:
+                                  description: Host name to connect to, defaults to
+                                    the pod IP. You probably want to set "Host" in
+                                    httpHeaders instead.
+                                  type: string
+                                httpHeaders:
+                                  description: Custom headers to set in the request.
+                                    HTTP allows repeated headers.
+                                  items:
+                                    description: HTTPHeader describes a custom header
+                                      to be used in HTTP probes
+                                    properties:
+                                      name:
+                                        description: The header field name
+                                        type: string
+                                      value:
+                                        description: The header field value
+                                        type: string
+                                    required:
+                                    - name
+                                    - value
+                                    type: object
+                                  type: array
+                                path:
+                                  description: Path to access on the HTTP server.
+                                  type: string
+                                port:
+                                  anyOf:
+                                  - type: integer
+                                  - type: string
+                                  description: Name or number of the port to access
+                                    on the container. Number must be in the range
+                                    1 to 65535. Name must be an IANA_SVC_NAME.
+                                  x-kubernetes-int-or-string: true
+                                scheme:
+                                  description: Scheme to use for connecting to the
+                                    host. Defaults to HTTP.
+                                  type: string
+                              required:
+                              - port
+                              type: object
+                            initialDelaySeconds:
+                              description: 'Number of seconds after the container
+                                has started before liveness probes are initiated.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                              format: int32
+                              type: integer
+                            periodSeconds:
+                              description: How often (in seconds) to perform the probe.
+                                Default to 10 seconds. Minimum value is 1.
+                              format: int32
+                              type: integer
+                            successThreshold:
+                              description: Minimum consecutive successes for the probe
+                                to be considered successful after having failed. Defaults
+                                to 1. Must be 1 for liveness and startup. Minimum
+                                value is 1.
+                              format: int32
+                              type: integer
+                            tcpSocket:
+                              description: 'TCPSocket specifies an action involving
+                                a TCP port. TCP hooks not yet supported TODO: implement
+                                a realistic TCP lifecycle hook'
+                              properties:
+                                host:
+                                  description: 'Optional: Host name to connect to,
+                                    defaults to the pod IP.'
+                                  type: string
+                                port:
+                                  anyOf:
+                                  - type: integer
+                                  - type: string
+                                  description: Number or name of the port to access
+                                    on the container. Number must be in the range
+                                    1 to 65535. Name must be an IANA_SVC_NAME.
+                                  x-kubernetes-int-or-string: true
+                              required:
+                              - port
+                              type: object
+                            terminationGracePeriodSeconds:
+                              description: Optional duration in seconds the pod needs
+                                to terminate gracefully upon probe failure. The grace
+                                period is the duration in seconds after the processes
+                                running in the pod are sent a termination signal and
+                                the time when the processes are forcibly halted with
+                                a kill signal. Set this value longer than the expected
+                                cleanup time for your process. If this value is nil,
+                                the pod's terminationGracePeriodSeconds will be used.
+                                Otherwise, this value overrides the value provided
+                                by the pod spec. Value must be non-negative integer.
+                                The value zero indicates stop immediately via the
+                                kill signal (no opportunity to shut down). This is
+                                a beta field and requires enabling ProbeTerminationGracePeriod
+                                feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds
+                                is used if unset.
+                              format: int64
+                              type: integer
+                            timeoutSeconds:
+                              description: 'Number of seconds after which the probe
+                                times out. Defaults to 1 second. Minimum value is
+                                1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                              format: int32
+                              type: integer
+                          type: object
+                        stdin:
+                          description: Whether this container should allocate a buffer
+                            for stdin in the container runtime. If this is not set,
+                            reads from stdin in the container will always result in
+                            EOF. Default is false.
+                          type: boolean
+                        stdinOnce:
+                          description: Whether the container runtime should close
+                            the stdin channel after it has been opened by a single
+                            attach. When stdin is true the stdin stream will remain
+                            open across multiple attach sessions. If stdinOnce is
+                            set to true, stdin is opened on container start, is empty
+                            until the first client attaches to stdin, and then remains
+                            open and accepts data until the client disconnects, at
+                            which time stdin is closed and remains closed until the
+                            container is restarted. If this flag is false, a container
+                            processes that reads from stdin will never receive an
+                            EOF. Default is false
+                          type: boolean
+                        terminationMessagePath:
+                          description: 'Optional: Path at which the file to which
+                            the container''s termination message will be written is
+                            mounted into the container''s filesystem. Message written
+                            is intended to be brief final status, such as an assertion
+                            failure message. Will be truncated by the node if greater
+                            than 4096 bytes. The total message length across all containers
+                            will be limited to 12kb. Defaults to /dev/termination-log.
+                            Cannot be updated.'
+                          type: string
+                        terminationMessagePolicy:
+                          description: Indicate how the termination message should
+                            be populated. File will use the contents of terminationMessagePath
+                            to populate the container status message on both success
+                            and failure. FallbackToLogsOnError will use the last chunk
+                            of container log output if the termination message file
+                            is empty and the container exited with an error. The log
+                            output is limited to 2048 bytes or 80 lines, whichever
+                            is smaller. Defaults to File. Cannot be updated.
+                          type: string
+                        tty:
+                          description: Whether this container should allocate a TTY
+                            for itself, also requires 'stdin' to be true. Default
+                            is false.
+                          type: boolean
+                        volumeDevices:
+                          description: volumeDevices is the list of block devices
+                            to be used by the container.
+                          items:
+                            description: volumeDevice describes a mapping of a raw
+                              block device within a container.
+                            properties:
+                              devicePath:
+                                description: devicePath is the path inside of the
+                                  container that the device will be mapped to.
+                                type: string
+                              name:
+                                description: name must match the name of a persistentVolumeClaim
+                                  in the pod
+                                type: string
+                            required:
+                            - devicePath
+                            - name
+                            type: object
+                          type: array
+                        volumeMounts:
+                          description: Pod volumes to mount into the container's filesystem.
+                            Cannot be updated.
+                          items:
+                            description: VolumeMount describes a mounting of a Volume
+                              within a container.
+                            properties:
+                              mountPath:
+                                description: Path within the container at which the
+                                  volume should be mounted.  Must not contain ':'.
+                                type: string
+                              mountPropagation:
+                                description: mountPropagation determines how mounts
+                                  are propagated from the host to container and the
+                                  other way around. When not set, MountPropagationNone
+                                  is used. This field is beta in 1.10.
+                                type: string
+                              name:
+                                description: This must match the Name of a Volume.
+                                type: string
+                              readOnly:
+                                description: Mounted read-only if true, read-write
+                                  otherwise (false or unspecified). Defaults to false.
+                                type: boolean
+                              subPath:
+                                description: Path within the volume from which the
+                                  container's volume should be mounted. Defaults to
+                                  "" (volume's root).
+                                type: string
+                              subPathExpr:
+                                description: Expanded path within the volume from
+                                  which the container's volume should be mounted.
+                                  Behaves similarly to SubPath but environment variable
+                                  references $(VAR_NAME) are expanded using the container's
+                                  environment. Defaults to "" (volume's root). SubPathExpr
+                                  and SubPath are mutually exclusive.
+                                type: string
+                            required:
+                            - mountPath
+                            - name
+                            type: object
+                          type: array
+                        workingDir:
+                          description: Container's working directory. If not specified,
+                            the container runtime's default will be used, which might
+                            be configured in the container image. Cannot be updated.
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                type: object
               probes:
                 description: Probes defines configuration of liveness and readiness
                   probe for Mattermost pods. These settings generally don't need to
@@ -466,6 +1733,23 @@ spec:
                         required:
                         - port
                         type: object
+                      terminationGracePeriodSeconds:
+                        description: Optional duration in seconds the pod needs to
+                          terminate gracefully upon probe failure. The grace period
+                          is the duration in seconds after the processes running in
+                          the pod are sent a termination signal and the time when
+                          the processes are forcibly halted with a kill signal. Set
+                          this value longer than the expected cleanup time for your
+                          process. If this value is nil, the pod's terminationGracePeriodSeconds
+                          will be used. Otherwise, this value overrides the value
+                          provided by the pod spec. Value must be non-negative integer.
+                          The value zero indicates stop immediately via the kill signal
+                          (no opportunity to shut down). This is a beta field and
+                          requires enabling ProbeTerminationGracePeriod feature gate.
+                          Minimum value is 1. spec.terminationGracePeriodSeconds is
+                          used if unset.
+                        format: int64
+                        type: integer
                       timeoutSeconds:
                         description: 'Number of seconds after which the probe times
                           out. Defaults to 1 second. Minimum value is 1. More info:
@@ -581,6 +1865,23 @@ spec:
                         required:
                         - port
                         type: object
+                      terminationGracePeriodSeconds:
+                        description: Optional duration in seconds the pod needs to
+                          terminate gracefully upon probe failure. The grace period
+                          is the duration in seconds after the processes running in
+                          the pod are sent a termination signal and the time when
+                          the processes are forcibly halted with a kill signal. Set
+                          this value longer than the expected cleanup time for your
+                          process. If this value is nil, the pod's terminationGracePeriodSeconds
+                          will be used. Otherwise, this value overrides the value
+                          provided by the pod spec. Value must be non-negative integer.
+                          The value zero indicates stop immediately via the kill signal
+                          (no opportunity to shut down). This is a beta field and
+                          requires enabling ProbeTerminationGracePeriod feature gate.
+                          Minimum value is 1. spec.terminationGracePeriodSeconds is
+                          used if unset.
+                        format: int64
+                        type: integer
                       timeoutSeconds:
                         description: 'Number of seconds after which the probe times
                           out. Defaults to 1 second. Minimum value is 1. More info:
@@ -597,6 +1898,28 @@ spec:
               resourceLabels:
                 additionalProperties:
                   type: string
+                type: object
+              resourcePatch:
+                description: "ResourcePatch specifies JSON patches that can be applied
+                  to resources created by Mattermost Operator. \n WARNING: ResourcePatch
+                  is highly experimental and subject to change. Some patches may be
+                  impossible to perform or may impact the stability of Mattermost
+                  server. \n Use at your own risk when no other options are available."
+                properties:
+                  deployment:
+                    properties:
+                      disable:
+                        type: boolean
+                      patch:
+                        type: string
+                    type: object
+                  service:
+                    properties:
+                      disable:
+                        type: boolean
+                      patch:
+                        type: string
+                    type: object
                 type: object
               scheduling:
                 description: Scheduling defines the configuration related to scheduling
@@ -899,10 +2222,73 @@ spec:
                                             only "value". The requirements are ANDed.
                                           type: object
                                       type: object
+                                    namespaceSelector:
+                                      description: A label query over the set of namespaces
+                                        that the term applies to. The term is applied
+                                        to the union of the namespaces selected by
+                                        this field and the ones listed in the namespaces
+                                        field. null selector and null or empty namespaces
+                                        list means "this pod's namespace". An empty
+                                        selector ({}) matches all namespaces. This
+                                        field is beta-level and is only honored when
+                                        PodAffinityNamespaceSelector feature is enabled.
+                                      properties:
+                                        matchExpressions:
+                                          description: matchExpressions is a list
+                                            of label selector requirements. The requirements
+                                            are ANDed.
+                                          items:
+                                            description: A label selector requirement
+                                              is a selector that contains values,
+                                              a key, and an operator that relates
+                                              the key and values.
+                                            properties:
+                                              key:
+                                                description: key is the label key
+                                                  that the selector applies to.
+                                                type: string
+                                              operator:
+                                                description: operator represents a
+                                                  key's relationship to a set of values.
+                                                  Valid operators are In, NotIn, Exists
+                                                  and DoesNotExist.
+                                                type: string
+                                              values:
+                                                description: values is an array of
+                                                  string values. If the operator is
+                                                  In or NotIn, the values array must
+                                                  be non-empty. If the operator is
+                                                  Exists or DoesNotExist, the values
+                                                  array must be empty. This array
+                                                  is replaced during a strategic merge
+                                                  patch.
+                                                items:
+                                                  type: string
+                                                type: array
+                                            required:
+                                            - key
+                                            - operator
+                                            type: object
+                                          type: array
+                                        matchLabels:
+                                          additionalProperties:
+                                            type: string
+                                          description: matchLabels is a map of {key,value}
+                                            pairs. A single {key,value} in the matchLabels
+                                            map is equivalent to an element of matchExpressions,
+                                            whose key field is "key", the operator
+                                            is "In", and the values array contains
+                                            only "value". The requirements are ANDed.
+                                          type: object
+                                      type: object
                                     namespaces:
-                                      description: namespaces specifies which namespaces
-                                        the labelSelector applies to (matches against);
-                                        null or empty list means "this pod's namespace"
+                                      description: namespaces specifies a static list
+                                        of namespace names that the term applies to.
+                                        The term is applied to the union of the namespaces
+                                        listed in this field and the ones selected
+                                        by namespaceSelector. null or empty namespaces
+                                        list and null namespaceSelector means "this
+                                        pod's namespace"
                                       items:
                                         type: string
                                       type: array
@@ -999,10 +2385,71 @@ spec:
                                         The requirements are ANDed.
                                       type: object
                                   type: object
+                                namespaceSelector:
+                                  description: A label query over the set of namespaces
+                                    that the term applies to. The term is applied
+                                    to the union of the namespaces selected by this
+                                    field and the ones listed in the namespaces field.
+                                    null selector and null or empty namespaces list
+                                    means "this pod's namespace". An empty selector
+                                    ({}) matches all namespaces. This field is beta-level
+                                    and is only honored when PodAffinityNamespaceSelector
+                                    feature is enabled.
+                                  properties:
+                                    matchExpressions:
+                                      description: matchExpressions is a list of label
+                                        selector requirements. The requirements are
+                                        ANDed.
+                                      items:
+                                        description: A label selector requirement
+                                          is a selector that contains values, a key,
+                                          and an operator that relates the key and
+                                          values.
+                                        properties:
+                                          key:
+                                            description: key is the label key that
+                                              the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: operator represents a key's
+                                              relationship to a set of values. Valid
+                                              operators are In, NotIn, Exists and
+                                              DoesNotExist.
+                                            type: string
+                                          values:
+                                            description: values is an array of string
+                                              values. If the operator is In or NotIn,
+                                              the values array must be non-empty.
+                                              If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. This
+                                              array is replaced during a strategic
+                                              merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchLabels:
+                                      additionalProperties:
+                                        type: string
+                                      description: matchLabels is a map of {key,value}
+                                        pairs. A single {key,value} in the matchLabels
+                                        map is equivalent to an element of matchExpressions,
+                                        whose key field is "key", the operator is
+                                        "In", and the values array contains only "value".
+                                        The requirements are ANDed.
+                                      type: object
+                                  type: object
                                 namespaces:
-                                  description: namespaces specifies which namespaces
-                                    the labelSelector applies to (matches against);
-                                    null or empty list means "this pod's namespace"
+                                  description: namespaces specifies a static list
+                                    of namespace names that the term applies to. The
+                                    term is applied to the union of the namespaces
+                                    listed in this field and the ones selected by
+                                    namespaceSelector. null or empty namespaces list
+                                    and null namespaceSelector means "this pod's namespace"
                                   items:
                                     type: string
                                   type: array
@@ -1099,10 +2546,73 @@ spec:
                                             only "value". The requirements are ANDed.
                                           type: object
                                       type: object
+                                    namespaceSelector:
+                                      description: A label query over the set of namespaces
+                                        that the term applies to. The term is applied
+                                        to the union of the namespaces selected by
+                                        this field and the ones listed in the namespaces
+                                        field. null selector and null or empty namespaces
+                                        list means "this pod's namespace". An empty
+                                        selector ({}) matches all namespaces. This
+                                        field is beta-level and is only honored when
+                                        PodAffinityNamespaceSelector feature is enabled.
+                                      properties:
+                                        matchExpressions:
+                                          description: matchExpressions is a list
+                                            of label selector requirements. The requirements
+                                            are ANDed.
+                                          items:
+                                            description: A label selector requirement
+                                              is a selector that contains values,
+                                              a key, and an operator that relates
+                                              the key and values.
+                                            properties:
+                                              key:
+                                                description: key is the label key
+                                                  that the selector applies to.
+                                                type: string
+                                              operator:
+                                                description: operator represents a
+                                                  key's relationship to a set of values.
+                                                  Valid operators are In, NotIn, Exists
+                                                  and DoesNotExist.
+                                                type: string
+                                              values:
+                                                description: values is an array of
+                                                  string values. If the operator is
+                                                  In or NotIn, the values array must
+                                                  be non-empty. If the operator is
+                                                  Exists or DoesNotExist, the values
+                                                  array must be empty. This array
+                                                  is replaced during a strategic merge
+                                                  patch.
+                                                items:
+                                                  type: string
+                                                type: array
+                                            required:
+                                            - key
+                                            - operator
+                                            type: object
+                                          type: array
+                                        matchLabels:
+                                          additionalProperties:
+                                            type: string
+                                          description: matchLabels is a map of {key,value}
+                                            pairs. A single {key,value} in the matchLabels
+                                            map is equivalent to an element of matchExpressions,
+                                            whose key field is "key", the operator
+                                            is "In", and the values array contains
+                                            only "value". The requirements are ANDed.
+                                          type: object
+                                      type: object
                                     namespaces:
-                                      description: namespaces specifies which namespaces
-                                        the labelSelector applies to (matches against);
-                                        null or empty list means "this pod's namespace"
+                                      description: namespaces specifies a static list
+                                        of namespace names that the term applies to.
+                                        The term is applied to the union of the namespaces
+                                        listed in this field and the ones selected
+                                        by namespaceSelector. null or empty namespaces
+                                        list and null namespaceSelector means "this
+                                        pod's namespace"
                                       items:
                                         type: string
                                       type: array
@@ -1199,10 +2709,71 @@ spec:
                                         The requirements are ANDed.
                                       type: object
                                   type: object
+                                namespaceSelector:
+                                  description: A label query over the set of namespaces
+                                    that the term applies to. The term is applied
+                                    to the union of the namespaces selected by this
+                                    field and the ones listed in the namespaces field.
+                                    null selector and null or empty namespaces list
+                                    means "this pod's namespace". An empty selector
+                                    ({}) matches all namespaces. This field is beta-level
+                                    and is only honored when PodAffinityNamespaceSelector
+                                    feature is enabled.
+                                  properties:
+                                    matchExpressions:
+                                      description: matchExpressions is a list of label
+                                        selector requirements. The requirements are
+                                        ANDed.
+                                      items:
+                                        description: A label selector requirement
+                                          is a selector that contains values, a key,
+                                          and an operator that relates the key and
+                                          values.
+                                        properties:
+                                          key:
+                                            description: key is the label key that
+                                              the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: operator represents a key's
+                                              relationship to a set of values. Valid
+                                              operators are In, NotIn, Exists and
+                                              DoesNotExist.
+                                            type: string
+                                          values:
+                                            description: values is an array of string
+                                              values. If the operator is In or NotIn,
+                                              the values array must be non-empty.
+                                              If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. This
+                                              array is replaced during a strategic
+                                              merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchLabels:
+                                      additionalProperties:
+                                        type: string
+                                      description: matchLabels is a map of {key,value}
+                                        pairs. A single {key,value} in the matchLabels
+                                        map is equivalent to an element of matchExpressions,
+                                        whose key field is "key", the operator is
+                                        "In", and the values array contains only "value".
+                                        The requirements are ANDed.
+                                      type: object
+                                  type: object
                                 namespaces:
-                                  description: namespaces specifies which namespaces
-                                    the labelSelector applies to (matches against);
-                                    null or empty list means "this pod's namespace"
+                                  description: namespaces specifies a static list
+                                    of namespace names that the term applies to. The
+                                    term is applied to the union of the namespaces
+                                    listed in this field and the ones selected by
+                                    namespaceSelector. null or empty namespaces list
+                                    and null namespaceSelector means "this pod's namespace"
                                   items:
                                     type: string
                                   type: array
@@ -1241,7 +2812,7 @@ spec:
                           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                           x-kubernetes-int-or-string: true
                         description: 'Limits describes the maximum amount of compute
-                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                       requests:
                         additionalProperties:
@@ -1253,9 +2824,51 @@ spec:
                         description: 'Requests describes the minimum amount of compute
                           resources required. If Requests is omitted for a container,
                           it defaults to Limits if that is explicitly specified, otherwise
-                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                     type: object
+                  tolerations:
+                    description: 'Defines tolerations for the Mattermost app server
+                      pods More info: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/'
+                    items:
+                      description: The pod this Toleration is attached to tolerates
+                        any taint that matches the triple <key,value,effect> using
+                        the matching operator <operator>.
+                      properties:
+                        effect:
+                          description: Effect indicates the taint effect to match.
+                            Empty means match all taint effects. When specified, allowed
+                            values are NoSchedule, PreferNoSchedule and NoExecute.
+                          type: string
+                        key:
+                          description: Key is the taint key that the toleration applies
+                            to. Empty means match all taint keys. If the key is empty,
+                            operator must be Exists; this combination means to match
+                            all values and all keys.
+                          type: string
+                        operator:
+                          description: Operator represents a key's relationship to
+                            the value. Valid operators are Exists and Equal. Defaults
+                            to Equal. Exists is equivalent to wildcard for value,
+                            so that a pod can tolerate all taints of a particular
+                            category.
+                          type: string
+                        tolerationSeconds:
+                          description: TolerationSeconds represents the period of
+                            time the toleration (which must be of effect NoExecute,
+                            otherwise this field is ignored) tolerates the taint.
+                            By default, it is not set, which means tolerate the taint
+                            forever (do not evict). Zero and negative values will
+                            be treated as 0 (evict immediately) by the system.
+                          format: int64
+                          type: integer
+                        value:
+                          description: Value is the taint value the toleration matches
+                            to. If the operator is Exists, the value should be empty,
+                            otherwise just a regular string.
+                          type: string
+                      type: object
+                    type: array
                 type: object
               serviceAnnotations:
                 additionalProperties:
@@ -1276,6 +2889,8 @@ spec:
                   by Size or manually.'
                 type: string
               useIngressTLS:
+                description: 'UseIngressTLS specifies whether TLS secret should be
+                  configured for Ingress. Deprecated: Use Spec.Ingress.TLSSecret.'
                 type: boolean
               useServiceLoadBalancer:
                 type: boolean
@@ -1706,14 +3321,14 @@ spec:
                       type: object
                     ephemeral:
                       description: "Ephemeral represents a volume that is handled
-                        by a cluster storage driver (Alpha feature). The volume's
-                        lifecycle is tied to the pod that defines it - it will be
-                        created before the pod starts, and deleted when the pod is
-                        removed. \n Use this if: a) the volume is only needed while
-                        the pod runs, b) features of normal volumes like restoring
-                        from snapshot or capacity    tracking are needed, c) the storage
-                        driver is specified through a storage class, and d) the storage
-                        driver supports dynamic volume provisioning through    a PersistentVolumeClaim
+                        by a cluster storage driver. The volume's lifecycle is tied
+                        to the pod that defines it - it will be created before the
+                        pod starts, and deleted when the pod is removed. \n Use this
+                        if: a) the volume is only needed while the pod runs, b) features
+                        of normal volumes like restoring from snapshot or capacity
+                        \   tracking are needed, c) the storage driver is specified
+                        through a storage class, and d) the storage driver supports
+                        dynamic volume provisioning through    a PersistentVolumeClaim
                         (see EphemeralVolumeSource for more    information on the
                         connection between this volume type    and PersistentVolumeClaim).
                         \n Use PersistentVolumeClaim or one of the vendor-specific
@@ -1722,12 +3337,10 @@ spec:
                         volumes if the CSI driver is meant to be used that way - see
                         the documentation of the driver for more information. \n A
                         pod can use both types of ephemeral volumes and persistent
-                        volumes at the same time."
+                        volumes at the same time. \n This is a beta feature and only
+                        available when the GenericEphemeralVolume feature gate is
+                        enabled."
                       properties:
-                        readOnly:
-                          description: Specifies a read-only configuration for the
-                            volume. Defaults to false (read/write).
-                          type: boolean
                         volumeClaimTemplate:
                           description: "Will be used to create a stand-alone PVC to
                             provision the volume. The pod in which this EphemeralVolumeSource
@@ -1769,14 +3382,58 @@ spec:
                                 dataSource:
                                   description: 'This field can be used to specify
                                     either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot)
-                                    * An existing PVC (PersistentVolumeClaim) * An
-                                    existing custom resource that implements data
-                                    population (Alpha) In order to use custom resource
-                                    types that implement data population, the AnyVolumeDataSource
-                                    feature gate must be enabled. If the provisioner
-                                    or an external controller can support the specified
-                                    data source, it will create a new volume based
-                                    on the contents of the specified data source.'
+                                    * An existing PVC (PersistentVolumeClaim) If the
+                                    provisioner or an external controller can support
+                                    the specified data source, it will create a new
+                                    volume based on the contents of the specified
+                                    data source. If the AnyVolumeDataSource feature
+                                    gate is enabled, this field will always have the
+                                    same contents as the DataSourceRef field.'
+                                  properties:
+                                    apiGroup:
+                                      description: APIGroup is the group for the resource
+                                        being referenced. If APIGroup is not specified,
+                                        the specified Kind must be in the core API
+                                        group. For any other third-party types, APIGroup
+                                        is required.
+                                      type: string
+                                    kind:
+                                      description: Kind is the type of resource being
+                                        referenced
+                                      type: string
+                                    name:
+                                      description: Name is the name of resource being
+                                        referenced
+                                      type: string
+                                  required:
+                                  - kind
+                                  - name
+                                  type: object
+                                dataSourceRef:
+                                  description: 'Specifies the object from which to
+                                    populate the volume with data, if a non-empty
+                                    volume is desired. This may be any local object
+                                    from a non-empty API group (non core object) or
+                                    a PersistentVolumeClaim object. When this field
+                                    is specified, volume binding will only succeed
+                                    if the type of the specified object matches some
+                                    installed volume populator or dynamic provisioner.
+                                    This field will replace the functionality of the
+                                    DataSource field and as such if both fields are
+                                    non-empty, they must have the same value. For
+                                    backwards compatibility, both fields (DataSource
+                                    and DataSourceRef) will be set to the same value
+                                    automatically if one of them is empty and the
+                                    other is non-empty. There are two important differences
+                                    between DataSource and DataSourceRef: * While
+                                    DataSource only allows two specific types of objects,
+                                    DataSourceRef   allows any non-core object, as
+                                    well as PersistentVolumeClaim objects. * While
+                                    DataSource ignores disallowed values (dropping
+                                    them), DataSourceRef   preserves all values, and
+                                    generates an error if a disallowed value is   specified.
+                                    (Alpha) Using this field requires the AnyVolumeDataSource
+                                    feature gate to be enabled.'
                                   properties:
                                     apiGroup:
                                       description: APIGroup is the group for the resource
@@ -1809,7 +3466,7 @@ spec:
                                         pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                                         x-kubernetes-int-or-string: true
                                       description: 'Limits describes the maximum amount
-                                        of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                                        of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                                       type: object
                                     requests:
                                       additionalProperties:
@@ -1823,7 +3480,7 @@ spec:
                                         is omitted for a container, it defaults to
                                         Limits if that is explicitly specified, otherwise
                                         to an implementation-defined value. More info:
-                                        https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                                        https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                                       type: object
                                   type: object
                                 selector:
@@ -2754,8 +4411,6 @@ spec:
                   - name
                   type: object
                 type: array
-            required:
-            - ingressName
             type: object
           status:
             description: MattermostStatus defines the observed state of Mattermost
@@ -2763,14 +4418,43 @@ spec:
               endpoint:
                 description: The endpoint to access the Mattermost instance
                 type: string
+              error:
+                description: The last observed error in the deployment of this Mattermost
+                  instance
+                type: string
               image:
                 description: The image running on the pods in the Mattermost instance
                 type: string
+              observedGeneration:
+                description: The last observed Generation of the Mattermost resource
+                  that was acted on.
+                format: int64
+                type: integer
               replicas:
                 description: Total number of non-terminated pods targeted by this
                   Mattermost deployment
                 format: int32
                 type: integer
+              resourcePatch:
+                description: Status of specified resource patches.
+                properties:
+                  deploymentPatch:
+                    description: PatchStatus represents status of particular patch.
+                    properties:
+                      applied:
+                        type: boolean
+                      error:
+                        type: string
+                    type: object
+                  servicePatch:
+                    description: PatchStatus represents status of particular patch.
+                    properties:
+                      applied:
+                        type: boolean
+                      error:
+                        type: string
+                    type: object
+                type: object
               state:
                 description: Represents the running state of the Mattermost instance
                 type: string
