@@ -108,6 +108,18 @@ $ helm upgrade  mm-te -f custom_values.yaml mattermost/mattermost-team-edition
 
 If in your `custom_values.yaml` you set the image.tag, please update that to the latest available, at the time of this doc was write the version is `5.35.3`
 
+## Kubernetes 1.22 Ingress
+
+When updating to Kubernetes 1.22 ensure chart version `6.4.0`+ has been run in the environment prior to the kuberentes update.
+If a chart less than `6.4.0`  the `Ingress` api version will not be updated.
+`Ingress` has been removed from `networking.k8s.io/v1beta1` as of kubernetes 1.22 and has been moved to `networking.k8s.io/v1`
+If when on Kubernetes 1.22 this error is seen:
+```
+Error: UPGRADE FAILED: current release manifest contains removed kubernetes api(s) for this kubernetes version...
+```
+follow steps here to resolve the `Ingress` version mismatch
+https://helm.sh/docs/topics/kubernetes_apis/
+
 ## Uninstalling the Chart
 
 To uninstall/delete the `my-release` deployment:
