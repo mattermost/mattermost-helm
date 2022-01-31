@@ -39,6 +39,52 @@ entries:
   mattermost-enterprise-edition:
   - apiVersion: v2
     appVersion: 6.3.0
+    created: "2022-01-31T08:43:12.569871254Z"
+    dependencies:
+    - name: mattermost-elasticsearch
+      repository: ""
+      version: 0.1.0
+    - name: mattermost-grafana
+      repository: ""
+      version: 0.3.6
+    - condition: global.features.database.useInternal
+      name: mysqlha
+      repository: https://charts.helm.sh/incubator
+      version: 2.0.0
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.helm.sh/stable
+      version: 5.0.26
+    - condition: global.features.grafana.enabled
+      name: prometheus
+      repository: https://charts.helm.sh/stable
+      version: 11.4.0
+    description: Mattermost Enterprise server with high availitibity.
+    digest: b96eeeab74a2cf62c97f570c937f8881905d74141f9aa2f8d23ad45663b3e17f
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - messaging
+    - team colaboration
+    maintainers:
+    - email: carlos@mattermost.com
+      name: cpanato
+    - email: joram@mattermost.com
+      name: jwilander
+    - email: stylianos@mattermost.com
+      name: stylianosrigas
+    name: mattermost-enterprise-edition
+    sources:
+    - https://github.com/mattermost/mattermost-server
+    - https://github.com/mattermost/mattermost-helm
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-enterprise-edition-2.3.1/mattermost-enterprise-edition-2.3.1.tgz
+    version: 2.3.1
+  - apiVersion: v2
+    appVersion: 6.3.0
     created: "2022-01-17T10:52:20.927959559Z"
     dependencies:
     - name: mattermost-elasticsearch
@@ -3146,4 +3192,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2022-01-24T09:37:28.882746553Z"
+generated: "2022-01-31T08:43:12.570388168Z"
