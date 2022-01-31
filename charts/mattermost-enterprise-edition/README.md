@@ -57,7 +57,7 @@ To learn more about the Mattermost configuration file, see https://docs.mattermo
 At minimum there are two settings you must update:
 
 * `global.siteURL` - set this to the URL your users will use to access Mattermost, e.g. `https://mattermost.example.com`
-* `global.mattermostLicense` - set this to the contents of your license file
+* `global.mattermostLicense` - set this to the contents of your license file or provide an existing secret. `global.existingLicenseSecret.name` `global.existingLicenseSecret.key` 
 
 Without these two settings, Mattermost will not run correctly.
 
@@ -141,6 +141,7 @@ If you would like to use an external database not managed by the Mattermost Helm
 * Set `global.features.database.external.driver` to either `mysql` or `postgres`
 * Set `global.features.database.external.dataSource` to your master DB connection string
 * (Optional) Set `global.features.database.external.dataSourceReplicas` to an array of read replica connection strings
+* (Optional) use an external provided secret. `global.features.database.external.existingDatabaseSecret.name` `global.features.database.external.existingDatabaseSecret.key`.
 
 ## 2.5 Push Notifications
 
