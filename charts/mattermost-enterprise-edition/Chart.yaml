@@ -2,8 +2,8 @@ apiVersion: v2
 description: Mattermost Enterprise server with high availitibity.
 name: mattermost-enterprise-edition
 type: application
-version: 2.3.0
-appVersion: 6.3.0
+version: 2.3.3
+appVersion: 6.3.3
 keywords:
 - mattermost
 - communication
@@ -18,6 +18,8 @@ maintainers:
     email: joram@mattermost.com
   - name: stylianosrigas
     email: stylianos@mattermost.com
+  - name: spirosoik
+    email: spiros.economakis@mattermost.com
 sources:
 - https://github.com/mattermost/mattermost-server
 - https://github.com/mattermost/mattermost-helm
