@@ -2,7 +2,7 @@ apiVersion: v2
 description: Mattermost Enterprise server with high availitibity.
 name: mattermost-enterprise-edition
 type: application
-version: 2.4.0
+version: 2.4.1
 appVersion: 6.4.0
 keywords:
 - mattermost
@@ -12,8 +12,6 @@ keywords:
 home: https://mattermost.com
 icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
 maintainers:
-  - name: cpanato
-    email: carlos@mattermost.com
   - name: jwilander
     email: joram@mattermost.com
   - name: stylianosrigas
