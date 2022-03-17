@@ -76,6 +76,9 @@ spec:
               name: {{ include "mattermost-enterprise-edition.fullname" . }}-mattermost-dbsecret
               key: mattermost.dbsecret
            {{- end }}
+{{- with .Values.global.features.jobserver.extraEnv }}
+{{ toYaml . | indent 8 }}
+{{- end }}
         volumeMounts:
         {{- if .Values.global.existingLicenseSecret.name }}
         - mountPath: /mattermost/{{.Values.global.existingLicenseSecret.key }}
