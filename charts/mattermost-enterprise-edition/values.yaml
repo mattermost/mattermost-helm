@@ -64,6 +64,8 @@ global:
       # jobserver Tolerations for pod assignment
       # Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
       tolerations: []
+      # Allows the specification of additional environment variables for Mattermost Jobserver
+      extraEnv: {}
     notifications:
       # Push proxy must be configured or useHPNS must be true for push noticiations to work.
       push:
