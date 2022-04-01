@@ -14,7 +14,7 @@ mattermostOperator:
     requeuOnLimitDelay: 20s
   image:
     repository: mattermost/mattermost-operator
-    tag: v1.16.0
+    tag: v1.18.0
     pullPolicy: IfNotPresent
   args:
     - --enable-leader-election
@@ -27,7 +27,7 @@ mattermostOperator:
 
 ### IMPORTANT: Below operators should be deployed separately in production environments. ###
 minioOperator:
-  enabled: false
+  enabled: true
   replicas: 1
   appName: minio
   namespace: minio-operator
@@ -41,7 +41,7 @@ minioOperator:
     pullPolicy: IfNotPresent
 
 mysqlOperator:
-  enabled: false
+  enabled: true
   replicas: 1
   appName: mysql
   namespace: mysql-operator
