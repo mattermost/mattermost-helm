@@ -27,7 +27,7 @@ mattermostOperator:
 
 ### IMPORTANT: Below operators should be deployed separately in production environments. ###
 minioOperator:
-  enabled: true
+  enabled: false
   replicas: 1
   appName: minio
   namespace: minio-operator
@@ -41,7 +41,7 @@ minioOperator:
     pullPolicy: IfNotPresent
 
 mysqlOperator:
-  enabled: true
+  enabled: false
   replicas: 1
   appName: mysql
   namespace: mysql-operator
