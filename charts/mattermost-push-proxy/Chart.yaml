@@ -2,7 +2,7 @@ apiVersion: v2
 description: Mattermost Push Proxy server
 name: mattermost-push-proxy
 type: application
-version: 0.6.3
+version: 0.6.4
 appVersion: 5.22.5
 keywords:
 - mattermost
@@ -13,8 +13,10 @@ keywords:
 home: https://mattermost.com
 icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
 maintainers:
-  - name: jwilander
-    email: joram@mattermost.com
+  - name: stylianosrigas
+    email: stylianos.rigas@mattermost.com
+  - name: spirosoik
+    email: spiros.economakis@mattermost.com
 sources:
 - https://github.com/mattermost/mattermost-helm
 - https://github.com/mattermost/mattermost-push-proxy
