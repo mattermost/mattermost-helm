@@ -14,7 +14,7 @@ mattermostOperator:
     requeuOnLimitDelay: 20s
   image:
     repository: mattermost/mattermost-operator
-    tag: v1.16.0
+    tag: v1.18.0
     pullPolicy: IfNotPresent
   args:
     - --enable-leader-election

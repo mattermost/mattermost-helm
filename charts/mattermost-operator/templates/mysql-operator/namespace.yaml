@@ -10,8 +10,8 @@ metadata:
     name: {{ template "mysql-operator.namespace" . }}
   name: {{ template "mysql-operator.namespace" . }}
   annotations:
-    "helm.sh/hook": pre-install
     "helm.sh/hook-delete-policy" : post-delete
+    "helm.sh/hook-weight": "-10"
 spec:
   finalizers:
   - kubernetes
