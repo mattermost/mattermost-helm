@@ -30,7 +30,7 @@ Once Helm is installed and initialized, run the following:
 helm repo add mattermost https://helm.mattermost.com
 ```
 
-##1.3 Run locally
+## 1.3 Run locally
 ```bash
 git clone git@github.com:mattermost/mattermost-helm.git (or use a fork of yours)
 cd charts/focalboard

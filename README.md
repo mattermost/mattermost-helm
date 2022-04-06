@@ -9,6 +9,7 @@ Click on the following links to see installation instructions for each chart:
 - [mattermost-enterprise-edition](charts/mattermost-enterprise-edition/)
 - [mattermost-push-proxy](charts/mattermost-push-proxy/)
 - [mattermost-operator](charts/mattermost-operator/)
+- [focalboard](charts/focalboard/)
 
 ## Usage
 
