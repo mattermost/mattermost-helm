@@ -30,7 +30,7 @@ Create chart name and version as used by the chart label.
 Return the appropriate apiVersion for ingress.
 */}}
 {{- define "mattermost-push-proxy.ingress.apiVersion" -}}
-  {{- if and (.Capabilities.APIVersions.Has "networking.k8s.io/v1") (semverCompare ">= 1.19-0" .Capabilities.KubeVersion.Version) -}}
+  {{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1" -}}
       {{- print "networking.k8s.io/v1" -}}
   {{- else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" -}}
     {{- print "networking.k8s.io/v1beta1" -}}
