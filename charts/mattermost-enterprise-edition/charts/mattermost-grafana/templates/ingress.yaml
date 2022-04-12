@@ -33,7 +33,7 @@ spec:
             backend:
               serviceName: {{ printf "%s-%s" $releaseName "grafana" | trunc 63 }}
               servicePort: {{ $servicePort }}
-            {{- else -}}
+            {{- end -}}
   {{- end -}}
   {{- if .Values.server.ingress.tls }}
   tls:
