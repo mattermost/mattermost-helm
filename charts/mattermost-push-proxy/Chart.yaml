@@ -2,7 +2,7 @@ apiVersion: v2
 description: Mattermost Push Proxy server
 name: mattermost-push-proxy
 type: application
-version: 0.7.0
+version: 0.7.1
 appVersion: 5.22.5
 keywords:
 - mattermost

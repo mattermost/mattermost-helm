@@ -34,7 +34,7 @@ spec:
             name: {{ $serviceName }}
             port:
               number: {{ $servicePort }}
-        pathType: Prefix
+        pathType: ImplementationSpecific
         {{- else }}
         backend:
           serviceName: {{ $serviceName }}
