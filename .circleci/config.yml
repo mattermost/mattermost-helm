@@ -13,11 +13,19 @@ jobs:
 
   lint-charts:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.4.0
+      - image: quay.io/helmpack/chart-testing:v3.5.1
     steps:
       - checkout
       - run:
           command: ct lint --config tests/ct.yaml
+
+  validate-charts:
+    docker:
+      - image: quay.io/helmpack/chart-testing:v3.5.1
+    steps:
+      - checkout
+      - run:
+          command: tests/validate-charts.sh
 
   install-charts:
     machine: true
