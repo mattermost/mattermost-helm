@@ -30,9 +30,18 @@ spec:
     http:
       paths:
       - path: /
+        {{- if $.Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+        backend:
+          service:
+            name: {{ $serviceName }}
+            port:
+              number: {{ $servicePort }}
+        pathType: Prefix
+        {{- else }}
         backend:
           serviceName: {{ $serviceName }}
           servicePort: {{ $servicePort }}
+        {{- end }}
   {{- end -}}
   {{- if .Values.mattermostApp.ingress.tls }}
   tls:
