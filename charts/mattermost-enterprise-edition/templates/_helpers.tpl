@@ -47,10 +47,12 @@ Return the appropriate apiVersion for ingress. Based on
 2) Kubernetes Version
 */}}
 {{- define "mattermost-enterprise-edition.ingress.apiVersion" -}}
-{{- if semverCompare ">=1.4-0, <1.14-0" .Capabilities.KubeVersion.GitVersion -}}
-"extensions/v1beta1"
-{{- else if semverCompare "^1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1" -}}
+"networking.k8s.io/v1"
+{{- else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" -}}
 "networking.k8s.io/v1beta1"
+{{- else -}}
+"extensions/v1beta1"
 {{- end -}}
 {{- end -}}
 
