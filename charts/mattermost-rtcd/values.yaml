@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: angelos1989/rtcd
+  repository: mattermost/rtcd
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "helm-test"
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
