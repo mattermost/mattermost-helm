@@ -2,8 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
-
 image:
   repository: mattermost/rtcd
   pullPolicy: Always
@@ -35,9 +33,17 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
+daemonset:
+  environmentVariables:
+    RTCD_API_SECURITY_ALLOWSELFREGISTRATION: "\"true\""
+    RTCD_RTC_ICESERVERS: "stun:stun.global.calls.mattermost.com:3478"
+    RTCD_LOGGER_CONSOLELEVEL: "\"DEBUG\""
+    CALLS_RTCD_URL: "http://mattermost-rtcd.mattermost-rtcd:8045"
+  maxUnavailable: 1 # Only used when updateStrategy is set to "RollingUpdate"
+  updateStrategy: RollingUpdate
+  terminationGracePeriod: 18000 # 5 hours
 
 service:
-  type: ClusterIP
   # APIport is the port that websocket and API uses
   APIport: 8045
   # RTCport is the UDP port that RTC uses
@@ -47,13 +53,13 @@ ingress:
   enabled: false
   classname: nginx-calls
   annotations:
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "86400"
-    nginx.ingress.kubernetes.io/proxy-connect-timeout: "86400"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "86400"
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "64k"
-    nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
-    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    # nginx.ingress.kubernetes.io/proxy-read-timeout: "86400"
+    # nginx.ingress.kubernetes.io/proxy-connect-timeout: "86400"
+    # nginx.ingress.kubernetes.io/proxy-send-timeout: "86400"
+    # nginx.ingress.kubernetes.io/proxy-buffer-size: "64k"
+    # nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
+    # nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    # nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
   hosts:
     - host: mattermost-rtcd.local
       paths:
@@ -72,8 +78,13 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-nodeSelector: {}
+nodeSelector:
+  kops.k8s.io/instancegroup: calls
 
-tolerations: []
+tolerations:
+  - key: "calls"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
 
 affinity: {}
