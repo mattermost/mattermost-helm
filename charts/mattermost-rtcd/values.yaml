@@ -38,7 +38,6 @@ daemonset:
     RTCD_API_SECURITY_ALLOWSELFREGISTRATION: "\"true\""
     RTCD_RTC_ICESERVERS: "stun:stun.global.calls.mattermost.com:3478"
     RTCD_LOGGER_CONSOLELEVEL: "\"DEBUG\""
-    CALLS_RTCD_URL: "http://mattermost-rtcd.mattermost-rtcd:8045"
   maxUnavailable: 1 # Only used when updateStrategy is set to "RollingUpdate"
   updateStrategy: RollingUpdate
   terminationGracePeriod: 18000 # 5 hours
