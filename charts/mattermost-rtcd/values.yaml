@@ -40,9 +40,9 @@ daemonset:
     # RTCD_LOGGER_CONSOLELEVEL: "\"DEBUG\""
     # RTCD_LOGGER_ENABLEFILE: "\"false\""
 
-  maxUnavailable: 1 # Only used when updateStrategy is set to "RollingUpdate"
+  maxUnavailable: 1     # Only used when updateStrategy is set to "RollingUpdate"
   updateStrategy: RollingUpdate
-  terminationGracePeriod: 18000 # 5 hours
+  terminationGracePeriod: 18000     # 5 hours
 
 service:
   # APIport is the port that websocket and API uses
