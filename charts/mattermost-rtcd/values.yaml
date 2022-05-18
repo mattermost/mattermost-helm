@@ -35,9 +35,11 @@ securityContext: {}
   # runAsUser: 1000
 daemonset:
   environmentVariables:
-    RTCD_API_SECURITY_ALLOWSELFREGISTRATION: "\"true\""
-    RTCD_RTC_ICESERVERS: "stun:stun.global.calls.mattermost.com:3478"
-    RTCD_LOGGER_CONSOLELEVEL: "\"DEBUG\""
+    # All env vars that exist for RTCD: https://github.com/mattermost/rtcd/blob/master/docs/env_config.md
+    # RTCD_API_SECURITY_ALLOWSELFREGISTRATION: "\"true\""
+    # RTCD_LOGGER_CONSOLELEVEL: "\"DEBUG\""
+    # RTCD_LOGGER_ENABLEFILE: "\"false\""
+
   maxUnavailable: 1 # Only used when updateStrategy is set to "RollingUpdate"
   updateStrategy: RollingUpdate
   terminationGracePeriod: 18000 # 5 hours
@@ -77,13 +79,8 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-nodeSelector:
-  kops.k8s.io/instancegroup: calls
+nodeSelector: {}
 
-tolerations:
-  - key: "calls"
-    operator: "Equal"
-    value: "true"
-    effect: "NoSchedule"
+tolerations: {}
 
 affinity: {}
