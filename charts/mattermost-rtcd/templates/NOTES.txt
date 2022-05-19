@@ -1,0 +1,2 @@
+RTC port: {{ .Values.service.RTCport }}
+API port: {{ .Values.service.APIport }}

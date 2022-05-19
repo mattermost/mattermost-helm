@@ -1,0 +1,86 @@
+# Default values for mattermost-rtcd.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: mattermost/rtcd
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+daemonset:
+  environmentVariables:
+    # All env vars that exist for RTCD: https://github.com/mattermost/rtcd/blob/master/docs/env_config.md
+    # RTCD_API_SECURITY_ALLOWSELFREGISTRATION: "\"true\""
+    # RTCD_LOGGER_CONSOLELEVEL: "\"DEBUG\""
+    # RTCD_LOGGER_ENABLEFILE: "\"false\""
+
+  maxUnavailable: 1     # Only used when updateStrategy is set to "RollingUpdate"
+  updateStrategy: RollingUpdate
+  terminationGracePeriod: 18000     # 5 hours
+
+service:
+  # APIport is the port that websocket and API uses
+  APIport: 8045
+  # RTCport is the UDP port that RTC uses
+  RTCport: 8443
+
+ingress:
+  enabled: false
+  ingressclassname: nginx-calls
+  annotations:
+    # nginx.ingress.kubernetes.io/proxy-read-timeout: "86400"
+    # nginx.ingress.kubernetes.io/proxy-connect-timeout: "86400"
+    # nginx.ingress.kubernetes.io/proxy-send-timeout: "86400"
+    # nginx.ingress.kubernetes.io/proxy-buffer-size: "64k"
+    # nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
+    # nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    # nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+  hosts:
+    - host: mattermost-rtcd.local
+      paths:
+        - "/"
+
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: {}
+
+affinity: {}
