@@ -3,17 +3,13 @@ name: mattermost-rtcd
 description: A Helm chart for Kubernetes to deploy Mattermost's RTCD
 type: application
 version: 1.0.0
-appVersion: 1.0.0
+appVersion: latest
 keywords:
 - mattermost
 - calls
 - rtcd
 maintainers:
-  - name: angeloskyratzakos
-    email: angelos.kyratzakos@mattermost.com
-  - name: stylianosrigas
-    email: stylianos@mattermost.com
-  - name: spirosoik
-    email: spiros.economakis@mattermost.com
+  - name: SRE Team
+    email: sre@mattermost.com
 sources:
 - https://github.com/mattermost/mattermost-helm
