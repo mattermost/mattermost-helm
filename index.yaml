@@ -2632,6 +2632,26 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-push-proxy-0.1.4/mattermost-push-proxy-0.1.4.tgz
     version: 0.1.4
+  mattermost-rtcd:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2022-05-19T13:24:15.741864436Z"
+    description: A Helm chart for Kubernetes to deploy Mattermost's RTCD
+    digest: ba965ffa6d9d01af59ae2974fa127cec5d2fab410f98a8cae1c7ee52f1fac164
+    keywords:
+    - mattermost
+    - calls
+    - rtcd
+    maintainers:
+    - email: sre@mattermost.com
+      name: SRE Team
+    name: mattermost-rtcd
+    sources:
+    - https://github.com/mattermost/mattermost-helm
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-rtcd-1.0.0/mattermost-rtcd-1.0.0.tgz
+    version: 1.0.0
   mattermost-team-edition:
   - apiVersion: v2
     appVersion: 6.7.0
@@ -4017,4 +4037,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2022-05-17T07:28:03.476879551Z"
+generated: "2022-05-19T13:24:15.742600469Z"
