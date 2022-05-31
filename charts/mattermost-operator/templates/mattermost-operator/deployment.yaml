@@ -26,6 +26,8 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      securityContext:
+      {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
       - args:
         {{- if .Values.mattermostOperator.args }}
@@ -41,6 +43,8 @@ spec:
         image: "{{ .Values.mattermostOperator.image.repository }}:{{ .Values.mattermostOperator.image.tag }}"
         imagePullPolicy: "{{ .Values.mattermostOperator.image.pullPolicy }}"
         name: {{ template "mattermost-operator.name" . }}
+        securityContext:
+        {{- toYaml .Values.securityContext | nindent 12 }}
       serviceAccountName: {{ template "mattermost-operator.name" . }}
       {{- if .Values.mattermostOperator.privateRegistry.enabled }}
       imagePullSecrets:
