@@ -1,8 +1,9 @@
-apiVersion: v1
+apiVersion: v2
 description: Mattermost Enterprise server with high availitibity.
 name: mattermost-enterprise-edition
-version: 1.15.0
-appVersion: 5.33.3
+type: application
+version: 2.6.7
+appVersion: 7.0.1
 keywords:
 - mattermost
 - communication
@@ -11,12 +12,29 @@ keywords:
 home: https://mattermost.com
 icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
 maintainers:
-  - name: cpanato
-    email: carlos@mattermost.com
   - name: jwilander
     email: joram@mattermost.com
   - name: stylianosrigas
     email: stylianos@mattermost.com
+  - name: spirosoik
+    email: spiros.economakis@mattermost.com
 sources:
 - https://github.com/mattermost/mattermost-server
 - https://github.com/mattermost/mattermost-helm
+dependencies:
+  - name: mattermost-elasticsearch
+    version: 0.1.0
+  - name: mattermost-grafana
+    version: 0.3.6
+  - name: mysqlha
+    repository: https://charts.helm.sh/incubator
+    version: 2.0.0
+    condition: global.features.database.useInternal
+  - name: minio
+    repository: https://charts.helm.sh/stable
+    version: 5.0.26
+    condition: minio.enabled
+  - name: prometheus
+    repository: https://charts.helm.sh/stable
+    version: 11.4.0
+    condition: global.features.grafana.enabled

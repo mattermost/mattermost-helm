@@ -2,7 +2,7 @@
 {
     "ServiceSettings": {
         "SiteURL": "{{ .Values.global.siteUrl }}",
-        "LicenseFileLocation": "/mattermost/mattermost.mattermost-license",
+        "LicenseFileLocation": "/mattermost/{{.Values.global.features.database.existingDatabaseSecret.key | default "mattermost.mattermost-license" }}",
         "ListenAddress": ":{{ .Values.mattermostApp.service.internalPort }}",
         "ConnectionSecurity": "",
         "TLSCertFile": "",
@@ -102,7 +102,7 @@
         "MaxIdleConns": 20,
         "MaxOpenConns": 35,
         "Trace": false,
-        "AtRestEncryptKey": "{{ randAlphaNum 32 }}",
+        "AtRestEncryptKey": "{{ .Values.global.atRestEncryptKey | default (randAlphaNum 32) }}",
         "QueryTimeout": 30
     },
     "LogSettings": {
@@ -128,7 +128,7 @@
         "DriverName": "amazons3",
         "Directory": "./data/",
         "EnablePublicLink": false,
-        "PublicLinkSalt": "{{ randAlphaNum 32 }}",
+        "PublicLinkSalt": "{{ .Values.global.publicLinkSalt | default (randAlphaNum 32) }}",
         "ThumbnailWidth": 120,
         "ThumbnailHeight": 100,
         "PreviewWidth": 1024,
@@ -158,7 +158,7 @@
         "SMTPServer": {{ .Values.global.smtpServer | quote }},
         "SMTPPort": {{ .Values.global.smtpPort | quote }},
         "ConnectionSecurity": {{ .Values.global.connectionSecurity | quote }},
-        "InviteSalt": {{ randAlphaNum 32 | quote }},
+        "InviteSalt": {{ .Values.global.inviteSalt | default (randAlphaNum 32) | quote }},
         "SendPushNotifications": {{ .Values.global.features.notifications.push.enabled }},
         {{- if .Values.global.features.notifications.push.useHPNS }}
         "PushNotificationServer": "https://push.mattermost.com",

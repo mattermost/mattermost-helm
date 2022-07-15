@@ -21,15 +21,27 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     {{- end }}
 spec:
+  {{- if .Values.mattermostApp.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.mattermostApp.ingress.ingressClassName }}
+  {{- end }}
   rules:
   {{- range $host := .Values.mattermostApp.ingress.hosts }}
   - host: {{ $host }}
     http:
       paths:
       - path: /
+        {{- if $.Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+        backend:
+          service:
+            name: {{ $serviceName }}
+            port:
+              number: {{ $servicePort }}
+        pathType: Prefix
+        {{- else }}
         backend:
           serviceName: {{ $serviceName }}
           servicePort: {{ $servicePort }}
+        {{- end }}
   {{- end -}}
   {{- if .Values.mattermostApp.ingress.tls }}
   tls:

@@ -40,7 +40,7 @@ $ helm install <your-release-name> mattermost/mattermost-operator -n <namespace_
 
 For example:
 ```bash
-$ helm install matttermost-operator mattermost/mattermost-operator -n mattermost-operator
+$ helm install mattermost-operator mattermost/mattermost-operator -n mattermost-operator
 ```
 
 If no version is specified the latest version will be installed.

@@ -33,15 +33,15 @@ spec:
     spec:
       {{- if .Values.global.features.loadtest.nodeSelector }}
       nodeSelector:
-        {{ toYaml .Values.global.features.loadtest.nodeSelector | indent 8 }}
+        {{- toYaml .Values.global.features.loadtest.nodeSelector | nindent 8 }}
       {{- end }}
       {{- if .Values.global.features.loadtest.affinity }}
       affinity:
-        {{ toYaml .Values.global.features.loadtest.affinity | indent 8 }}
+        {{- toYaml .Values.global.features.loadtest.affinity | nindent 8 }}
       {{- end }}
       {{- if .Values.global.features.loadtest.tolerations }}
       tolerations:
-        {{ toYaml .Values.global.features.loadtest.tolerations | indent 8 }}
+      {{- toYaml .Values.global.features.loadtest.tolerations | nindent 6 }}
       {{- end }}
       containers:
         - name: {{ include "mattermost-enterprise-edition.name" .}}-loadtest
@@ -51,9 +51,15 @@ spec:
           - mountPath: /mattermost/config/config.json
             name: config-json
             subPath: config.json
+          {{- if .Values.global.existingLicenseSecret.name }}
+          - mountPath: /mattermost/{{.Values.global.existingLicenseSecret.key }}
+            name: mattermost-license
+            subPath: {{.Values.global.existingLicenseSecret.key }}
+          {{- else }}
           - mountPath: /mattermost/mattermost.mattermost-license
             name: mattermost-license
             subPath: mattermost.mattermost-license
+          {{- end }}
           - mountPath: /mattermost-load-test/loadtestconfig.json
             name: loadtestconfig-json
             subPath: loadtestconfig.json
@@ -70,7 +76,11 @@ spec:
               path: config.json
         - name: mattermost-license
           secret:
+            {{- if .Values.global.existingLicenseSecret.name }}
+            secretName: {{ .Values.global.existingLicenseSecret.name }}
+            {{- else }}
             secretName: {{ include "mattermost-enterprise-edition.fullname" . }}-mattermost-license
+            {{- end }}
         - name: loadtestconfig-json
           configMap:
             name: {{ include "mattermost-enterprise-edition.fullname" . }}-loadtestconfig-json

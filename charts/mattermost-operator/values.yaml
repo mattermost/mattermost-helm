@@ -14,13 +14,20 @@ mattermostOperator:
     requeuOnLimitDelay: 20s
   image:
     repository: mattermost/mattermost-operator
-    tag: v1.14.0
+    tag: v1.18.0
     pullPolicy: IfNotPresent
   args:
     - --enable-leader-election
 
+  ## Specify image pull secret for private repository
+  ##
+  privateRegistry:
+    enabled: false
+    imagePullSecret: <name of the secret>
+
+### IMPORTANT: Below operators should be deployed separately in production environments. ###
 minioOperator:
-  enabled: true
+  enabled: false
   replicas: 1
   appName: minio
   namespace: minio-operator
@@ -34,7 +41,7 @@ minioOperator:
     pullPolicy: IfNotPresent
 
 mysqlOperator:
-  enabled: true
+  enabled: false
   replicas: 1
   appName: mysql
   namespace: mysql-operator

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "mattermost-chaos-engine.fullname" . }}-test-connection"
+  labels:
+    {{- include "mattermost-chaos-engine.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "mattermost-chaos-engine.fullname" . }}:{{ .Values.service.port }}/bindings']
+  restartPolicy: Never

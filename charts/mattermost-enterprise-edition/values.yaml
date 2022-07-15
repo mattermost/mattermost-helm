@@ -1,7 +1,11 @@
 global:
   siteUrl: "http://mattermost.example.com"  # REQUIRED SETTING, PLEASE UPDATE
-  mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"  # REQUIRED SETTING, PLEASE UPDATE
-
+  # Use an existing secret for License credential (see secret-mattermost-license.yaml for required fields)
+  existingLicenseSecret:
+    name:
+    key:
+  # REQUIRED SETTING, if no existing secret is provided.
+  mattermostLicense: "THIS STRING SHOULD BE REPLACED WITH THE CONTENTS OF YOUR LICENSE FILE"
   # Settings for configuration of Mattermost
   # For more details: https://docs.mattermost.com/administration/config-settings.html
   siteName: "Mattermost"
@@ -32,6 +36,10 @@ global:
         driver: "mysql"
         dataSource: ""
         dataSourceReplicas:
+       # Use an existing secret for License credential (see secret-mattermost-dbsecret.yaml for required fields)
+      existingDatabaseSecret:
+        name:
+        key:
     elasticsearch:
       enabled: false
     grafana:
@@ -56,6 +64,8 @@ global:
       # jobserver Tolerations for pod assignment
       # Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
       tolerations: []
+      # Allows the specification of additional environment variables for Mattermost Jobserver
+      extraEnv: {}
     notifications:
       # Push proxy must be configured or useHPNS must be true for push noticiations to work.
       push:
@@ -115,7 +125,7 @@ mattermostApp:
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
-    tag: 5.33.3
+    tag: 7.0.1@sha256:d28641d2665611b68fe2c11c7670e6c12cb91384f7092039c441b59b16cb94c5
     pullPolicy: IfNotPresent
 
   strategy:
@@ -157,6 +167,7 @@ mattermostApp:
       #   proxy_cache_min_uses 2;
       #   proxy_cache_use_stale timeout;
       #   proxy_cache_lock on;
+    # ingressClassName:
 
   autoscaling:
     enabled: false

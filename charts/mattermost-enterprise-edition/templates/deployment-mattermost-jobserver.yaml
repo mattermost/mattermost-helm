@@ -37,15 +37,15 @@ spec:
     spec:
       {{- if .Values.global.features.jobserver.nodeSelector }}
       nodeSelector:
-        {{ toYaml .Values.global.features.jobserver.nodeSelector | indent 8 }}
+        {{- toYaml .Values.global.features.jobserver.nodeSelector | nindent 8 }}
       {{- end }}
       {{- if .Values.global.features.jobserver.affinity }}
       affinity:
-        {{ toYaml .Values.global.features.jobserver.affinity | indent 8 }}
+        {{- toYaml .Values.global.features.jobserver.affinity | nindent 8 }}
       {{- end }}
       {{- if .Values.global.features.jobserver.tolerations }}
       tolerations:
-        {{ toYaml .Values.global.features.jobserver.tolerations | indent 8 }}
+      {{- toYaml .Values.global.features.jobserver.tolerations | nindent 6 }}
       {{- end }}
       {{- if .Values.mattermostApp.securityContext }}
       securityContext:
@@ -67,17 +67,35 @@ spec:
         command: ["mattermost", "jobserver"]
         env:
         - name: MM_CONFIG
-{{- if .Values.global.features.database.useInternal }}
-          value: "mysql://{{ .Values.mysqlha.mysqlha.mysqlUser }}:{{ .Values.mysqlha.mysqlha.mysqlPassword }}@tcp({{ .Release.Name }}-mysqlha-0.{{ .Release.Name }}-mysqlha:3306)/{{ .Values.mysqlha.mysqlha.mysqlDatabase }}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
-{{- else }}
-          value: "{{ .Values.global.features.database.external.driver }}://{{ .Values.global.features.database.external.dataSource }}"
-{{- end }}
+          valueFrom:
+            secretKeyRef:
+           {{- if .Values.global.features.database.existingDatabaseSecret }}
+              name: {{ .Values.global.features.database.existingDatabaseSecret.name }}
+              key: {{ .Values.global.features.database.existingDatabaseSecret.key }}
+           {{- else }}
+              name: {{ include "mattermost-enterprise-edition.fullname" . }}-mattermost-dbsecret
+              key: mattermost.dbsecret
+           {{- end }}
+        {{- with .Values.global.features.jobserver.extraEnv }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         volumeMounts:
+        {{- if .Values.global.existingLicenseSecret.name }}
+        - mountPath: /mattermost/{{.Values.global.existingLicenseSecret.key }}
+          name: mattermost-license
+          subPath: {{.Values.global.existingLicenseSecret.key }}
+        {{- else }}
         - mountPath: /mattermost/mattermost.mattermost-license
           name: mattermost-license
           subPath: mattermost.mattermost-license
+        {{- end }}
       volumes:
       - name: mattermost-license
         secret:
+          {{- if .Values.global.existingLicenseSecret.name }}
+          secretName: {{ .Values.global.existingLicenseSecret.name }}
+          {{- else }}
           secretName: {{ include "mattermost-enterprise-edition.fullname" . }}-mattermost-license
+          {{- end }}
+
 {{- end -}}

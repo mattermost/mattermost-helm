@@ -42,25 +42,33 @@ spec:
               name: push-config-template
               subPath: push-config.json
           {{- if .Values.applePushSettings.apple.privateCert }}
-            - mountPath: /mattermost-push-proxy/certs/apple-push-cert.pem
+            - mountPath: /certs/apple-push-cert.pem
               name: apple-push-cert
               subPath: apple-push-cert.pem
           {{- end }}
           {{- if .Values.applePushSettings.apple_rn.privateCert }}
-            - mountPath: /mattermost-push-proxy/certs/apple-rn-push-cert.pem
+            - mountPath: /certs/apple-rn-push-cert.pem
               name: apple-rn-push-cert
               subPath: apple-rn-push-cert.pem
           {{- end }}
           {{- if .Values.applePushSettings.apple_rnbeta.privateCert }}
-            - mountPath: /mattermost-push-proxy/certs/apple-rnbeta-push-cert.pem
+            - mountPath: /certs/apple-rnbeta-push-cert.pem
               name: apple-rnbeta-push-cert
               subPath: apple-rnbeta-push-cert.pem
           {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
-    {{- if .Values.nodeSelector }}
+    {{- with .Values.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
         - name: push-config-template

@@ -10,8 +10,8 @@ metadata:
     name: {{ template "minio-operator.namespace" . }}
   name: {{ template "minio-operator.namespace" . }}
   annotations:
-    "helm.sh/hook": pre-install
     "helm.sh/hook-delete-policy" : post-delete
+    "helm.sh/hook-weight": "-10"    
 spec:
   finalizers:
   - kubernetes

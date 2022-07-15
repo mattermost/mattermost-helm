@@ -46,9 +46,67 @@ provide you with a custom message on what you need to change in your
 configuration. Note that this failure will occur before any changes have been
 made to the k8s cluster.
 
-## Upgrading  the Chart to 4.0.0+
+## Upgrading the Chart to 4.0.0+
 
 The Chart version 4.0.0+ supports only Helm v3, follow the [guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/)
+
+## Upgrading the Chart to 5.0.0+
+
+There were some changes that was introduced in Mattermost version 5.30+ that made this helm chart incompatible and caused the upgrade to fail. To fix that a new Major version of the chart was released, and now the configuration is moved to the database and environment variables.
+
+Steps to migrate:
+
+1 - Copy the existing configuration file from your Secret save it (for backup)
+
+```
+$ kubectl get secrets mm-te-mattermost-team-edition-config-json -o=go-template='{{index .data "config.json"}}' | base64 -d | jq . > config-mm.json
+```
+
+2 - Access the Mattermost pod
+
+```
+$ kubectl exec -it mm-te-mattermost-team-edition-799cc8b475-twglt /bin/sh
+```
+
+3 - Copy the exist config.json to a temp folder, run this inside the container you accessed on Item 2
+
+```
+$ cp config/config.json /tmp
+```
+
+4 - Migrate the config.json to the database (run inside the container that you accessed in the Item 2)
+
+```
+~ $ ./bin/mattermost config migrate /tmp/config.json "mysql://mmuser:mmuser123@tcp(mm-te-mysql:3306)/mattermost?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
+{"level":"warn","msg":"DefaultServerLocale must be one of the supported locales. Setting DefaultServerLocale to en as default value."}
+{"level":"warn","msg":"DefaultClientLocale must be one of the supported locales. Setting DefaultClientLocale to en as default value."}
+{"level":"warn","msg":"DefaultServerLocale must be one of the supported locales. Setting DefaultServerLocale to en as default value."}
+{"level":"warn","msg":"DefaultClientLocale must be one of the supported locales. Setting DefaultClientLocale to en as default value."}
+{"level":"info","msg":"Successfully migrated config."}
+```
+
+5 - Update the helm repo
+
+```
+$ helm repo update
+```
+
+6 - Upgrade your mattermost helm, check your existing values, you remove the section `config.json` from your custom values
+and **important** need to keep the existing image tag in this case was 5.29.0
+
+```
+$ helm upgrade  mm-te -f custom_values.yaml --set image.tag=5.29.0 mattermost/mattermost-team-edition
+```
+
+7 - It should deploy and in a few seconds the new Pod for the Mattermost server should be up and running
+
+8 - After all up and running you can upgrade it again to get the latest image tag
+
+```
+$ helm upgrade  mm-te -f custom_values.yaml mattermost/mattermost-team-edition
+```
+
+If in your `custom_values.yaml` you set the image.tag, please update that to the latest available, at the time of this doc was write the version is `5.35.3`
 
 ## Uninstalling the Chart
 
@@ -68,7 +126,7 @@ Parameter                             | Description                             
 ---                                   | ---                                                                                             | ---
 `configJSON`                          | The `config.json` configuration to be used by the mattermost server. The values you provide will by using Helm's merging behavior override individual default values only. See the [example configuration](#example-configuration) and the [Mattermost documentation](https://docs.mattermost.com/administration/config-settings.html) for details. |  See `configJSON` in [values.yaml](https://github.com/helm/charts/blob/master/stable/mattermost-team-edition/values.yaml)
 `image.repository`                    | Container image repository                                                                      | `mattermost/mattermost-team-edition`
-`image.tag`                           | Container image tag                                                                             | `5.13.2`
+`image.tag`                           | Container image tag                                                                             | `5.39.0`
 `image.imagePullPolicy`               | Container image pull policy                                                                     | `IfNotPresent`
 `initContainerImage.repository`       | Init container image repository                                                                 | `appropriate/curl`
 `initContainerImage.tag`              | Init container image tag                                                                        | `latest`
@@ -91,12 +149,15 @@ Parameter                             | Description                             
 `service.annotations`                 | Service annotations                                                                             | `{}`
 `service.loadBalancerIP`              | A user-specified IP address for service type LoadBalancer to use as External IP (if supported)  | `nil`
 `service.loadBalancerSourceRanges`    | list of IP CIDRs allowed access to load balancer (if supported)                                 | `[]`
+`serviceAccount.create`               | Enables creation and use of a service account for the mattermost pod                            | `false`
+`serviceAccount.name`                 | Name of the service account to create and use                                                   | ""
+`serviceAccount.annotations`          | The service account annotations                                                                 | `{}`
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```bash
 $ helm install --name my-release \
-  --set image.tag=5.12.4 \
+  --set image.tag=5.35.3 \
   --set mysql.mysqlUser=sampleUser \
   --set mysql.mysqlPassword=samplePassword \
   mattermost/mattermost-team-edition
@@ -144,7 +205,7 @@ To use an external **PostgreSQL**, You need to set Mattermost **externalDB** con
 externalDB:
   enabled: true
   externalDriverType: "postgres"
-  externalConnectionString: "postgres://<USERNAME>:<PASSWORD>@<HOST>:5432/<DATABASE_NAME>?sslmode=disable&connect_timeout=10"
+  externalConnectionString: "<USERNAME>:<PASSWORD>@<HOST>:5432/<DATABASE_NAME>?sslmode=disable&connect_timeout=10"
 ```
 
 #### MySQL
@@ -186,7 +247,7 @@ Perform local installation
 
 ```bash
 $ helm install . \
-    --set image.tag=5.12.4 \
+    --set image.tag=5.35.3 \
     --set mysql.mysqlUser=sampleUser \
     --set mysql.mysqlPassword=samplePassword
 ```
@@ -195,7 +256,7 @@ $ helm install . \
 ```bash
 $ helm install . \
     --generate-name \
-    --set image.tag=5.12.4 \
+    --set image.tag=5.35.3 \
     --set mysql.mysqlUser=sampleUser \
     --set mysql.mysqlPassword=samplePassword
 ```
