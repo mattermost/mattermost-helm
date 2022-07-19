@@ -83,4 +83,6 @@ nodeSelector: {}
 
 tolerations: {}
 
+dnsConfig: {}
+
 affinity: {}
