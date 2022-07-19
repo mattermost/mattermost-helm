@@ -62,6 +62,52 @@ entries:
     version: 0.1.0
   mattermost-enterprise-edition:
   - apiVersion: v2
+    appVersion: 7.1.1
+    created: "2022-07-19T10:45:25.930466817Z"
+    dependencies:
+    - name: mattermost-elasticsearch
+      repository: ""
+      version: 0.1.0
+    - name: mattermost-grafana
+      repository: ""
+      version: 0.3.6
+    - condition: global.features.database.useInternal
+      name: mysqlha
+      repository: https://charts.helm.sh/incubator
+      version: 2.0.0
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.helm.sh/stable
+      version: 5.0.26
+    - condition: global.features.grafana.enabled
+      name: prometheus
+      repository: https://charts.helm.sh/stable
+      version: 11.4.0
+    description: Mattermost Enterprise server with high availitibity.
+    digest: 119adaf02135ea62b808995cc9d21ad7a409d49d1af5e5530c023cf85858da30
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - messaging
+    - team colaboration
+    maintainers:
+    - email: joram@mattermost.com
+      name: jwilander
+    - email: stylianos@mattermost.com
+      name: stylianosrigas
+    - email: spiros.economakis@mattermost.com
+      name: spirosoik
+    name: mattermost-enterprise-edition
+    sources:
+    - https://github.com/mattermost/mattermost-server
+    - https://github.com/mattermost/mattermost-helm
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-enterprise-edition-2.6.9/mattermost-enterprise-edition-2.6.9.tgz
+    version: 2.6.9
+  - apiVersion: v2
     appVersion: 7.1.0
     created: "2022-07-18T14:04:32.834048237Z"
     dependencies:
@@ -4363,4 +4409,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2022-07-18T14:08:00.297452289Z"
+generated: "2022-07-19T10:45:25.931328855Z"
