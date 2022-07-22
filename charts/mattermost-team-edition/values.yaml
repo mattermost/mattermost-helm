@@ -54,6 +54,11 @@ service:
   # loadBalancerIP:
   loadBalancerSourceRanges: []
 
+## Enable calls
+callService:
+  internalPort: 8443
+  hostPort: 8443
+
 ingress:
   enabled: false
   path: /

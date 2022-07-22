@@ -78,6 +78,10 @@ spec:
         - name: http
           containerPort: {{ .Values.service.internalPort }}
           protocol: TCP
+        - name: calls
+          containerPort: {{ .Values.callService.internalPort }}
+          hostPort: {{ .Values.callService.hostPort }
+          protocol: UDP
         livenessProbe:
           initialDelaySeconds: 90
           timeoutSeconds: 5
