@@ -23,4 +23,4 @@ tags
 charts/mattermost-enterprise-edition/charts/*.tgz
 charts/mattermost-team-edition/charts/*.tgz
 
-vscode/
+.vscode/
