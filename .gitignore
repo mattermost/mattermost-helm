@@ -24,3 +24,6 @@ charts/mattermost-enterprise-edition/charts/*.tgz
 charts/mattermost-team-edition/charts/*.tgz
 
 .vscode/
+.helm
+.cr-index
+.cr-release-packages
