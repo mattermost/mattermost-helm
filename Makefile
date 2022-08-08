@@ -11,6 +11,7 @@ DOCKER_IMAGE_CT ?= quay.io/helmpack/chart-testing:v3.7.0@sha256:2f87e56a0cebc6d9
 # Contains chart-releaser cli.
 DOCKER_IMAGE_CR ?= quay.io/helmpack/chart-releaser:v1.4.0@sha256:f9e6b06a1d60bcd94a2a6a4988a59233936239347c69b4ab2d99916ffc848a5b
 
+# Define all shell scripts here, the list will be provided to lint target as arguments.
 VERIFY_SCRIPTS += /src/tests/e2e-kind.sh /src/scripts/release.sh
 
 CT_CONFIG ?= tests/ct.yaml
@@ -20,8 +21,8 @@ CLUSTER_NAME ?= mattermost-helm-test
 GIT_USER ?= mattermod
 GIT_EMAIL ?= dev-ops@mattermost.com
 
- .PHONY: lint
- lint: lint-scripts lint-charts ## Lint helm charts and shell scripts
+.PHONY: lint
+lint: lint-scripts lint-charts ## Lint helm charts and shell scripts
 
  .PHONY: lint-charts
 lint-charts: ## Validate helm charts
