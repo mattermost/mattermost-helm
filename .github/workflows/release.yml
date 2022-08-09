@@ -1,0 +1,24 @@
+name: "Release"
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency: release
+
+jobs:
+  release-charts:
+    name: Release Charts
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout everything since ct uses git diff to determine charts
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b #v3.0.2
+        with:
+          fetch-depth: 0 
+      - name: Release Charts
+        run: make release
+        env:
+          CR_TOKEN: ${{ github.token }}
