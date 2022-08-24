@@ -1,0 +1,34 @@
+name: "Validate PR"
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  lint:
+    name: Lint Project
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout everything since ct uses git diff to determine charts
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b #v3.0.2
+        with:
+          fetch-depth: 0 
+      - name: Execute Lint
+        run: make lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs:
+      - lint
+    steps:
+      # Checkout everything since ct uses git diff to determine charts
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b #v3.0.2
+        with:
+          fetch-depth: 0 
+      - name: Execute Tests
+        run: make test
+
+
