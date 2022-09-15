@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "mattermost-rtcd.fullname" . }}
+  labels:
+    {{- include "mattermost-rtcd.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "mattermost-rtcd.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    {{- if eq .Values.daemonset.updateStrategy "RollingUpdate" }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.daemonset.maxUnavailable }}
+    {{- end }}
+    type: {{ .Values.daemonset.updateStrategy }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mattermost-rtcd.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      serviceAccountName: {{ include "mattermost-rtcd.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.daemonset.terminationGracePeriod }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.daemonset.environmentVariables }}
+          env:
+            {{- range $key, $val := .Values.daemonset.environmentVariables }}
+            - name: {{ $key }}
+              value: {{ $val }}
+            {{- end}}
+          {{- end }}
+          ports:
+            - name: api
+              containerPort: {{ .Values.service.APIport }}
+              hostPort: {{ .Values.service.APIport }}
+              protocol: TCP              
+            - name: rtc
+              containerPort: {{ .Values.service.RTCport }}
+              hostPort: {{ .Values.service.RTCport }}
+              protocol: UDP
+          livenessProbe:
+            httpGet:
+              path: /version
+              port: api
+          readinessProbe:
+            httpGet:
+              path: /version
+              port: api
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,18 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -o errexit
 set -o nounset
 set -o pipefail
 
-: "${CR_TOKEN:?Environment variable CR_TOKEN must be set}"
-: "${GIT_REPOSITORY_URL:?Environment variable GIT_REPOSITORY_URL must be set}"
-: "${GIT_USERNAME:?Environment variable GIT_USERNAME must be set}"
-: "${GIT_EMAIL:?Environment variable GIT_EMAIL must be set}"
-
 readonly REPO_ROOT="${REPO_ROOT:-$(git rev-parse --show-toplevel)}"
 
 main() {
     pushd "$REPO_ROOT" > /dev/null
+
+    git config user.name "${GIT_USER}"
+    git config user.email "${GIT_EMAIL}"
 
     echo "Fetching tags..."
     git fetch --tags
@@ -33,11 +31,7 @@ main() {
         exit
     fi
 
-    rm -rf .cr-release-packages
-    mkdir -p .cr-release-packages
-
-    rm -rf .cr-index
-    mkdir -p .cr-index
+    rm -rf .cr-release-packages .cr-index && mkdir -p .cr-release-packages .cr-index
 
     echo "Identifying changed charts since tag '$latest_tag'..."
 
@@ -45,7 +39,6 @@ main() {
     readarray -t changed_charts <<< "$(git diff --find-renames --name-only "$latest_tag_rev" -- charts | cut -d '/' -f 2 | uniq)"
 
     if [[ -n "${changed_charts[*]}" ]]; then
-        add_chart_repos
 
         for chart in "${changed_charts[@]}"; do
             echo "Packaging chart '$chart'..."
@@ -68,31 +61,42 @@ find_latest_tag() {
     fi
 }
 
-add_chart_repos() {
-    helm repo add incubator https://charts.helm.sh/incubator
-    helm repo add stable https://charts.helm.sh/stable
-}
-
 package_chart() {
     local chart="$1"
-    helm package "$chart" --destination .cr-release-packages --dependency-update
+    docker run --rm -u "$(id -u):$(id -g)" \
+        --entrypoint '/bin/sh' \
+        -v "$(pwd):/src" \
+        -w /src \
+        -e XDG_DATA_HOME="/src/.helm/data" \
+		-e XDG_CONFIG_HOME="/src/.helm/config" \
+		-e XDG_CACHE_HOME="/src/.helm/cache" \
+        "${DOCKER_IMAGE_CT}" \
+        -c \
+        "helm package $chart --destination .cr-release-packages --dependency-update"
+    
 }
 
 release_charts() {
-    cr upload -o mattermost -r mattermost-helm
+    docker run --rm -u "$(id -u):$(id -g)" \
+        -v "$(pwd):/src" \
+        -w /src \
+        -e CR_TOKEN="${CR_TOKEN}" \
+        "${DOCKER_IMAGE_CR}" \
+        upload -o mattermost -r mattermost-helm
 }
 
 update_index() {
-    cr index -o mattermost -r mattermost-helm -c https://helm.mattermost.com
-
-    git config user.email "$GIT_EMAIL"
-    git config user.name "$GIT_USERNAME"
+    docker run --rm -u "$(id -u):$(id -g)" \
+        -v "$(pwd):/src" \
+        -w /src \
+        "${DOCKER_IMAGE_CR}" \
+       index -o mattermost -r mattermost-helm -c https://helm.mattermost.com
 
     git checkout gh-pages
     cp --force .cr-index/index.yaml index.yaml
     git add index.yaml
     git commit --message="Update index.yaml" --signoff
-    git push "$GIT_REPOSITORY_URL" gh-pages
+    git push
 }
 
 main

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mattermost-rtcd.fullname" . }}
+  labels:
+    {{- include "mattermost-rtcd.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ .Values.service.APIport }}
+      targetPort: api
+      protocol: TCP
+      name: api
+    - port: {{ .Values.service.RTCport }}
+      targetPort: rtc
+      protocol: UDP
+      name: rtc
+  selector:
+    {{- include "mattermost-rtcd.selectorLabels" . | nindent 4 }}
