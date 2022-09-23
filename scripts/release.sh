@@ -13,7 +13,7 @@ main() {
 
     for chart in charts/*; do
         echo "Packaging chart '$chart'..."
-        package_chart $chart
+        package_chart "$chart"
     done
     release_charts
     sleep 30
