@@ -2,6 +2,38 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# The values beloew are for the mattermost custom resource
+# Full spec example can be found here: https://github.com/mattermost/mattermost-operator/blob/master/docs/examples/mattermost_full.yaml
+# Examples for mattermost spec can be found here: https://github.com/mattermost/mattermost-operator/tree/master/docs/examples
+# Enable the database, file storage operatorManaged below to run with in cluster database and file storage (not recommended for production scenario).
+mattermostCR:
+  enabled: true
+  name: mattermost-example
+  spec:
+    version: 7.2.0
+    replicas: 1
+    ingress:
+      enabled: true
+      host: example.mattermost-example.com
+    # database:
+    #   operatorManaged:                            # Operator managed database allows configuration of replicas, storage size and resource requirements. If the `size` is specified, it will override those values.
+    #     replicas: 1
+    #     resources:
+    #       requests:
+    #         cpu: 250m
+    #         memory: 512Mi
+    #     storageSize: 50Gi
+    #     type: mysql
+    # fileStore:
+    #   operatorManaged:                            # Operator managed file store allows configuration of replicas, storage size and resource requirements. If the `size` is specified, it will override those values.
+    #     replicas: 1
+    #     resources:
+    #       requests:
+    #         cpu: 150m
+    #         memory: 512Mi
+    #     storageSize: 50Gi
+
+# The values below are for the mattermost operator
 mattermostOperator:
   enabled: true
   replicas: 1
