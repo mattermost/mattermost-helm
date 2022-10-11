@@ -1,0 +1,14 @@
+{{- if and .Values.mattermostCR.enabled }}
+apiVersion: installation.mattermost.com/v1beta1
+kind: Mattermost
+metadata:
+  creationTimestamp: null
+  name: {{ .Values.mattermostCR.name }}
+  labels:
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/name: {{ template "mattermost-operator.name" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+{{ toYaml .Values.mattermostCR.spec | indent 2}}
+{{- end }}
