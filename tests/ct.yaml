@@ -4,4 +4,7 @@ chart-repos:
   - incubator=https://charts.helm.sh/incubator
   - stable=https://charts.helm.sh/stable
 helm-extra-args: --timeout 5m0s
+helm-repo-extra-args:
+  - incubator=--repository-config /tmp/helm/repo.yaml --repository-cache /tmp/helm/repository
+  - stable=--repository-config /tmp/helm/repo.yaml --repository-cache /tmp/helm/repository
 validate-maintainers: false
