@@ -28,7 +28,7 @@ if [[ "$cluster_name" != "${CLUSTER_NAME}" ]]; then
 fi
 
 docker run --rm -u "$(id -u):$(id -g)" --interactive --network host \
-    -entrypoint '/bin/sh' \
+    --entrypoint '/bin/sh' \
     -v "$HOME/.kube/config:/root/.kube/config" \
     -v "$(pwd):/src" \
     -w /src \
