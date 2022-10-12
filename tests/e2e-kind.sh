@@ -28,10 +28,11 @@ if [[ "$cluster_name" != "${CLUSTER_NAME}" ]]; then
 fi
 
 docker run --rm -u "$(id -u):$(id -g)" --interactive --network host \
-    -entrypoint '/bin/sh' \
-    -v "$HOME/.kube/config:/root/.kube/config" \
+    --entrypoint '/bin/sh' \
+    -v "$HOME/.kube/config:/src/.kube/config" \
     -v "$(pwd):/src" \
     -w /src \
+    -e KUBECONFIG='/src/.kube/config' \
     "${DOCKER_IMAGE_CT}" \
     -c \
     "ls > /dev/null && ct install --config ${CT_CONFIG}"
