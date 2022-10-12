@@ -23,9 +23,9 @@ spec:
       labels:
         {{- include "mattermost-rtcd.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
+    {{- if .Values.privateRegistry.enabled }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+        - name: {{ .Values.privateRegistry.imagePullSecret }}
       {{- end }}
       dnsPolicy: ClusterFirstWithHostNet
       hostNetwork: true

@@ -8,7 +8,12 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-imagePullSecrets: []
+  ## Specify image pull secret for private repository
+  ##
+privateRegistry:
+  enabled: false
+  imagePullSecret: <name of the secret>
+
 nameOverride: ""
 fullnameOverride: ""
 
