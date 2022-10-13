@@ -5,12 +5,15 @@ set -o nounset
 set -o pipefail
 
 readonly REPO_ROOT="${REPO_ROOT:-$(git rev-parse --show-toplevel)}"
+CR_INDEX_DIR=.cr-index
+CR_RELEASE_PACKAGES_DIR=.cr-release-packages
 
 main() {
     pushd "$REPO_ROOT" > /dev/null
     git config user.name "${GIT_USER}"
     git config user.email "${GIT_EMAIL}"
 
+    rm -rf $CR_RELEASE_PACKAGES_DIR $CR_INDEX_DIR && mkdir -p $CR_RELEASE_PACKAGES_DIR $CR_INDEX_DIR
     for chart in charts/*; do
         echo "Packaging chart '$chart'..."
         package_chart "$chart"
@@ -57,6 +60,10 @@ update_index() {
         -w /src \
         "${DOCKER_IMAGE_CR}" \
        index -o mattermost -r mattermost-helm -c https://helm.mattermost.com
+    if [[ ! -d "$CR_INDEX_DIR" ]]; then
+        echo "No changes found for the index.yaml"
+        exit 0
+    fi
 
     git checkout gh-pages
     cp --force .cr-index/index.yaml index.yaml
