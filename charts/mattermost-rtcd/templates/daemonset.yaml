@@ -47,7 +47,7 @@ spec:
             {{- end}}
           {{- end }}
           {{- if .Values.daemonset.extraVolumeMounts }}
-          volumeMounts: {{ toYaml .Values.daemonset.extraVolumeMounts | nindent 10 }}
+          volumeMounts: {{ toYaml .Values.daemonset.extraVolumeMounts | nindent 12 }}
           {{- end }}
           ports:
             - name: api
