@@ -46,6 +46,9 @@ spec:
               value: {{ $val }}
             {{- end}}
           {{- end }}
+          {{- if .Values.daemonset.extraVolumeMounts }}
+          volumeMounts: {{ toYaml .Values.daemonset.extraVolumeMounts | nindent 12 }}
+          {{- end }}
           ports:
             - name: api
               containerPort: {{ .Values.service.APIport }}
@@ -80,4 +83,7 @@ spec:
       {{- with .Values.dnsConfig }}
       dnsConfig:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.daemonset.extraVolumes }}
+      volumes: {{ toYaml .Values.daemonset.extraVolumes | nindent 8 }}
       {{- end }}

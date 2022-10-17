@@ -5,53 +5,22 @@ set -o nounset
 set -o pipefail
 
 readonly REPO_ROOT="${REPO_ROOT:-$(git rev-parse --show-toplevel)}"
+CR_INDEX_DIR=.cr-index
+CR_RELEASE_PACKAGES_DIR=.cr-release-packages
 
 main() {
     pushd "$REPO_ROOT" > /dev/null
-
     git config user.name "${GIT_USER}"
     git config user.email "${GIT_EMAIL}"
 
-    echo "Fetching tags..."
-    git fetch --tags
-
-    local latest_tag
-    latest_tag=$(find_latest_tag)
-
-    local latest_tag_rev
-    latest_tag_rev=$(git rev-parse --verify "$latest_tag")
-    echo "$latest_tag_rev $latest_tag (latest tag)"
-
-    local head_rev
-    head_rev=$(git rev-parse --verify HEAD)
-    echo "$head_rev HEAD"
-
-    if [[ "$latest_tag_rev" == "$head_rev" ]]; then
-        echo "No code changes. Nothing to release."
-        exit
-    fi
-
-    rm -rf .cr-release-packages .cr-index && mkdir -p .cr-release-packages .cr-index
-
-    echo "Identifying changed charts since tag '$latest_tag'..."
-
-    local changed_charts=()
-    readarray -t changed_charts <<< "$(git diff --find-renames --name-only "$latest_tag_rev" -- charts | cut -d '/' -f 2 | uniq)"
-
-    if [[ -n "${changed_charts[*]}" ]]; then
-
-        for chart in "${changed_charts[@]}"; do
-            echo "Packaging chart '$chart'..."
-            package_chart "charts/$chart"
-        done
-
-        release_charts
-        sleep 30
-        update_index
-    else
-        echo "Nothing to do. No chart changes detected."
-    fi
-
+    rm -rf $CR_RELEASE_PACKAGES_DIR $CR_INDEX_DIR && mkdir -p $CR_RELEASE_PACKAGES_DIR $CR_INDEX_DIR
+    for chart in charts/*; do
+        echo "Packaging chart '$chart'..."
+        package_chart "$chart"
+    done
+    release_charts
+    sleep 30
+    update_index
     popd > /dev/null
 }
 
@@ -82,7 +51,7 @@ release_charts() {
         -w /src \
         -e CR_TOKEN="${CR_TOKEN}" \
         "${DOCKER_IMAGE_CR}" \
-        upload -o mattermost -r mattermost-helm
+        upload --skip-existing -o mattermost -r mattermost-helm
 }
 
 update_index() {
@@ -91,6 +60,10 @@ update_index() {
         -w /src \
         "${DOCKER_IMAGE_CR}" \
        index -o mattermost -r mattermost-helm -c https://helm.mattermost.com
+    if [[ ! -d "$CR_INDEX_DIR" ]]; then
+        echo "No changes found for the index.yaml"
+        exit 0
+    fi
 
     git checkout gh-pages
     cp --force .cr-index/index.yaml index.yaml
