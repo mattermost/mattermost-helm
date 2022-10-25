@@ -14,6 +14,10 @@ spec:
   - name: {{ .Release.Name }}-app-test
     image: bats/bats:v1.1.0
     imagePullPolicy: Always
+    {{- with .Values.imagePullSecrets }}
+    imagePullSecrets:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     command: ["/opt/bats/bin/bats", "-t", "/tests/run.sh"]
     volumeMounts:
     - mountPath: /tests
