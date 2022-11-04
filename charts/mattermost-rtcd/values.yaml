@@ -43,6 +43,16 @@ daemonset:
   maxUnavailable: 1     # Only used when updateStrategy is set to "RollingUpdate"
   updateStrategy: RollingUpdate
   terminationGracePeriod: 18000     # 5 hours
+  # Add additional mounts
+  extraVolumes: []
+    # - hostPath:
+    #     path: /var/log
+    #   name: varlog
+  extraVolumeMounts: []
+    # - name: varlog
+    #   mountPath: /host/var/log
+    #   readOnly: true
+  ## Allows the specification of additional environment variables for Mattermost
 
 service:
   # APIport is the port that websocket and API uses
