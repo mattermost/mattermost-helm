@@ -115,22 +115,22 @@ global:
       tolerations: []
 
 saml:
-  enable: false,
-  verify: true,
-  encrypt: true,
-  idpUrl: "",
-  idpDescriptorUrl: "",
-  assertionConsumerServiceURL: "",
-  idpCertificateFile: "",
-  publicCertificateFile: "",
-  privateKeyFile: "",
-  firstNameAttribute: "",
-  lastNameAttribute: "",
-  emailAttribute: "",
-  usernameAttribute: "",
-  nicknameAttribute: "",
-  localeAttribute: "",
-  positionAttribute: "",
+  enable: false
+  verify: true
+  encrypt: true
+  idpUrl: ""
+  idpDescriptorUrl: ""
+  assertionConsumerServiceURL: ""
+  idpCertificateFile: ""
+  publicCertificateFile: ""
+  privateKeyFile: ""
+  firstNameAttribute: ""
+  lastNameAttribute: ""
+  emailAttribute: ""
+  usernameAttribute: ""
+  nicknameAttribute: ""
+  localeAttribute: ""
+  positionAttribute: ""
 
 initContainerImage:
   repository: appropriate/curl
