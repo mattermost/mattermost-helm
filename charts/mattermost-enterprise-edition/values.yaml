@@ -114,6 +114,24 @@ global:
       # Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
       tolerations: []
 
+saml:
+  enable: false,
+  verify: true,
+  encrypt: true,
+  idpUrl: "",
+  idpDescriptorUrl: "",
+  assertionConsumerServiceURL: "",
+  idpCertificateFile: "",
+  publicCertificateFile: "",
+  privateKeyFile: "",
+  firstNameAttribute: "",
+  lastNameAttribute: "",
+  emailAttribute: "",
+  usernameAttribute: "",
+  nicknameAttribute: "",
+  localeAttribute: "",
+  positionAttribute: "",
+
 initContainerImage:
   repository: appropriate/curl
   tag: latest
