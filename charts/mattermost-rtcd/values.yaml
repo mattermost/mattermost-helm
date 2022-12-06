@@ -2,11 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Configure  Deployment to be either daemonSet or Deployment
+deploymentType: DaemonSet
+
 image:
   repository: mattermost/rtcd
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "v0.7.0"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -33,49 +36,46 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-daemonset:
+
+Configuration:
+
+  # Replicas should be defined if deploymentType is Deployment
+    # replicas: 1
+
+  # host Network should be set to false if using nodePort
+  hostNetwork: true
+
   environmentVariables:
     # All env vars that exist for RTCD: https://github.com/mattermost/rtcd/blob/master/docs/env_config.md
+    # Example configuration for RTCD: https://github.com/mattermost/rtcd/blob/master/config/config.sample.toml
     # RTCD_API_SECURITY_ALLOWSELFREGISTRATION: "\"true\""
     # RTCD_LOGGER_CONSOLELEVEL: "\"DEBUG\""
     # RTCD_LOGGER_ENABLEFILE: "\"false\""
+    RTCD_STORE_DATASOURCE: "/tmp/rtcd_db"
 
   maxUnavailable: 1     # Only used when updateStrategy is set to "RollingUpdate"
   updateStrategy: RollingUpdate
   terminationGracePeriod: 18000     # 5 hours
   # Add additional mounts
-  extraVolumes: []
-    # - hostPath:
-    #     path: /var/log
-    #   name: varlog
-  extraVolumeMounts: []
-    # - name: varlog
-    #   mountPath: /host/var/log
-    #   readOnly: true
+  extraVolumes: 
+    - name: tmp-volume
+      emptyDir: {}
+  extraVolumeMounts: 
+    - mountPath: /tmp
+      name: tmp-volume
   ## Allows the specification of additional environment variables for Mattermost
 
+
 service:
+  type: ClusterIP
+  ClusterIP: None
   # APIport is the port that websocket and API uses
-  APIport: 8045
-  # RTCport is the UDP port that RTC uses
-  RTCport: 8443
-
-ingress:
-  enabled: false
-  ingressclassname: nginx-calls
-  annotations:
-    # nginx.ingress.kubernetes.io/proxy-read-timeout: "86400"
-    # nginx.ingress.kubernetes.io/proxy-connect-timeout: "86400"
-    # nginx.ingress.kubernetes.io/proxy-send-timeout: "86400"
-    # nginx.ingress.kubernetes.io/proxy-buffer-size: "64k"
-    # nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
-    # nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-    # nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
-  hosts:
-    - host: mattermost-rtcd.local
-      paths:
-        - "/"
-
+  apiPort:
+    port: 8045
+    # nodePort:
+  rtcPort:
+    port: 8443
+    # nodePort: 
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

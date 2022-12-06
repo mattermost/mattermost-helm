@@ -5,15 +5,24 @@ metadata:
   labels:
     {{- include "mattermost-rtcd.labels" . | nindent 4 }}
 spec:
-  clusterIP: None
+  type: {{ .Values.service.type }}
+  {{- if eq .Values.service.type "ClusterIP" }}
+  clusterIP: {{ .Values.service.ClusterIP }}
+  {{- end }}
   ports:
-    - port: {{ .Values.service.APIport }}
+    - port: {{ .Values.service.apiPort.port }}
+      {{- if eq .Values.service.type "NodePort" }}
+      nodePort: {{ .Values.service.apiPort.nodePort }}
+      {{- end }}
       targetPort: api
       protocol: TCP
       name: api
-    - port: {{ .Values.service.RTCport }}
+    - port: {{ .Values.service.rtcPort.port }}
       targetPort: rtc
       protocol: UDP
       name: rtc
+      {{- if eq .Values.service.type "NodePort" }}
+      nodePort: {{ .Values.service.rtcPort.NodePort  }}
+      {{- end }}
   selector:
     {{- include "mattermost-rtcd.selectorLabels" . | nindent 4 }}

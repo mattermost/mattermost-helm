@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: {{ .Values.deploymentType }}
 metadata:
   name: {{ include "mattermost-rtcd.fullname" . }}
   labels:
@@ -9,11 +9,11 @@ spec:
     matchLabels:
       {{- include "mattermost-rtcd.selectorLabels" . | nindent 6 }}
   updateStrategy:
-    {{- if eq .Values.daemonset.updateStrategy "RollingUpdate" }}
+    {{- if eq .Values.Configuration.updateStrategy "RollingUpdate" }}
     rollingUpdate:
-      maxUnavailable: {{ .Values.daemonset.maxUnavailable }}
+      maxUnavailable: {{ .Values.Configuration.maxUnavailable }}
     {{- end }}
-    type: {{ .Values.daemonset.updateStrategy }}
+    type: {{ .Values.Configuration.updateStrategy }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -23,14 +23,19 @@ spec:
       labels:
         {{- include "mattermost-rtcd.selectorLabels" . | nindent 8 }}
     spec:
+      {{- if eq .Values.deploymentType "Deployment" }}
+      replicas: {{ .Values.Configuration.replicas | default 1 }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.Configuration.hostNetwork }}
       dnsPolicy: ClusterFirstWithHostNet
       hostNetwork: true
+      {{- end }}
       serviceAccountName: {{ include "mattermost-rtcd.serviceAccountName" . }}
-      terminationGracePeriodSeconds: {{ .Values.daemonset.terminationGracePeriod }}
+      terminationGracePeriodSeconds: {{ .Values.Configuration.terminationGracePeriod }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -39,24 +44,28 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.daemonset.environmentVariables }}
+          {{- if .Values.Configuration.environmentVariables }}
           env:
-            {{- range $key, $val := .Values.daemonset.environmentVariables }}
+            {{- range $key, $val := .Values.Configuration.environmentVariables }}
             - name: {{ $key }}
               value: {{ $val }}
             {{- end}}
           {{- end }}
-          {{- if .Values.daemonset.extraVolumeMounts }}
-          volumeMounts: {{ toYaml .Values.daemonset.extraVolumeMounts | nindent 12 }}
+          {{- if .Values.Configuration.extraVolumeMounts }}
+          volumeMounts: {{ toYaml .Values.Configuration.extraVolumeMounts | nindent 12 }}
           {{- end }}
           ports:
             - name: api
-              containerPort: {{ .Values.service.APIport }}
-              hostPort: {{ .Values.service.APIport }}
+              containerPort: {{ .Values.service.apiPort.port }}
+              {{- if .Values.Configuration.hostNetwork }}
+              hostPort: {{ .Values.service.apiPort.port }}
+              {{- end }}
               protocol: TCP              
             - name: rtc
-              containerPort: {{ .Values.service.RTCport }}
-              hostPort: {{ .Values.service.RTCport }}
+              containerPort: {{ .Values.service.rtcPort.port }}
+              {{- if .Values.Configuration.hostNetwork }}
+              hostPort: {{ .Values.service.rtcPort.port }}
+              {{- end }}
               protocol: UDP
           livenessProbe:
             httpGet:
@@ -84,6 +93,6 @@ spec:
       dnsConfig:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.daemonset.extraVolumes }}
-      volumes: {{ toYaml .Values.daemonset.extraVolumes | nindent 8 }}
+      {{- if .Values.Configuration.extraVolumes }}
+      volumes: {{ toYaml .Values.Configuration.extraVolumes | nindent 8 }}
       {{- end }}
