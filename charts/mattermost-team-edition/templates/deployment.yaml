@@ -63,11 +63,13 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.imagePullPolicy }}
         env:
+        {{- if .Values.externalDB.generateSecretWithConnectionString }}
         - name: MM_CONFIG
           valueFrom:
             secretKeyRef:
               name: {{ include "mattermost-team-edition.fullname" . }}-mattermost-dbsecret
               key: mattermost.dbsecret
+        {{- end }}
         {{- if .Values.extraEnvVars }}
           {{- .Values.extraEnvVars | toYaml | nindent 8 }}
         {{- end }}
