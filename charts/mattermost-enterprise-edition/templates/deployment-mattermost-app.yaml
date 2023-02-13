@@ -193,3 +193,8 @@ spec:
 {{- if .Values.mattermostApp.extraVolumes }}
 {{ toYaml .Values.mattermostApp.extraVolumes | indent 6 }}
 {{- end }}
+      {{- with .Values.mattermostApp.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
