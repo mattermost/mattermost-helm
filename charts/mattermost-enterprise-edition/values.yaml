@@ -125,7 +125,7 @@ mattermostApp:
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
-    tag: 7.8.1@sha256:5d28ddf0313a071578321d5f996ab8befa9f56e6e82d6ea92477c424bb6f4c70
+    tag: 7.9.0@sha256:f7aede33240926f11bf13b4c51ebc5fd3866500f1063f385807439502634c9d7
     pullPolicy: IfNotPresent
 
   strategy:
