@@ -53,9 +53,7 @@ mattermostOperator:
 
   ## Specify image pull secret for private repository
   ##
-  privateRegistry:
-    enabled: false
-    imagePullSecret: <name of the secret>
+imagePullSecrets: []
 
 ### IMPORTANT: Below operators should be deployed separately in production environments. ###
 minioOperator:
