@@ -1090,8 +1090,7 @@ spec:
                   running.
                 properties:
                   exec:
-                    description: One and only one of the following should be specified.
-                      Exec specifies the action to take.
+                    description: Exec specifies the action to take.
                     properties:
                       command:
                         description: Command is the command line to execute inside
@@ -1111,6 +1110,25 @@ spec:
                       value is 1.
                     format: int32
                     type: integer
+                  grpc:
+                    description: GRPC specifies an action involving a GRPC port. This
+                      is an alpha field and requires enabling GRPCContainerProbe feature
+                      gate.
+                    properties:
+                      port:
+                        description: Port number of the gRPC service. Number must
+                          be in the range 1 to 65535.
+                        format: int32
+                        type: integer
+                      service:
+                        description: "Service is the name of the service to place
+                          in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+                          \n If this is not specified, the default behavior is defined
+                          by gRPC."
+                        type: string
+                    required:
+                    - port
+                    type: object
                   httpGet:
                     description: HTTPGet specifies the http request to perform.
                     properties:
@@ -1171,9 +1189,7 @@ spec:
                     format: int32
                     type: integer
                   tcpSocket:
-                    description: 'TCPSocket specifies an action involving a TCP port.
-                      TCP hooks not yet supported TODO: implement a realistic TCP
-                      lifecycle hook'
+                    description: TCPSocket specifies an action involving a TCP port.
                     properties:
                       host:
                         description: 'Optional: Host name to connect to, defaults
@@ -1396,8 +1412,7 @@ spec:
                   to accept traffic.
                 properties:
                   exec:
-                    description: One and only one of the following should be specified.
-                      Exec specifies the action to take.
+                    description: Exec specifies the action to take.
                     properties:
                       command:
                         description: Command is the command line to execute inside
@@ -1417,6 +1432,25 @@ spec:
                       value is 1.
                     format: int32
                     type: integer
+                  grpc:
+                    description: GRPC specifies an action involving a GRPC port. This
+                      is an alpha field and requires enabling GRPCContainerProbe feature
+                      gate.
+                    properties:
+                      port:
+                        description: Port number of the gRPC service. Number must
+                          be in the range 1 to 65535.
+                        format: int32
+                        type: integer
+                      service:
+                        description: "Service is the name of the service to place
+                          in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+                          \n If this is not specified, the default behavior is defined
+                          by gRPC."
+                        type: string
+                    required:
+                    - port
+                    type: object
                   httpGet:
                     description: HTTPGet specifies the http request to perform.
                     properties:
@@ -1477,9 +1511,7 @@ spec:
                     format: int32
                     type: integer
                   tcpSocket:
-                    description: 'TCPSocket specifies an action involving a TCP port.
-                      TCP hooks not yet supported TODO: implement a realistic TCP
-                      lifecycle hook'
+                    description: TCPSocket specifies an action involving a TCP port.
                     properties:
                       host:
                         description: 'Optional: Host name to connect to, defaults
