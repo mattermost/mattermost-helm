@@ -36,11 +36,16 @@ spec:
         env:
         - name: MAX_RECONCILING_INSTALLATIONS
           value: "{{ .Values.mattermostOperator.env.maxReconcilingInstallations }}"
+        - name: MAX_RECONCILE_CONCURRENCY
+          value: "{{ .Values.mattermostOperator.env.maxReconcilingConcurrency }}"
         - name: REQUEUE_ON_LIMIT_DELAY
           value: "{{ .Values.mattermostOperator.env.requeuOnLimitDelay }}"
         image: "{{ .Values.mattermostOperator.image.repository }}:{{ .Values.mattermostOperator.image.tag }}"
         imagePullPolicy: "{{ .Values.mattermostOperator.image.pullPolicy }}"
         name: {{ template "mattermost-operator.name" . }}
+        ports:
+        - containerPort: 8383
+          name: metrics
       serviceAccountName: {{ template "mattermost-operator.name" . }}
       {{- if .Values.mattermostOperator.privateRegistry.enabled }}
       imagePullSecrets:
