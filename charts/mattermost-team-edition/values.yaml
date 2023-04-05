@@ -188,6 +188,12 @@ extraVolumeMounts: []
   #   mountPath: /host/var/log
   #   readOnly: true
 
+# Add additional ports to be exposed in the mattermost container (for plugins that start their own webservers)
+extraPorts: []
+  #  - name: matternelle
+  #    port: 8585
+  #    protocol: TCP
+
 ## Node selector
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
 nodeSelector: {}
