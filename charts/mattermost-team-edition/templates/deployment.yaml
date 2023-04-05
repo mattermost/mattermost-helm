@@ -78,6 +78,11 @@ spec:
         - name: http
           containerPort: {{ .Values.service.internalPort }}
           protocol: TCP
+        {{- range .Values.extraPorts }}
+        - name: {{ .name }}
+          containerPort: {{ .port }}
+          protocol: {{ .protocol }}
+        {{- end }}
         livenessProbe:
           initialDelaySeconds: 90
           timeoutSeconds: 5

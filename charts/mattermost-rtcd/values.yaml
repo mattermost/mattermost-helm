@@ -33,8 +33,15 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-daemonset:
-  environmentVariables:
+
+# Which deployment method you'd like to use "deployment" or "daemonset"
+deploymentType: "deployment"
+
+configuration:
+  # Only needed if deploymentType is set to "deployment"
+  replicas: 2
+
+  environmentVariables: {}
     # All env vars that exist for RTCD: https://github.com/mattermost/rtcd/blob/master/docs/env_config.md
     # RTCD_API_SECURITY_ALLOWSELFREGISTRATION: "\"true\""
     # RTCD_LOGGER_CONSOLELEVEL: "\"DEBUG\""
@@ -95,4 +102,23 @@ tolerations: {}
 
 dnsConfig: {}
 
-affinity: {}
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - mattermost-rtcd
+        topologyKey: topology.kubernetes.io/zone
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - mattermost-rtcd
+          topologyKey: topology.kubernetes.io/zone
