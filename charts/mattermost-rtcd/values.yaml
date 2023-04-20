@@ -36,7 +36,7 @@ securityContext: {}
 deployment:
   replicas: 2
 
-  environmentVariables:
+  environmentVariables: {}
     # All env vars that exist for RTCD: https://github.com/mattermost/rtcd/blob/master/docs/env_config.md
     # RTCD_API_SECURITY_ALLOWSELFREGISTRATION: "\"true\""
     # RTCD_LOGGER_CONSOLELEVEL: "\"DEBUG\""
@@ -100,15 +100,13 @@ dnsConfig: {}
 affinity:
   podAntiAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - mattermost-rtcd
-          topologyKey: kubernetes.io/hostname
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - mattermost-rtcd
+        topologyKey: topology.kubernetes.io/zone
     preferredDuringSchedulingIgnoredDuringExecution:
       - weight: 100
         podAffinityTerm:

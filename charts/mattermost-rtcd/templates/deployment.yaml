@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: deployment
+kind: Deployment
 metadata:
   name: {{ include "mattermost-rtcd.fullname" . }}
   labels:
