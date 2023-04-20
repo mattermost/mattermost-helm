@@ -1,19 +1,20 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: deployment
 metadata:
   name: {{ include "mattermost-rtcd.fullname" . }}
   labels:
     {{- include "mattermost-rtcd.labels" . | nindent 4 }}
 spec:
+  replicas: {{ .Values.deployment.replicas }}
   selector:
     matchLabels:
       {{- include "mattermost-rtcd.selectorLabels" . | nindent 6 }}
-  updateStrategy:
-    {{- if eq .Values.daemonset.updateStrategy "RollingUpdate" }}
+  strategy:
+    {{- if eq .Values.deployment.updateStrategy "RollingUpdate" }}
     rollingUpdate:
-      maxUnavailable: {{ .Values.daemonset.maxUnavailable }}
+      maxUnavailable: {{ .Values.deployment.maxUnavailable }}
     {{- end }}
-    type: {{ .Values.daemonset.updateStrategy }}
+    type: {{ .Values.deployment.updateStrategy }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -30,7 +31,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       hostNetwork: true
       serviceAccountName: {{ include "mattermost-rtcd.serviceAccountName" . }}
-      terminationGracePeriodSeconds: {{ .Values.daemonset.terminationGracePeriod }}
+      terminationGracePeriodSeconds: {{ .Values.deployment.terminationGracePeriod }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -39,15 +40,15 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.daemonset.environmentVariables }}
+          {{- if .Values.deployment.environmentVariables }}
           env:
-            {{- range $key, $val := .Values.daemonset.environmentVariables }}
+            {{- range $key, $val := .Values.deployment.environmentVariables }}
             - name: {{ $key }}
               value: {{ $val }}
             {{- end}}
           {{- end }}
-          {{- if .Values.daemonset.extraVolumeMounts }}
-          volumeMounts: {{ toYaml .Values.daemonset.extraVolumeMounts | nindent 12 }}
+          {{- if .Values.deployment.extraVolumeMounts }}
+          volumeMounts: {{ toYaml .Values.deployment.extraVolumeMounts | nindent 12 }}
           {{- end }}
           ports:
             - name: api
@@ -84,6 +85,6 @@ spec:
       dnsConfig:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.daemonset.extraVolumes }}
-      volumes: {{ toYaml .Values.daemonset.extraVolumes | nindent 8 }}
+      {{- if .Values.deployment.extraVolumes }}
+      volumes: {{ toYaml .Values.deployment.extraVolumes | nindent 8 }}
       {{- end }}
