@@ -3647,6 +3647,25 @@ entries:
   mattermost-rtcd:
   - apiVersion: v2
     appVersion: latest
+    created: "2023-04-24T14:13:46.183147796Z"
+    description: A Helm chart for Kubernetes to deploy Mattermost's RTCD
+    digest: 2c1de4bdd51f903ba51b4c51910edca84e441ae944cf93d03ca827bcb34c0721
+    keywords:
+    - mattermost
+    - calls
+    - rtcd
+    maintainers:
+    - email: sre@mattermost.com
+      name: SRE Team
+    name: mattermost-rtcd
+    sources:
+    - https://github.com/mattermost/mattermost-helm
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-rtcd-1.2.1/mattermost-rtcd-1.2.1.tgz
+    version: 1.2.1
+  - apiVersion: v2
+    appVersion: latest
     created: "2023-04-20T15:20:47.786332532Z"
     description: A Helm chart for Kubernetes to deploy Mattermost's RTCD
     digest: 1b54c50ea1deac35468577f6aa16277da348180157799810c8fca824bcb4cf1d
@@ -5586,4 +5605,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2023-04-20T15:20:47.88431764Z"
+generated: "2023-04-24T14:13:46.270178057Z"
