@@ -1,16 +1,15 @@
-{{- if eq .Values.deploymentType "deployment" -}}
+{{- if eq .Values.deploymentType "daemonset" -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: {{ include "mattermost-rtcd.fullname" . }}
   labels:
     {{- include "mattermost-rtcd.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.configuration.replicas }}
   selector:
     matchLabels:
       {{- include "mattermost-rtcd.selectorLabels" . | nindent 6 }}
-  strategy:
+  updateStrategy:
     {{- if eq .Values.configuration.updateStrategy "RollingUpdate" }}
     rollingUpdate:
       maxUnavailable: {{ .Values.configuration.maxUnavailable }}

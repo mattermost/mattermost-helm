@@ -33,8 +33,11 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-deployment:
-  replicas: 2
+
+deploymentType: "deployment" # "deployment" or "daemonset"
+
+configuration:
+  replicas: 2 # Only needed if deploymentType is set to "deployment"
 
   environmentVariables: {}
     # All env vars that exist for RTCD: https://github.com/mattermost/rtcd/blob/master/docs/env_config.md
