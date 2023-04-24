@@ -39,7 +39,7 @@ deploymentType: "deployment"
 
 configuration:
   # Only needed if deploymentType is set to "deployment"
-  replicas: 2 
+  replicas: 2
 
   environmentVariables: {}
     # All env vars that exist for RTCD: https://github.com/mattermost/rtcd/blob/master/docs/env_config.md
