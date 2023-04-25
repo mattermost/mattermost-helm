@@ -41,6 +41,11 @@ spec:
             - mountPath: /mattermost-push-proxy/config/config.json
               name: push-config-template
               subPath: push-config.json
+          {{- if .Values.applePushSettings.authKey }}
+            - mountPath: {{ .Values.applePushSettings.authKeyFile }}
+              name: apple-push-auth-key
+              subPath: {{ .Values.applePushSettings.authKeyFileName }}
+          {{- end }}
           {{- if .Values.applePushSettings.apple.privateCert }}
             - mountPath: /certs/apple-push-cert.pem
               name: apple-push-cert
@@ -77,12 +82,20 @@ spec:
             items:
             - key: push-config.json
               path: push-config.json
+        {{- if .Values.applePushSettings.authKey }}
+        - name: apple-push-auth-key
+          secret:
+            secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
+            items:
+            - key: apple_auth_key
+              path: {{ .Values.applePushSettings.authKeyFileName }}
+        {{- end }}
         {{- if .Values.applePushSettings.apple.privateCert }}
         - name: apple-push-cert
           secret:
             secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
             items:
-            - key: apple
+            - key: apple_cert
               path: apple-push-cert.pem
         {{- end }}
         {{- if .Values.applePushSettings.apple_rn.privateCert }}
@@ -90,7 +103,7 @@ spec:
           secret:
             secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
             items:
-            - key: apple_rn
+            - key: apple_rn_cert
               path: apple-rn-push-cert.pem
         {{- end }}
         {{- if .Values.applePushSettings.apple_rnbeta.privateCert }}
@@ -98,6 +111,6 @@ spec:
           secret:
             secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
             items:
-            - key: apple_rnbeta
+            - key: apple_rnbeta_cert
               path: apple-rnbeta-push-cert.pem
         {{- end }}
