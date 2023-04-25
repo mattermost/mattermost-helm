@@ -14,6 +14,15 @@
             {{- else }}
             "ApplePushCertPrivate": "/certs/apple-push-cert.pem",
 	    {{- end }}
+        {{- if eq .Values.applePushSettings.authKey "" }}
+            "AppleAuthKeyFile":"",
+            "AppleAuthKeyID":"",
+            "AppleTeamID":"",
+        {{- else }}
+            "AppleAuthKeyFile": "{{ .Values.applePushSettings.authKeyFile }}",
+            "AppleAuthKeyID": "{{ .Values.applePushSettings.authKeyID }}",
+            "AppleTeamID": "{{ .Values.applePushSettings.teamID }}",
+        {{- end }}
             "ApplePushCertPassword":"{{ .Values.applePushSettings.apple.privateCertPassword }}",
             "ApplePushTopic":"{{ .Values.applePushSettings.apple.pushTopic }}"
         },
@@ -25,6 +34,15 @@
         {{- else }}
             "ApplePushCertPrivate": "/certs/apple-rn-push-cert.pem",
         {{- end }}
+        {{- if eq .Values.applePushSettings.authKey "" }}
+            "AppleAuthKeyFile":"",
+            "AppleAuthKeyID":"",
+            "AppleTeamID":"",
+        {{- else }}
+            "AppleAuthKeyFile": "{{ .Values.applePushSettings.authKeyFile }}",
+            "AppleAuthKeyID": "{{ .Values.applePushSettings.authKeyID }}",
+            "AppleTeamID": "{{ .Values.applePushSettings.teamID }}",
+        {{- end }}
             "ApplePushCertPassword":"{{ .Values.applePushSettings.apple_rn.privateCertPassword }}",
             "ApplePushTopic":"{{ .Values.applePushSettings.apple_rn.pushTopic }}"
         },
@@ -35,6 +53,15 @@
             "ApplePushCertPrivate":"",
         {{- else }}
             "ApplePushCertPrivate": "/certs/apple-rnbeta-push-cert.pem",
+        {{- end }}
+        {{- if eq .Values.applePushSettings.authKey "" }}
+            "AppleAuthKeyFile":"",
+            "AppleAuthKeyID":"",
+            "AppleTeamID":"",
+        {{- else }}
+            "AppleAuthKeyFile": "{{ .Values.applePushSettings.authKeyFile }}",
+            "AppleAuthKeyID": "{{ .Values.applePushSettings.authKeyID }}",
+            "AppleTeamID": "{{ .Values.applePushSettings.teamID }}",
         {{- end }}
             "ApplePushCertPassword":"{{ .Values.applePushSettings.apple_rnbeta.privateCertPassword }}",
             "ApplePushTopic":"{{ .Values.applePushSettings.apple_rnbeta.pushTopic }}"
