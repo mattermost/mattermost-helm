@@ -220,6 +220,16 @@ externalDB:
   externalConnectionString: "<USERNAME>:<PASSWORD>@tcp(<HOST>:3306)/<DATABASE_NAME>?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
 ```
 
+#### Expose extra ports
+To use plugins that require extra ports to be exposed, you can use the following config
+
+```yaml
+extraPorts:
+    - name: plugin-name
+      port: 8585
+      protocol: TCP
+```
+
 ### Local development
 
 For local testing use [minikube](https://github.com/kubernetes/minikube)
