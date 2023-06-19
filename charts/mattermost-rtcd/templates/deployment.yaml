@@ -56,10 +56,14 @@ spec:
               containerPort: {{ .Values.service.APIport }}
               hostPort: {{ .Values.service.APIport }}
               protocol: TCP              
-            - name: rtc
+            - name: rtc-udp
               containerPort: {{ .Values.service.RTCport }}
               hostPort: {{ .Values.service.RTCport }}
               protocol: UDP
+            - name: rtc-tcp
+              containerPort: {{ .Values.service.RTCport }}
+              hostPort: {{ .Values.service.RTCport }}
+              protocol: TCP
           livenessProbe:
             httpGet:
               path: /version
