@@ -1,8 +1,8 @@
 remote: origin
 target-branch: master
-chart-repos:
-  - incubator=https://charts.helm.sh/incubator
-  - stable=https://charts.helm.sh/stable
+chart-dirs:
+  - stable
+  - incubator
 helm-extra-args: --timeout 5m0s
 helm-repo-extra-args:
   - incubator=--repository-config /tmp/helm/repo.yaml --repository-cache /tmp/helm/repository

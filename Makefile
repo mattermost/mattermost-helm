@@ -5,7 +5,7 @@ CLUSTER_NAME ?= mattermost-helm-test
 DOCKER_IMAGE_SHELLCHECK ?= koalaman/shellcheck:v0.8.0@sha256:4c4427336d2b4bdb054a1e97396fa2e9ca0c329a1f43f831b99bcaae4ac24fcd
 # Official image of chart-testing[https://github.com/helm/chart-testing].
 # Contains chart-testing cli,  helm and kubectl.
-DOCKER_IMAGE_CT ?= quay.io/helmpack/chart-testing:v3.7.0@sha256:2f87e56a0cebc6d9bb78d51cb6adac97858afb0887cac4d65f7f8c6a16054568
+DOCKER_IMAGE_CT ?= quay.io/helmpack/chart-testing:v3.7.1@sha256:ef453de0be68d5ded26f3b3ea0c5431b396c8c48f89e2a07be7b19c4c9a68b31
 
 # Official image of chart-releaser[https://github.com/helm/chart-releaser].
 # Contains chart-releaser cli.
