@@ -22,6 +22,12 @@ spec:
     targetPort: http
     protocol: TCP
     name: {{  include "mattermost-team-edition.name" . }}
+  {{- range .Values.extraPorts }}
+  - name: {{ .name }}
+    port: {{ .port }}
+    targetPort: {{ .port }}
+    protocol: {{ .protocol }}
+  {{- end }}
 {{- if .Values.service.loadBalancerIP }}
   loadBalancerIP: {{ .Values.service.loadBalancerIP }}
 {{- end }}
