@@ -83,17 +83,15 @@ spec:
           containerPort: {{ .port }}
           protocol: {{ .protocol }}
         {{- end }}
-        livenessProbe:
-          initialDelaySeconds: 90
-          timeoutSeconds: 5
-          periodSeconds: 15
+        startupProbe: {{- .Values.startupProbe | toYaml | nindent 10 }}
+          httpGet:
+            path: /healthz
+            port: http
+        livenessProbe: {{- .Values.livenessProbe | toYaml | nindent 10 }}
           httpGet:
             path: /api/v4/system/ping
             port: http
-        readinessProbe:
-          initialDelaySeconds: 15
-          timeoutSeconds: 5
-          periodSeconds: 15
+        readinessProbe: {{- .Values.readinessProbe | toYaml | nindent 10 }}
           httpGet:
             path: /api/v4/system/ping
             port: http
