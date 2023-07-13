@@ -195,6 +195,9 @@ extraPorts: []
   #    port: 8585
   #    protocol: TCP
 
+# Array of extra objects to deploy with the release
+extraDeploy: []
+
 ## Node selector
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
 nodeSelector: {}
