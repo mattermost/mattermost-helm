@@ -37,7 +37,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 4545
   targetPort: 4545
 
@@ -80,4 +80,4 @@ config:
   - name: API_SECURITY_ALLOWSELFREGISTRATION # This should only be set to true if running the service inside a private network.
     value: "true"
   - name: LOGGER_CONSOLELEVEL
-    value: "DEBUG"
+    value: "INFO"
