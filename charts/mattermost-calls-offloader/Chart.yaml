@@ -1,0 +1,15 @@
+apiVersion: v2
+name: mattermost-calls-offloader
+description: A Helm chart for Kubernetes to deploy Mattermost's Calls Offloader service
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+- mattermost
+- calls-offloader
+maintainers:
+  - name: SRE Team
+    email: sre@mattermost.com
+sources:
+- https://github.com/mattermost/mattermost-helm
+- https://github.com/mattermost/calls-offloader
