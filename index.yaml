@@ -31,6 +31,27 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/focalboard-0.4.0/focalboard-0.4.0.tgz
     version: 0.4.0
+  mattermost-calls-offloader:
+  - apiVersion: v2
+    appVersion: 0.3.0
+    created: "2023-08-02T09:37:10.745855642Z"
+    description: A Helm chart for Kubernetes to deploy Mattermost's Calls Offloader
+      service
+    digest: 2cb7df4bb78dbf755f94841a83fbb8f28d0aa23dc38e1e35ce13f395d2bbc3b8
+    keywords:
+    - mattermost
+    - calls-offloader
+    maintainers:
+    - email: sre@mattermost.com
+      name: SRE Team
+    name: mattermost-calls-offloader
+    sources:
+    - https://github.com/mattermost/mattermost-helm
+    - https://github.com/mattermost/calls-offloader
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-calls-offloader-0.1.0/mattermost-calls-offloader-0.1.0.tgz
+    version: 0.1.0
   mattermost-chaos-engine:
   - apiVersion: v2
     created: "2022-04-14T09:58:23.608214958Z"
@@ -6163,4 +6184,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2023-07-27T11:59:12.439001386Z"
+generated: "2023-08-02T09:37:11.411959212Z"
