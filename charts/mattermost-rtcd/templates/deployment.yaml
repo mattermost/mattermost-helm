@@ -68,10 +68,18 @@ spec:
             httpGet:
               path: /version
               port: api
+            initialDelaySeconds: {{ .Values.configuration.livenessProbeInitialDelaySeconds | default 30 }}
+            failureThreshold: {{ .Values.configuration.livenessProbeFailureThreshold | default 3 }}
+            periodSeconds: {{ .Values.configuration.livenessProbePeriodSeconds | default 10 }}
+            timeoutSeconds: {{ .Values.configuration.livenessProbeTimeoutSeconds | default 5 }}
           readinessProbe:
             httpGet:
               path: /version
               port: api
+            initialDelaySeconds: {{ .Values.configuration.readinessProbeInitialDelaySeconds | default 30 }}
+            failureThreshold: {{ .Values.configuration.readinessProbeFailureThreshold | default 3 }}
+            periodSeconds: {{ .Values.configuration.readinessProbePeriodSeconds | default 10 }}
+            timeoutSeconds: {{ .Values.configuration.readinessProbeTimeoutSeconds | default 5 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

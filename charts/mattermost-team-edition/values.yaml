@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: mattermost/mattermost-team-edition
-  tag: 7.10.2@sha256:cfa8fc843912bf66f3085571632bd4b34db7ef4764bed6fa0652aa231d0668eb
+  tag: 8.1.1@sha256:9d4945e61f7808aebceb0fb11f57a9c386eb7083c86f771d18f9c7a913e591a5
   imagePullPolicy: IfNotPresent
 
 initContainerImage:
@@ -56,6 +56,7 @@ service:
 
 ingress:
   enabled: false
+  className: ""
   path: /
   annotations: {}
     # kubernetes.io/ingress.class: nginx
@@ -194,6 +195,9 @@ extraPorts: []
   #    port: 8585
   #    protocol: TCP
 
+# Array of extra objects to deploy with the release
+extraDeploy: []
+
 ## Node selector
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
 nodeSelector: {}
@@ -224,3 +228,22 @@ serviceAccount:
 ## You can add any config here, but need to respect the format: MM_<GROUPSECTION>_<SETTING>. ie: MM_SERVICESETTINGS_ENABLECOMMANDS: false
 config:
   MM_PLUGINSETTINGS_CLIENTDIRECTORY: "./client/plugins"
+
+## Configure startup, liveness and readiness probes
+startupProbe:
+  initialDelaySeconds: 10
+  failureThreshold: 30
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+livenessProbe:
+  initialDelaySeconds: 1
+  failureThreshold: 3
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  initialDelaySeconds: 15
+  failureThreshold: 3
+  timeoutSeconds: 5
+  periodSeconds: 10

@@ -36,13 +36,13 @@ To expose the application outside of your network, configure an ingress if your 
 
 We suggest using [nginx-ingress](https://github.com/kubernetes/ingress-nginx), which we use internally at Mattermost.
 
-To install nginx-ingress in your Kubernetes cluster, follow [the official installation documentation](https://kubernetes.github.io/ingress-nginx/deploy/). You may also use the [helm charts](https://github.com/helm/charts/tree/master/stable/nginx-ingress) directly.
+To install nginx-ingress in your Kubernetes cluster, follow [the official installation documentation](https://kubernetes.github.io/ingress-nginx/deploy/). You may also use the [helm charts](https://github.com/kubernetes/ingress-nginx/tree/main/charts/ingress-nginx) directly.
 
 To get the nginx cache to work, adjust the ConfigMap and Deployment from the above instructions. [See the ingress section of our blog post](https://mattermost.com/blog/mattermost-kubernetes/#ingress) to see how we did it for an AWS installation.
 
 ## 1.4 Certificate Manager
 
-If you do not want to manually add SSL/TLS certificates, install [cert-manager](https://github.com/jetstack/cert-manager). You can follow [this documentation](https://cert-manager.io/docs/) or install the [helm charts](https://github.com/helm/charts/tree/master/stable/cert-manager).
+If you do not want to manually add SSL/TLS certificates, install [cert-manager](https://github.com/jetstack/cert-manager). You can follow [this documentation](https://cert-manager.io/docs/) or install the [helm charts](https://artifacthub.io/packages/helm/cert-manager/cert-manager).
 
 To run with HTTPS you will need to add a Kubernetes secret for your SSL/TLS certificate, whether you use cert-manager or not.
 
@@ -57,7 +57,7 @@ To learn more about the Mattermost configuration file, see https://docs.mattermo
 At minimum there are two settings you must update:
 
 * `global.siteURL` - set this to the URL your users will use to access Mattermost, e.g. `https://mattermost.example.com`
-* `global.mattermostLicense` - set this to the contents of your license file or provide an existing secret. `global.existingLicenseSecret.name` `global.existingLicenseSecret.key` 
+* `global.mattermostLicense` - set this to the contents of your license file or provide an existing secret. `global.existingLicenseSecret.name` `global.existingLicenseSecret.key`
 
 Without these two settings, Mattermost will not run correctly.
 
@@ -65,7 +65,7 @@ Without these two settings, Mattermost will not run correctly.
 
 To set the Mattermost application version, update:
 
-* `mattermostApp.image.tag` - set this to the Mattermost server version you wish to install (e.g. `5.12.0`)
+* `mattermostApp.image.tag` - set this to the Mattermost server version you wish to install (e.g. `7.10.2`)
 
 ## 2.3 Ingress
 
@@ -82,7 +82,7 @@ where `mattermost.example.com` is your domain name and matches `global.siteURL`.
 
 ### 2.3.1 HTTPS
 
-To run with HTTPS, add an SSL/TLS certificate as a secret to your Kubernetes cluster, either manually or [using cert-manager](#certificate-manager).
+To run with HTTPS, add an SSL/TLS certificate as a secret to your Kubernetes cluster, either manually or [using cert-manager](#14-certificate-manager).
 
 Set the following under `mattermostApp` to enable HTTPS:
 
@@ -147,19 +147,33 @@ If you would like to use an external database not managed by the Mattermost Helm
 
 By default push notifications are enabled using [HPNS](https://docs.mattermost.com/mobile/mobile-hpns.html). If you prefer to run your own push proxy, do the following:
 
-* Set `global.features.notifications.useHPNS` to `false`
-* Install the push proxy Helm chart, [see instructions here](#install-push-proxy)
+* Set `global.features.notifications.push.useHPNS` to `false`
+* Install the push proxy Helm chart, [see instructions here](#251-push-proxy)
+
+## 2.5.1 Push Proxy
+
+You can launch the Mattermost push proxy chart with:
+```bash
+$ helm repo add mattermost https://helm.mattermost.com
+$ helm install mattermost/mattermost-push-proxy
+```
+
+To list options for mattermost-push-proxy:
+
+```bash
+$ helm inspect values mattermost/mattermost-push-proxy
+```
 
 ## 2.6 Storage
 
-We use [stable/minio](https://github.com/helm/charts/tree/master/stable/minio) for file storage.
+We use [stable/minio](https://github.com/minio/operator/tree/master/helm/operator) for file storage.
 
 Minio is configured by default, but we recommend updating the following settings:
 
 * `minio.accessKey`
 * `minio.secretKey`
 
-See the [stable/minio configuration settings](https://github.com/helm/charts/tree/master/stable/minio#configuration) for more options you can configure.
+See the [stable/minio configuration settings](https://min.io/docs/minio/kubernetes/upstream/index.html) for more options you can configure.
 
 # 3. Install
 
@@ -167,13 +181,13 @@ After adding the Mattermost repo (see section 1.2) you can install a version of 
 
 ```bash
 $ helm repo add mattermost https://helm.mattermost.com
-$ helm install mattermost/mattermost-enterprise-edition --version <version_number>
+$ helm install <name> mattermost/mattermost-enterprise-edition --version <version_number>
 ```
 
 For example:
 ```bash
 $ helm repo add mattermost https://helm.mattermost.com
-$ helm install mattermost/mattermost-enterprise-edition --version v0.8.2
+$ helm install <name> mattermost/mattermost-enterprise-edition --version v0.8.2
 ```
 
 If no Helm Chart version is specified the latest version will be installed.
@@ -191,20 +205,6 @@ $ helm upgrade -f config.yaml <your-release-name> mattermost/mattermost-enterpri
 ## 3.1 Uninstalling Mattermost Enterprise Helm Chart
 
 If you are done with your deployment and want to delete it, use `helm delete <your-release-name>`. If you don't know the name of your release, use `helm ls` to find it.
-
-## 3.2 Install Push Proxy
-
-You can launch the Mattermost push proxy chart with:
-```bash
-$ helm repo add mattermost https://helm.mattermost.com
-$ helm install mattermost/mattermost-push-proxy
-```
-
-To list options for mattermost-push-proxy:
-
-```bash
-$ helm inspect values mattermost/mattermost-push-proxy
-```
 
 # 4. Upgrading to Mattermost Chart Version 1.0.0
 
