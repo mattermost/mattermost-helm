@@ -2,8 +2,8 @@ apiVersion: v2
 description: Mattermost Enterprise server with high availitibity.
 name: mattermost-enterprise-edition
 type: application
-version: 2.6.32
-appVersion: 8.1.1
+version: 2.6.33
+appVersion: 8.1.2
 keywords:
 - mattermost
 - communication
