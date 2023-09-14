@@ -2,7 +2,7 @@ apiVersion: v2
 name: mattermost-rtcd
 description: A Helm chart for Kubernetes to deploy Mattermost's RTCD
 type: application
-version: 1.3.0
+version: 1.4.0
 appVersion: latest
 keywords:
 - mattermost
