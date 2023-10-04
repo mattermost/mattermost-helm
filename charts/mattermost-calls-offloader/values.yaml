@@ -8,7 +8,7 @@ image:
   repository: mattermost/calls-offloader
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.3.3"
+  tag: "v0.4.0"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -77,6 +77,8 @@ config:
     value: "kubernetes"
   - name: JOBS_MAXCONCURRENTJOBS
     value: "1"
+  - name: JOBS_FAILEDJOBSRETENTIONTIME
+    value: "7d"
   - name: API_SECURITY_ALLOWSELFREGISTRATION # This should only be set to true if running the service inside a private network.
     value: "true"
   - name: LOGGER_CONSOLELEVEL
