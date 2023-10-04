@@ -181,3 +181,18 @@ mysqlOperator:
   topology:
     user: "b3JjaGVzdHJhdG9y"
     password: "Nnc2NHBhaGJzUA=="
+
+
+podSecurityContext:
+  runAsUser: 10001
+  runAsGroup: 10001
+  fsGroup: 10001
+
+securityContext:
+#  capabilities:
+#    drop:
+#    - ALL
+#  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
