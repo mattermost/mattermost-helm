@@ -247,3 +247,8 @@ readinessProbe:
   failureThreshold: 3
   timeoutSeconds: 5
   periodSeconds: 10
+
+## Additional annotations for test job
+
+testJob:
+  annotations: {}
