@@ -9,7 +9,7 @@ The Mattermost Operator source code lives [here](https://github.com/mattermost/m
 
 ## 1.1 Kubernetes Cluster
 
-You need a running Kubernetes cluster v1.16+. If you do not have one, find options and installation instructions here:
+You need a running Kubernetes cluster v1.22+. If you do not have one, find options and installation instructions here:
 
 https://kubernetes.io/docs/home/
 

@@ -12,8 +12,12 @@ spec:
       protocol: TCP
       name: api
     - port: {{ .Values.service.RTCport }}
-      targetPort: rtc
+      targetPort: rtc-udp
       protocol: UDP
-      name: rtc
+      name: rtc-udp
+    - port: {{ .Values.service.RTCport }}
+      targetPort: rtc-tcp
+      protocol: TCP
+      name: rtc-tcp
   selector:
     {{- include "mattermost-rtcd.selectorLabels" . | nindent 4 }}

@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: mattermost/mattermost-team-edition
-  tag: 7.7.1@sha256:94d382c9cb06f0d0194bbebb9e20f285b29338c3cd0d46444b3e46b9fd16913d
+  tag: 9.0.0@sha256:ee866c411f65a220b41d16271ba3e0a5b56ed81cbb926553d4547f53d071ac0f
   imagePullPolicy: IfNotPresent
 
 initContainerImage:
@@ -56,6 +56,7 @@ service:
 
 ingress:
   enabled: false
+  className: ""
   path: /
   annotations: {}
     # kubernetes.io/ingress.class: nginx
@@ -188,6 +189,15 @@ extraVolumeMounts: []
   #   mountPath: /host/var/log
   #   readOnly: true
 
+# Add additional ports to be exposed in the mattermost container (for plugins that start their own webservers)
+extraPorts: []
+  #  - name: matternelle
+  #    port: 8585
+  #    protocol: TCP
+
+# Array of extra objects to deploy with the release
+extraDeploy: []
+
 ## Node selector
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
 nodeSelector: {}
@@ -218,3 +228,27 @@ serviceAccount:
 ## You can add any config here, but need to respect the format: MM_<GROUPSECTION>_<SETTING>. ie: MM_SERVICESETTINGS_ENABLECOMMANDS: false
 config:
   MM_PLUGINSETTINGS_CLIENTDIRECTORY: "./client/plugins"
+
+## Configure startup, liveness and readiness probes
+startupProbe:
+  initialDelaySeconds: 10
+  failureThreshold: 30
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+livenessProbe:
+  initialDelaySeconds: 1
+  failureThreshold: 3
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  initialDelaySeconds: 15
+  failureThreshold: 3
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+## Additional annotations for test job
+
+testJob:
+  annotations: {}

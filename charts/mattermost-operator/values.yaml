@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# The values below are for mattermost Custom Resource
+# The values below are for Mattermost Custom Resource
 # Full spec example can be found here: https://github.com/mattermost/mattermost-operator/blob/master/docs/examples/mattermost_full.yaml
 # Examples for mattermost spec can be found here: https://github.com/mattermost/mattermost-operator/tree/master/docs/examples
 # Enable the database, file storage operatorManaged below to run with in cluster database and file storage (not recommended for production scenario).
@@ -10,7 +10,7 @@ mattermostCR:
   enabled: false
   name: mattermost-example
   spec:
-    version: 7.2.0
+    version: 7.10.2
     replicas: 1
     ingress:
       enabled: true
@@ -43,13 +43,15 @@ mattermostOperator:
     create: true
   env:
     maxReconcilingInstallations: 20
+    maxReconcilingConcurrency: 10
     requeuOnLimitDelay: 20s
   image:
     repository: mattermost/mattermost-operator
-    tag: v1.18.0
+    tag: v1.20.1
     pullPolicy: IfNotPresent
   args:
     - --enable-leader-election
+    - --metrics-addr=0.0.0.0:8383
 
   ## Specify image pull secret for private repository
   ##

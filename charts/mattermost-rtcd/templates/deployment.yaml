@@ -1,15 +1,16 @@
-{{- if eq .Values.deploymentType "daemonset" -}}
+{{- if eq .Values.deploymentType "deployment" -}}
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: {{ include "mattermost-rtcd.fullname" . }}
   labels:
     {{- include "mattermost-rtcd.labels" . | nindent 4 }}
 spec:
+  replicas: {{ .Values.configuration.replicas }}
   selector:
     matchLabels:
       {{- include "mattermost-rtcd.selectorLabels" . | nindent 6 }}
-  updateStrategy:
+  strategy:
     {{- if eq .Values.configuration.updateStrategy "RollingUpdate" }}
     rollingUpdate:
       maxUnavailable: {{ .Values.configuration.maxUnavailable }}
@@ -71,7 +72,6 @@ spec:
             failureThreshold: {{ .Values.configuration.livenessProbeFailureThreshold | default 3 }}
             periodSeconds: {{ .Values.configuration.livenessProbePeriodSeconds | default 10 }}
             timeoutSeconds: {{ .Values.configuration.livenessProbeTimeoutSeconds | default 5 }}
-
           readinessProbe:
             httpGet:
               path: /version
