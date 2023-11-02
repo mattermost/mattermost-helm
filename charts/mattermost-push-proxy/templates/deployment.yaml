@@ -61,6 +61,16 @@ spec:
               name: apple-rnbeta-push-cert
               subPath: apple-rnbeta-push-cert.pem
           {{- end }}
+          {{- if .Values.androidPushSettings.android.serviceFile }}
+            - mountPath: "{{ .Values.androidPushSettings.android.serviceFileLocation }}"
+              name: android-service-file
+              subPath: "{{ .Values.androidPushSettings.android.serviceFileName }}"
+          {{- end }}
+          {{- if .Values.androidPushSettings.android_rn.serviceFile }}
+            - mountPath: "{{ .Values.androidPushSettings.android_rn.serviceFileLocation }}"
+              name: android-rn-service-file
+              subPath: "{{ .Values.androidPushSettings.android_rn.serviceFileName }}"
+          {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
@@ -114,3 +124,21 @@ spec:
             - key: apple_rnbeta_cert
               path: apple-rnbeta-push-cert.pem
         {{- end }}
+        {{- if .Values.androidPushSettings.android.serviceFileLocation }}
+        - name: android-service-file
+          secret:
+            secretName: {{ include "mattermost-push-proxy.fullname" . }}-android-service-files
+            items:
+            - key: android_serviceFile
+              path: {{ .Values.androidPushSettings.android.serviceFileName }}
+        {{- end }}
+        {{- if .Values.androidPushSettings.android_rn.serviceFileLocation }}
+        - name: android-rn-service-file
+          secret:
+            secretName: {{ include "mattermost-push-proxy.fullname" . }}-android-service-files
+            items:
+            - key: android_rn_serviceFile
+              path: {{ .Values.androidPushSettings.android_rn.serviceFileName }}
+        {{- end }}
+      
+

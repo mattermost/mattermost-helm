@@ -4,7 +4,8 @@
     "ThrottlePerSec":300,
     "ThrottleMemoryStoreSize":50000,
     "ThrottleVaryByHeader":"X-Forwarded-For",
-    "EnableMetrics": true,
+    "EnableMetrics": {{ .Values.enableMetrics }},
+    "SendTimeoutSec": {{ .Values.sendTimeoutSec }},
     "ApplePushSettings":[
         {
             "Type":"apple",
@@ -70,11 +71,19 @@
     "AndroidPushSettings":[
         {
             "Type":"android",
-            "AndroidApiKey":"{{ .Values.androidPushSettings.android.apiKey }}"
+             {{- if eq .Values.androidPushSettings.android.serviceFileLocation "" }}
+            "ServiceFileLocation":""
+             {{- else }}
+            "ServiceFileLocation":"{{ .Values.androidPushSettings.android.serviceFileLocation }}"
+             {{- end }}
         },
         {
             "Type":"android_rn",
-            "AndroidApiKey":"{{ .Values.androidPushSettings.android_rn.apiKey }}"
+            {{- if eq .Values.androidPushSettings.android_rn.serviceFileLocation "" }}
+            "ServiceFileLocation":""
+             {{- else }}
+            "ServiceFileLocation":"{{ .Values.androidPushSettings.android_rn.serviceFileLocation }}"
+             {{- end }}
         }
     ]
 }
