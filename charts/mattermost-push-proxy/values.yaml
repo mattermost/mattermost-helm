@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: mattermost/mattermost-push-proxy
-  tag: 5.24.0
+  tag: 5.26.0
   pullPolicy: Always
 
 resources: {}
@@ -47,6 +47,10 @@ ingress:
   #      - push-proxy.example.local
 
 # You cannot specify both the authKey and privateCert methods.
+
+sendTimeoutSec: 30
+enableMetrics: true
+
 applePushSettings:
   authKey: ""
   authKeyFile: "/mattermost-push-proxy/config/AuthKey_1234.p8"
@@ -67,6 +71,38 @@ applePushSettings:
     pushTopic: ""
 androidPushSettings:
   android:
-    apiKey: ""
+    # serviceFile: {
+    #   "type": "service_account",
+    #   "project_id": "",
+    #   "private_key_id": "",
+    #   "private_key": "",
+    #   "client_email": "",
+    #   "client_id": "",
+    #   "auth_uri": "",
+    #   "token_uri": "",
+    #   "auth_provider_x509_cert_url": "",
+    #   "client_x509_cert_url": "",
+    #   "universe_domain": "googleapis.com"
+    # }
+    serviceFile: {}
+    # When setting serviceFileLocation both serviceFile and serviceFileName needs to be set
+    serviceFileLocation: ""
+    serviceFileName: ""
   android_rn:
-    apiKey: ""
+    # serviceFile: {
+    #   "type": "service_account",
+    #   "project_id": "",
+    #   "private_key_id": "",
+    #   "private_key": "",
+    #   "client_email": "",
+    #   "client_id": "",
+    #   "auth_uri": "",
+    #   "token_uri": "",
+    #   "auth_provider_x509_cert_url": "",
+    #   "client_x509_cert_url": "",
+    #   "universe_domain": "googleapis.com"
+    # }
+    serviceFile: {}
+    # When setting serviceFileLocation both serviceFile and serviceFileName needs to be set
+    serviceFileLocation: ""
+    serviceFileName: ""
