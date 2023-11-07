@@ -4634,6 +4634,30 @@ entries:
     version: 1.0.0
   mattermost-team-edition:
   - apiVersion: v2
+    appVersion: 9.1.2
+    created: "2023-11-07T07:40:04.158884248Z"
+    dependencies:
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://charts.helm.sh/stable
+      version: 1.6.4
+    description: Mattermost Team Edition server.
+    digest: ea60f43e3e4b9c1981f978126d09a9b360f5064aa542dc00c461d499e2d77e26
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - team collaboration
+    name: mattermost-team-edition
+    sources:
+    - https://github.com/mattermost/mattermost-server
+    - https://github.com/mattermost/mattermost-helm
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-6.6.42/mattermost-team-edition-6.6.42.tgz
+    version: 6.6.42
+  - apiVersion: v2
     appVersion: 9.1.1
     created: "2023-10-31T16:17:50.210777229Z"
     dependencies:
@@ -6905,4 +6929,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2023-11-07T07:38:48.645943074Z"
+generated: "2023-11-07T07:40:04.160688493Z"
