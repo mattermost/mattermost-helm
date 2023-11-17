@@ -133,6 +133,7 @@ Parameter                             | Description                             
 `initContainerImage.imagePullPolicy`  | Container image pull policy                                                                     | `IfNotPresent`
 `revisionHistoryLimit`                | How many old ReplicaSets for Mattermost Deployment you want to retain                           | `1`
 `ingress.enabled`                     | If `true`, an ingress is created                                                                | `false`
+`ingress.labels`                      | Enables labels for ingress                                                                      | `{}`
 `ingress.hosts`                       | A list of ingress hosts                                                                         | `[mattermost.example.com]`
 `ingress.tls`                         | A list of [ingress tls](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) items | `[]`
 `mysql.enabled`                       | Enables deployment of a mysql server                                                            | `true`

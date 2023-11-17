@@ -50,6 +50,7 @@ service:
   type: ClusterIP
   externalPort: 8065
   internalPort: 8065
+  labels: {}
   annotations: {}
   # loadBalancerIP:
   loadBalancerSourceRanges: []
