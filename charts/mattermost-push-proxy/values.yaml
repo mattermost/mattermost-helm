@@ -27,6 +27,7 @@ service:
   type: ClusterIP
   externalPort: 8066
   internalPort: 8066
+  annotations: {}
 
 ingress:
   enabled: false
