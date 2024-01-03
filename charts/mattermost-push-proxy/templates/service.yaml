@@ -14,10 +14,30 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.externalPort }}
+  {{- if and .Values.service.externalPort (not (eq .Values.service.type "LoadBalancer")) }}
+    - name: {{ .Values.service.name }}
+      port: {{ .Values.service.externalPort }}
       targetPort: {{ .Values.service.internalPort }}
       protocol: TCP
-      name: {{ .Values.service.name }}
+  {{- end }}
+  {{- if and .Values.service.enableHttp (eq .Values.service.type "LoadBalancer") }}
+    - name: {{ .Values.service.name }}-http
+      port: 80
+      protocol: TCP
+      targetPort: {{ .Values.service.internalPort }}
+    {{- if and (semverCompare ">=1.20" .Capabilities.KubeVersion.Version) }}
+      appProtocol: http
+    {{- end }}
+  {{- end }}
+  {{- if and .Values.service.enableHttps (eq .Values.service.type "LoadBalancer") }}
+    - name: {{ .Values.service.name }}-https
+      port: 443
+      protocol: TCP
+      targetPort: {{ .Values.service.internalPort }}
+    {{- if and (semverCompare ">=1.20" .Capabilities.KubeVersion.Version) }}
+      appProtocol: https
+    {{- end }}
+  {{- end }}
   selector:
     app.kubernetes.io/name: {{ include "mattermost-push-proxy.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

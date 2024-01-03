@@ -27,6 +27,12 @@ service:
   type: ClusterIP
   externalPort: 8066
   internalPort: 8066
+
+  # The following configuration is relevant only when service.type is set to `LoadBalancer`, exposing ports HTTP (80) and HTTPS (443).
+  # This is particularly beneficial in situations where service.type is set to `LoadBalancer` instead of `ClusterIP` and/or using Ingress
+  enableHttp: false
+  enableHttps: false
+
   annotations: {}
 
 ingress:
