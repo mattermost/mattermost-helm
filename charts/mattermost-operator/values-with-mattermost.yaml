@@ -1,0 +1,46 @@
+# Mattermost Operator Values
+mattermostOperator:
+  enabled: true
+  replicas: 1
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
+  env:
+    maxReconcilingInstallations: 20
+    maxReconcilingConcurrency: 10
+    requeuOnLimitDelay: 20s
+  image:
+    repository: mattermost/mattermost-operator
+    tag: v1.20.1
+    pullPolicy: IfNotPresent
+  args:
+    - --enable-leader-election
+    - --metrics-addr=0.0.0.0:8383
+
+  ## Specify image pull secret for private repository
+  ##
+  privateRegistry:
+    enabled: false
+    imagePullSecret: <name of the secret>
+
+# The values below are for Mattermost Custom Resource
+# Full spec example can be found here: https://github.com/mattermost/mattermost-operator/blob/master/docs/examples/mattermost_full.yaml
+# Examples for mattermost spec can be found here: https://github.com/mattermost/mattermost-operator/tree/master/docs/examples
+mattermostCR:
+  enabled: true
+  name: mattermost-example
+  spec:
+    version: 9.4.1
+    replicas: 1
+    ingress:
+      enabled: true
+      host: example.mattermost-example.com
+    # database:
+    #   external:
+    #     secret:  <secret-name>
+    # fileStore:
+    #   external:
+    #     bucket:  <bucket-name>
+    #     secret:  <secret-name>
+    #     url:     s3.amazonaws.com

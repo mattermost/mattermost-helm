@@ -1,4 +1,4 @@
-{{- if and .Values.mattermostCR.enabled }}
+{{- if and .Values.mattermostCR .Values.mattermostCR.enabled }}
 apiVersion: installation.mattermost.com/v1beta1
 kind: Mattermost
 metadata:
