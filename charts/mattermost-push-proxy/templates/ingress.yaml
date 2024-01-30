@@ -42,7 +42,9 @@ spec:
           pathType: {{ default "ImplementationSpecific" .pathType }}
           {{- end }}
           backend:
-            {{- if $ingressApiIsStable }}
+            {{- if .customService }}
+            {{- toYaml .customServiceSpec | nindent 12 }}
+            {{- else if $ingressApiIsStable }}
             service:
               name: {{ $serviceName }}
               port:
