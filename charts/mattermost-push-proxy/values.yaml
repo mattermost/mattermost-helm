@@ -48,6 +48,17 @@ ingress:
           # -- pathType (e.g. ImplementationSpecific, Prefix, .. etc.)
           # pathType: Prefix
 
+        # Example of a CustomService Path, using AWS Load Balancer controller to filter traffic reaching /metrics
+        # Directives `customService` & `customServiceSpec` in use
+        # - path: /metrics
+        #   pathType: Prefix
+        #   customService: true
+        #   customServiceSpec:
+        #     service:
+        #       name: response-403
+        #       port:
+        #         name: use-annotation
+
   tls: []
   #  - secretName: push-proxy-example-tls
   #    hosts:
