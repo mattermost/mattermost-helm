@@ -249,6 +249,8 @@ mattermostApp:
     #   value: "true"
     # - name: MM_SERVICESETTINGS_ENABLECUSTOMEMOJI
     #   value: "true"
+  ## Allows the specification of a configmap or secret to set all key-value pairs as environment variables for Mattermost
+  envFrom: []
   ## Additional pod annotations
   extraPodAnnotations: {}
 # MySQL HA Section. Use this to configure MySQL.
