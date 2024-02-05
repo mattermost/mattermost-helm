@@ -204,6 +204,52 @@ entries:
   mattermost-enterprise-edition:
   - apiVersion: v2
     appVersion: 9.4.2
+    created: "2024-02-05T13:05:39.232239002Z"
+    dependencies:
+    - name: mattermost-elasticsearch
+      repository: ""
+      version: 0.1.0
+    - name: mattermost-grafana
+      repository: ""
+      version: 0.3.6
+    - condition: global.features.database.useInternal
+      name: mysqlha
+      repository: https://charts.helm.sh/incubator
+      version: 2.0.0
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.helm.sh/stable
+      version: 5.0.26
+    - condition: global.features.grafana.enabled
+      name: prometheus
+      repository: https://charts.helm.sh/stable
+      version: 11.4.0
+    description: Mattermost Enterprise server with high availitibity.
+    digest: 82579ce07387f6afbaccbf18515869c56d441eea15576942b2968297f9959543
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - messaging
+    - team colaboration
+    maintainers:
+    - email: joram@mattermost.com
+      name: jwilander
+    - email: stylianos@mattermost.com
+      name: stylianosrigas
+    - email: spiros.economakis@mattermost.com
+      name: spirosoik
+    name: mattermost-enterprise-edition
+    sources:
+    - https://github.com/mattermost/mattermost-server
+    - https://github.com/mattermost/mattermost-helm
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-enterprise-edition-2.6.45/mattermost-enterprise-edition-2.6.45.tgz
+    version: 2.6.45
+  - apiVersion: v2
+    appVersion: 9.4.2
     created: "2024-01-31T09:19:27.780558175Z"
     dependencies:
     - name: mattermost-elasticsearch
@@ -7495,4 +7541,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2024-01-31T09:20:36.356656869Z"
+generated: "2024-02-05T13:05:39.78424594Z"
