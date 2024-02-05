@@ -67,7 +67,28 @@ ingress:
 # You cannot specify both the authKey and privateCert methods.
 
 sendTimeoutSec: 30
+# To be phased out in favor of servicemonitors.monitoring.coreos.com
 enableMetrics: true
+
+metrics:
+  enabled: false
+  serviceMonitor:
+    # -- Additional labels that can be used so ServiceMonitor will be discovered by Prometheus
+    additionalLabels: {}
+    # -- Interval at which metrics should be scraped.
+    interval: "30s"
+    # -- The name of the label on the target service to use as the job name in Prometheus
+    jobLabel: ""
+    # -- MetricRelabelConfigs to apply to samples before ingestion
+    metricRelabelings: {}
+    # -- Namespace for the ServiceMonitor Resource (defaults to the Release Namespace)
+    namespace: ""
+    # -- The path used by Prometheus to scrape metrics
+    path: "/metrics"
+    # -- RelabelConfigs to apply to samples before scraping
+    relabelings: {}
+    # -- Timeout after which the scrape is ended
+    scrapeTimeout: ""
 
 applePushSettings:
   authKey: ""
