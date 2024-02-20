@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: mattermost/mattermost-push-proxy
-  tag: 5.28.0
+  tag: 5.29.0
   pullPolicy: Always
 
 resources: {}
