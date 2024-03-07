@@ -230,6 +230,10 @@ config:
   MM_PLUGINSETTINGS_CLIENTDIRECTORY: "./client/plugins"
 
 ## Configure startup, liveness and readiness probes
+
+# Set probeScheme to the default of Plain HTTP - change to HTTPS if the mattermost listener is TLS enabled otherwise the probes fail
+probeScheme: HTTP
+
 startupProbe:
   initialDelaySeconds: 10
   failureThreshold: 30
