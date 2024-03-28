@@ -343,9 +343,7 @@ spec:
                                     field and the ones listed in the namespaces field.
                                     null selector and null or empty namespaces list
                                     means "this pod's namespace". An empty selector
-                                    ({}) matches all namespaces. This field is beta-level
-                                    and is only honored when PodAffinityNamespaceSelector
-                                    feature is enabled.
+                                    ({}) matches all namespaces.
                                   properties:
                                     matchExpressions:
                                       description: matchExpressions is a list of label
@@ -400,7 +398,7 @@ spec:
                                     term is applied to the union of the namespaces
                                     listed in this field and the ones selected by
                                     namespaceSelector. null or empty namespaces list
-                                    and null namespaceSelector means "this pod's namespace"
+                                    and null namespaceSelector means "this pod's namespace".
                                   items:
                                     type: string
                                   type: array
@@ -499,8 +497,6 @@ spec:
                                 the ones listed in the namespaces field. null selector
                                 and null or empty namespaces list means "this pod's
                                 namespace". An empty selector ({}) matches all namespaces.
-                                This field is beta-level and is only honored when
-                                PodAffinityNamespaceSelector feature is enabled.
                               properties:
                                 matchExpressions:
                                   description: matchExpressions is a list of label
@@ -551,7 +547,7 @@ spec:
                                 to the union of the namespaces listed in this field
                                 and the ones selected by namespaceSelector. null or
                                 empty namespaces list and null namespaceSelector means
-                                "this pod's namespace"
+                                "this pod's namespace".
                               items:
                                 type: string
                               type: array
@@ -652,9 +648,7 @@ spec:
                                     field and the ones listed in the namespaces field.
                                     null selector and null or empty namespaces list
                                     means "this pod's namespace". An empty selector
-                                    ({}) matches all namespaces. This field is beta-level
-                                    and is only honored when PodAffinityNamespaceSelector
-                                    feature is enabled.
+                                    ({}) matches all namespaces.
                                   properties:
                                     matchExpressions:
                                       description: matchExpressions is a list of label
@@ -709,7 +703,7 @@ spec:
                                     term is applied to the union of the namespaces
                                     listed in this field and the ones selected by
                                     namespaceSelector. null or empty namespaces list
-                                    and null namespaceSelector means "this pod's namespace"
+                                    and null namespaceSelector means "this pod's namespace".
                                   items:
                                     type: string
                                   type: array
@@ -808,8 +802,6 @@ spec:
                                 the ones listed in the namespaces field. null selector
                                 and null or empty namespaces list means "this pod's
                                 namespace". An empty selector ({}) matches all namespaces.
-                                This field is beta-level and is only honored when
-                                PodAffinityNamespaceSelector feature is enabled.
                               properties:
                                 matchExpressions:
                                   description: matchExpressions is a list of label
@@ -860,7 +852,7 @@ spec:
                                 to the union of the namespaces listed in this field
                                 and the ones selected by namespaceSelector. null or
                                 empty namespaces list and null namespaceSelector means
-                                "this pod's namespace"
+                                "this pod's namespace".
                               items:
                                 type: string
                               type: array
@@ -1013,6 +1005,28 @@ spec:
                     description: Defines the resource requests and limits for the
                       database pods.
                     properties:
+                      claims:
+                        description: "Claims lists the names of resources, defined
+                          in spec.resourceClaims, that are used by this container.
+                          \n This is an alpha field and requires enabling the DynamicResourceAllocation
+                          feature gate. \n This field is immutable. It can only be
+                          set for containers."
+                        items:
+                          description: ResourceClaim references one entry in PodSpec.ResourceClaims.
+                          properties:
+                            name:
+                              description: Name must match the name of one entry in
+                                pod.spec.resourceClaims of the Pod where this field
+                                is used. It makes that resource available inside a
+                                container.
+                              type: string
+                          required:
+                          - name
+                          type: object
+                        type: array
+                        x-kubernetes-list-map-keys:
+                        - name
+                        x-kubernetes-list-type: map
                       limits:
                         additionalProperties:
                           anyOf:
@@ -1058,6 +1072,9 @@ spec:
                   type:
                     description: Defines the type of database to use for an Operator-Managed
                       database. This value is ignored when using a User-Managed database.
+                    type: string
+                  version:
+                    description: Defines the cluster version for the database to use
                     type: string
                 type: object
               elasticSearch:
@@ -1112,7 +1129,7 @@ spec:
                     type: integer
                   grpc:
                     description: GRPC specifies an action involving a GRPC port. This
-                      is an alpha field and requires enabling GRPCContainerProbe feature
+                      is a beta field and requires enabling GRPCContainerProbe feature
                       gate.
                     properties:
                       port:
@@ -1367,6 +1384,28 @@ spec:
                     description: Defines the resource requests and limits for the
                       Minio pods.
                     properties:
+                      claims:
+                        description: "Claims lists the names of resources, defined
+                          in spec.resourceClaims, that are used by this container.
+                          \n This is an alpha field and requires enabling the DynamicResourceAllocation
+                          feature gate. \n This field is immutable. It can only be
+                          set for containers."
+                        items:
+                          description: ResourceClaim references one entry in PodSpec.ResourceClaims.
+                          properties:
+                            name:
+                              description: Name must match the name of one entry in
+                                pod.spec.resourceClaims of the Pod where this field
+                                is used. It makes that resource available inside a
+                                container.
+                              type: string
+                          required:
+                          - name
+                          type: object
+                        type: array
+                        x-kubernetes-list-map-keys:
+                        - name
+                        x-kubernetes-list-type: map
                       limits:
                         additionalProperties:
                           anyOf:
@@ -1434,7 +1473,7 @@ spec:
                     type: integer
                   grpc:
                     description: GRPC specifies an action involving a GRPC port. This
-                      is an alpha field and requires enabling GRPCContainerProbe feature
+                      is a beta field and requires enabling GRPCContainerProbe feature
                       gate.
                     properties:
                       port:
@@ -1564,6 +1603,27 @@ spec:
                 description: Defines the resource requests and limits for the Mattermost
                   app server pods.
                 properties:
+                  claims:
+                    description: "Claims lists the names of resources, defined in
+                      spec.resourceClaims, that are used by this container. \n This
+                      is an alpha field and requires enabling the DynamicResourceAllocation
+                      feature gate. \n This field is immutable. It can only be set
+                      for containers."
+                    items:
+                      description: ResourceClaim references one entry in PodSpec.ResourceClaims.
+                      properties:
+                        name:
+                          description: Name must match the name of one entry in pod.spec.resourceClaims
+                            of the Pod where this field is used. It makes that resource
+                            available inside a container.
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                    x-kubernetes-list-map-keys:
+                    - name
+                    x-kubernetes-list-type: map
                   limits:
                     additionalProperties:
                       anyOf:
