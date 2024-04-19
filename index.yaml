@@ -33,6 +33,26 @@ entries:
     version: 0.4.0
   mattermost-calls-offloader:
   - apiVersion: v2
+    appVersion: 0.8.0
+    created: "2024-04-19T06:55:27.287587274Z"
+    description: A Helm chart for Kubernetes to deploy Mattermost's Calls Offloader
+      service
+    digest: 3d983009d81ec54cab77652484ed68a54b7e8ff2a04cc4e8b706d8f022795ef7
+    keywords:
+    - mattermost
+    - calls-offloader
+    maintainers:
+    - email: sre@mattermost.com
+      name: SRE Team
+    name: mattermost-calls-offloader
+    sources:
+    - https://github.com/mattermost/mattermost-helm
+    - https://github.com/mattermost/calls-offloader
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-calls-offloader-0.1.7/mattermost-calls-offloader-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
     appVersion: 0.6.0
     created: "2024-01-29T12:23:17.008625844Z"
     description: A Helm chart for Kubernetes to deploy Mattermost's Calls Offloader
@@ -8092,4 +8112,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2024-04-17T06:14:48.13990776Z"
+generated: "2024-04-19T06:55:27.765333226Z"
