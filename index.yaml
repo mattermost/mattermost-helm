@@ -4731,6 +4731,39 @@ entries:
           image: mattermost/mattermost-push-proxy:5.26.0
       artifacthub.io/license: Apache-2.0
     apiVersion: v2
+    appVersion: 6.0.2
+    created: "2024-04-24T11:18:41.664945477Z"
+    description: Mattermost Push Proxy server
+    digest: c4c68269a0fda18b7810b0e12d7f3a59daf4f2f37bd3cde39e0e0d736b690171
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - notification
+    - messaging
+    - team colaboration
+    maintainers:
+    - email: stylianos.rigas@mattermost.com
+      name: stylianosrigas
+    - email: spiros.economakis@mattermost.com
+      name: spirosoik
+    - email: devops@mattermost.com
+      name: delivery-team
+    name: mattermost-push-proxy
+    sources:
+    - https://github.com/mattermost/mattermost-helm
+    - https://github.com/mattermost/mattermost-push-proxy
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-push-proxy-0.11.2/mattermost-push-proxy-0.11.2.tgz
+    version: 0.11.2
+  - annotations:
+      artifacthub.io/images: |
+        - name: mattermost-push-proxy
+          image: mattermost/mattermost-push-proxy:5.26.0
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
     appVersion: 6.0.1
     created: "2024-03-20T07:11:18.682701643Z"
     description: Mattermost Push Proxy server
@@ -8112,4 +8145,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2024-04-19T06:55:27.765333226Z"
+generated: "2024-04-24T11:18:41.829959703Z"
