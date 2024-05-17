@@ -30,7 +30,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       dnsPolicy: ClusterFirstWithHostNet
-      hostNetwork: true
+      hostNetwork: false
       serviceAccountName: {{ include "mattermost-rtcd.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ .Values.configuration.terminationGracePeriod }}
       securityContext:
@@ -57,11 +57,11 @@ spec:
               hostPort: {{ .Values.service.APIport }}
               protocol: TCP              
             - name: rtc-udp
-              containerPort: {{ .Values.service.RTCport }}
+              containerPort: {{ .Values.service.RTCTargetPort }}
               hostPort: {{ .Values.service.RTCport }}
               protocol: UDP
             - name: rtc-tcp
-              containerPort: {{ .Values.service.RTCport }}
+              containerPort: {{ .Values.service.RTCTargetPort }}
               hostPort: {{ .Values.service.RTCport }}
               protocol: TCP
           livenessProbe:
