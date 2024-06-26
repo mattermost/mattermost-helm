@@ -54,6 +54,10 @@ spec:
         image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
         imagePullPolicy: {{ .Values.initContainerImage.imagePullPolicy }}
         command: ["sh", "-c", "until curl --max-time 10 http://{{ .Release.Name }}-mysql:3306; do echo waiting for {{ .Release.Name }}-mysql; sleep 5; done;"]
+        {{- if .Values.containerSecurityContext }}
+        securityContext:
+          {{- toYaml .Values.containerSecurityContext | nindent 10 }}
+        {{- end }}
       {{- end }}
       {{- if .Values.extraInitContainers }}
       {{- .Values.extraInitContainers | toYaml | nindent 6 }}
@@ -95,6 +99,10 @@ spec:
           httpGet:
             path: /api/v4/system/ping
             port: http
+        {{- if .Values.containerSecurityContext }}
+        securityContext:
+          {{- toYaml .Values.containerSecurityContext | nindent 10 }}
+        {{- end }}
         volumeMounts:
         - mountPath: /mattermost/config
           name: mattermost-config

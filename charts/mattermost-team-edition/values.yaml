@@ -217,6 +217,12 @@ securityContext:
   # runAsGroup: 2000
   # runAsUser: 2000
 
+containerSecurityContext:
+  # runAsNonRoot: true
+  # allowPrivilegeEscalation: false
+  # capabilities:
+  #   drop: ['ALL']
+
 serviceAccount:
   create: false
   name:
