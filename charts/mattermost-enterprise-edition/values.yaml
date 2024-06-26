@@ -195,6 +195,8 @@ mattermostApp:
     # runAsGroup: 2000
     # runAsUser: 2000
 
+## Container Security Context
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   containerSecurityContext:
     # runAsNonRoot: true
     # allowPrivilegeEscalation: false
