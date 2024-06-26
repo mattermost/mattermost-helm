@@ -72,6 +72,10 @@ spec:
       - name: init-mysql
         image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
         imagePullPolicy: {{ .Values.initContainerImage.imagePullPolicy }}
+        {{- if .Values.mattermostApp.containerSecurityContext }}
+        securityContext:
+          {{- toYaml .Values.mattermostApp.containerSecurityContext | nindent 10 }}
+        {{- end }}
         command: [
           "sh",
           "-c",
@@ -161,6 +165,10 @@ spec:
           httpGet:
             path: /api/v4/system/ping
             port: {{ .Values.mattermostApp.service.internalPort }}
+        {{- if .Values.mattermostApp.containerSecurityContext }}
+        securityContext:
+          {{- toYaml .Values.mattermostApp.containerSecurityContext | nindent 10 }}
+        {{- end }}
         volumeMounts:
         {{- if .Values.global.existingLicenseSecret.name }}
         - mountPath: /mattermost/{{.Values.global.existingLicenseSecret.key }}

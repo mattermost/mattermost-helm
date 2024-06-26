@@ -195,6 +195,12 @@ mattermostApp:
     # runAsGroup: 2000
     # runAsUser: 2000
 
+  containerSecurityContext:
+    # runAsNonRoot: true
+    # allowPrivilegeEscalation: false
+    # capabilities:
+    #   drop: ['ALL']
+
   resources: {}
     # limits:
     #   cpu: 100m
