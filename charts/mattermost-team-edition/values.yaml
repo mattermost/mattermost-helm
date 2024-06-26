@@ -220,10 +220,10 @@ securityContext:
 ## Container Security Context
 ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 containerSecurityContext:
-  runAsNonRoot: true
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop: ['ALL']
+  # runAsNonRoot: true
+  # allowPrivilegeEscalation: false
+  # capabilities:
+  #   drop: ['ALL']
 
 serviceAccount:
   create: false
