@@ -2,8 +2,8 @@ apiVersion: v2
 name: mattermost-operator
 description: A Helm chart for Mattermost Operator
 type: application
-version: 1.0.1
-appVersion: 1.21.0
+version: 1.0.2
+appVersion: 1.22.0
 keywords:
 - mattermost
 - operator
