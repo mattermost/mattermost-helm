@@ -146,3 +146,10 @@ androidPushSettings:
     # When setting serviceFileLocation both serviceFile and serviceFileName needs to be set
     serviceFileLocation: ""
     serviceFileName: ""
+externalSecrets:
+  enabled: false
+  refreshInterval: 1h
+  secretStoreName: ""
+  secretStoreKind: ClusterSecretStore
+  # Data with base64 encoded format
+  data: {}
