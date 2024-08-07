@@ -88,6 +88,10 @@ route:
 externalDB:
   enabled: false
 
+  ## when externally configured
+  # existingSecret: secretname
+  # existingSecretKey: keywithfulluri
+
   ## postgres or mysql
   externalDriverType: ""
 

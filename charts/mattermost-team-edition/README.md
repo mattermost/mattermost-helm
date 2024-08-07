@@ -141,6 +141,8 @@ Parameter                             | Description                             
 `mysql.mysqlPassword`                 | User Password for Mysql (Required)                                                              | ""
 `mysql.mysqlDatabase`                 | Database name (Required)                                                                        | "mattermost"
 `externalDB.enabled`                  | Enables use of an preconfigured external database server                                        | `false`
+`externalDB.existingSecret`           | Uses an externally configured secret instead of externalDriverType + externalConnectionString   | ""
+`externalDB.existingSecretKey`        | The key in the existingSecret containing the necessary Connection String                        | ""
 `externalDB.externalDriverType`       | `"postgres"` or `"mysql"`                                                                       | ""
 `externalDB.externalConnectionString` | See the section about [external databases](#External-Databases).                                | ""
 `extraPodAnnotations`                 | Extra pod annotations to be used in the deployments                                             | `[]`
@@ -218,6 +220,20 @@ externalDB:
   enabled: true
   externalDriverType: "mysql"
   externalConnectionString: "<USERNAME>:<PASSWORD>@tcp(<HOST>:3306)/<DATABASE_NAME>?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
+```
+
+#### External Secret
+To use an externally configured secret, You need to set Mattermost **externalDB** config and the **existingSecret**
+
+**IMPORTANT:** Make sure the DB is already created before deploying Mattermost services
+
+Example when using **Percona Operator for PostgreSQL**:
+
+```yaml
+externalDB:
+  enabled: true
+  existingSecret: "mattermost-pguser-mattermost"
+  existingSecretKey: "uri"
 ```
 
 #### Expose extra ports
