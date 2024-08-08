@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: server
-    helm.sh/chart:  {{ include "mattermost-push-proxy.chart" . }}
+    helm.sh/chart: {{ include "mattermost-push-proxy.chart" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: 2
@@ -34,49 +34,72 @@ spec:
         - name: {{ include "mattermost-push-proxy.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args: ["--config", "/mattermost-push-proxy/config/config.json"]
+          args:
+            - "--config"
+            - "/mattermost-push-proxy/config/config.json"
           ports:
             - containerPort: {{ .Values.service.internalPort }}
           volumeMounts:
-            - mountPath: /mattermost-push-proxy/config/config.json
-              name: push-config-template
-              subPath: push-config.json
-          {{- if .Values.applePushSettings.authKey }}
-            - mountPath: {{ .Values.applePushSettings.authKeyFile }}
-              name: apple-push-auth-key
-              subPath: {{ .Values.applePushSettings.authKeyFileName }}
-          {{- end }}
-          {{- if .Values.applePushSettings.apple.privateCert }}
-            - mountPath: /certs/apple-push-cert.pem
-              name: apple-push-cert
-              subPath: apple-push-cert.pem
-          {{- end }}
-          {{- if .Values.applePushSettings.apple_rn.privateCert }}
-            - mountPath: /certs/apple-rn-push-cert.pem
-              name: apple-rn-push-cert
-              subPath: apple-rn-push-cert.pem
-          {{- end }}
-          {{- if .Values.applePushSettings.apple_rnbeta.privateCert }}
-            - mountPath: /certs/apple-rnbeta-push-cert.pem
-              name: apple-rnbeta-push-cert
-              subPath: apple-rnbeta-push-cert.pem
-          {{- end }}
-          {{- if .Values.androidPushSettings.android.serviceFile }}
+            - mountPath: "/mattermost-push-proxy/config/config.json"
+              name: "push-config-template"
+              subPath: "push-config.json"
+            {{- if not .Values.externalSecrets.enabled }}
+            {{- if .Values.applePushSettings.authKey }}
+            - mountPath: {{ .Values.applePushSettings.authKeyFile | quote }}
+              name: "apple-auth-key"
+              subPath: {{ .Values.applePushSettings.authKeyFileName | quote }}
+            {{- end }}
+            {{- if .Values.applePushSettings.apple.privateCert }}
+            - mountPath: "/certs/apple-push-cert.pem"
+              name: "apple-push-cert"
+              subPath: "apple-push-cert.pem"
+            {{- end }}
+            {{- if .Values.applePushSettings.apple_rn.privateCert }}
+            - mountPath: "/certs/apple-rn-push-cert.pem"
+              name: "apple-rn-push-cert"
+              subPath: "apple-rn-push-cert.pem"
+            {{- end }}
+            {{- if .Values.applePushSettings.apple_rnbeta.privateCert }}
+            - mountPath: "/certs/apple-rnbeta-push-cert.pem"
+              name: "apple-rnbeta-push-cert"
+              subPath: "apple-rnbeta-push-cert.pem"
+            {{- end }}
+            {{- if .Values.androidPushSettings.android.serviceFile }}
+            - mountPath: {{ .Values.androidPushSettings.android.serviceFileLocation | quote }}
+              name: "android-service-file"
+              subPath: {{ .Values.androidPushSettings.android.serviceFileName | quote }}
+            {{- end }}
+            {{- if .Values.androidPushSettings.android_rn.serviceFile }}
+            - mountPath: {{ .Values.androidPushSettings.android_rn.serviceFileLocation | quote }}
+              name: "android-rn-service-file"
+              subPath: {{ .Values.androidPushSettings.android_rn.serviceFileName | quote }}
+            {{- end }}
+            {{- else }}
+            - mountPath: "{{ .Values.applePushSettings.authKeyFile }}"
+              name: "common-secret"
+              subPath: "auth-key-file"
+            - mountPath: "/certs/apple-push-cert.pem"
+              name: "common-secret"
+              subPath: "apple-push-cert.pem"
+            - mountPath: "/certs/apple-rn-push-cert.pem"
+              name: "common-secret"
+              subPath: "apple-rn-push-cert.pem"
+            - mountPath: "/certs/apple-rnbeta-push-cert.pem"
+              name: "common-secret"
+              subPath: "apple-rnbeta-push-cert.pem"
             - mountPath: "{{ .Values.androidPushSettings.android.serviceFileLocation }}"
-              name: android-service-file
-              subPath: "{{ .Values.androidPushSettings.android.serviceFileName }}"
-          {{- end }}
-          {{- if .Values.androidPushSettings.android_rn.serviceFile }}
+              name: "common-secret"
+              subPath: "android-service-file"
             - mountPath: "{{ .Values.androidPushSettings.android_rn.serviceFileLocation }}"
-              name: android-rn-service-file
-              subPath: "{{ .Values.androidPushSettings.android_rn.serviceFileName }}"
-          {{- end }}
+              name: "common-secret"
+              subPath: "android-rn-service-file"
+            {{- end }}
           resources:
-{{ toYaml .Values.resources | indent 12 }}
+            {{ toYaml .Values.resources | nindent 12 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+    {{- end }}
     {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
@@ -86,59 +109,75 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
-        - name: push-config-template
+        - name: "push-config-template"
           configMap:
             name: {{ include "mattermost-push-proxy.fullname" . }}-push-config-template
             items:
-            - key: push-config.json
-              path: push-config.json
-        {{- if .Values.applePushSettings.authKey }}
-        - name: apple-push-auth-key
+              - key: "push-config.json"
+                path: "push-config.json"
+        {{- if not .Values.externalSecrets.enabled }}
+          {{- if .Values.applePushSettings.authKey }}
+          - name: "apple-auth-key"
+            secret:
+              secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
+              items:
+                - key: "apple_auth_key"
+                  path: {{ .Values.applePushSettings.authKeyFileName }}
+          {{- end }}
+          {{- if .Values.applePushSettings.apple.privateCert }}
+          - name: "apple-push-cert"
+            secret:
+              secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
+              items:
+                - key: "apple_cert"
+                  path: "apple-push-cert.pem"
+          {{- end }}
+          {{- if .Values.applePushSettings.apple_rn.privateCert }}
+          - name: "apple-rn-push-cert"
+            secret:
+              secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
+              items:
+                - key: "apple_rn_cert"
+                  path: "apple-rn-push-cert.pem"
+          {{- end }}
+          {{- if .Values.applePushSettings.apple_rnbeta.privateCert }}
+          - name: "apple-rnbeta-push-cert"
+            secret:
+              secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
+              items:
+                - key: "apple_rnbeta_cert"
+                  path: "apple-rnbeta-push-cert.pem"
+          {{- end }}
+          {{- if .Values.androidPushSettings.android serviceFile }}
+          - name: "android-service-file"
+            secret:
+              secretName: {{ include "mattermost-push-proxy.fullname" . }}-android-service-files
+              items:
+                - key: "android_serviceFile"
+                  path: {{ .Values.androidPushSettings.android serviceFileName }}
+          {{- end }}
+          {{- if .Values.androidPushSettings.android_rn serviceFile }}
+              - name: "android-rn-service-file"
+                secret:
+                  secretName: {{ include "mattermost-push-proxy.fullname" . }}-android-service-files
+                  items:
+                    - key: "android_rn serviceFile"
+                      path: {{ .Values.androidPushSettings.android_rn serviceFileName }}
+          {{- end }}
+        {{- else }}
+        - name: "common-secret"
           secret:
-            secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
+            secretName: {{ include "mattermost-push-proxy.fullname" . }}-secret
             items:
-            - key: apple_auth_key
-              path: {{ .Values.applePushSettings.authKeyFileName }}
-        {{- end }}
-        {{- if .Values.applePushSettings.apple.privateCert }}
-        - name: apple-push-cert
-          secret:
-            secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
-            items:
-            - key: apple_cert
-              path: apple-push-cert.pem
-        {{- end }}
-        {{- if .Values.applePushSettings.apple_rn.privateCert }}
-        - name: apple-rn-push-cert
-          secret:
-            secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
-            items:
-            - key: apple_rn_cert
-              path: apple-rn-push-cert.pem
-        {{- end }}
-        {{- if .Values.applePushSettings.apple_rnbeta.privateCert }}
-        - name: apple-rnbeta-push-cert
-          secret:
-            secretName: {{ include "mattermost-push-proxy.fullname" . }}-apple-certs
-            items:
-            - key: apple_rnbeta_cert
-              path: apple-rnbeta-push-cert.pem
-        {{- end }}
-        {{- if .Values.androidPushSettings.android.serviceFileLocation }}
-        - name: android-service-file
-          secret:
-            secretName: {{ include "mattermost-push-proxy.fullname" . }}-android-service-files
-            items:
-            - key: android_serviceFile
-              path: {{ .Values.androidPushSettings.android.serviceFileName }}
-        {{- end }}
-        {{- if .Values.androidPushSettings.android_rn.serviceFileLocation }}
-        - name: android-rn-service-file
-          secret:
-            secretName: {{ include "mattermost-push-proxy.fullname" . }}-android-service-files
-            items:
-            - key: android_rn_serviceFile
-              path: {{ .Values.androidPushSettings.android_rn.serviceFileName }}
-        {{- end }}
-      
-
+              - key: "auth-key-file"
+                path: "auth-key-file"
+              - key: "apple_cert"
+                path: "apple-push-cert.pem"
+              - key: "apple_rn_cert"
+                path: "apple-rn-push-cert.pem"
+              - key: "apple_rnbeta_cert"
+                path: "apple-rnbeta-push-cert.pem"
+              - key: "android_serviceFile"
+                path: "android-service-file"
+              - key: "android_rn serviceFile"
+                path: "android-rn-service-file"
