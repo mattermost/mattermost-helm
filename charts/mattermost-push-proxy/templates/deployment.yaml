@@ -77,7 +77,7 @@ spec:
             {{- else }}
             - mountPath: "{{ .Values.applePushSettings.authKeyFile }}"
               name: "common-secret"
-              subPath: "auth-key-file"
+              subPath: {{ .Values.applePushSettings.authKeyFileName }}
             - mountPath: "/certs/apple-push-cert.pem"
               name: "common-secret"
               subPath: "apple-push-cert.pem"
@@ -170,7 +170,7 @@ spec:
             secretName: {{ include "mattermost-push-proxy.fullname" . }}-secret
             items:
               - key: "apple_auth_key"
-                path: "auth-key-file"
+                path: {{ .Values.applePushSettings.authKeyFileName }}
               - key: "apple_cert"
                 path: "apple-push-cert.pem"
               - key: "apple_rn_cert"
