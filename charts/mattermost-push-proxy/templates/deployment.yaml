@@ -169,7 +169,7 @@ spec:
           secret:
             secretName: {{ include "mattermost-push-proxy.fullname" . }}-secret
             items:
-              - key: "auth-key-file"
+              - key: "apple_auth_key"
                 path: "auth-key-file"
               - key: "apple_cert"
                 path: "apple-push-cert.pem"
