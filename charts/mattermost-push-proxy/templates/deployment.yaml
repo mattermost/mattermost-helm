@@ -78,21 +78,12 @@ spec:
             - mountPath: "{{ .Values.applePushSettings.authKeyFile }}"
               name: "common-secret"
               subPath: {{ .Values.applePushSettings.authKeyFileName }}
-            - mountPath: "/certs/apple-push-cert.pem"
-              name: "common-secret"
-              subPath: "apple-push-cert.pem"
-            - mountPath: "/certs/apple-rn-push-cert.pem"
-              name: "common-secret"
-              subPath: "apple-rn-push-cert.pem"
-            - mountPath: "/certs/apple-rnbeta-push-cert.pem"
-              name: "common-secret"
-              subPath: "apple-rnbeta-push-cert.pem"
             - mountPath: "{{ .Values.androidPushSettings.android.serviceFileLocation }}"
               name: "common-secret"
-              subPath: "android-service-file"
+              subPath: "{{ .Values.androidPushSettings.android.serviceFileName }}"
             - mountPath: "{{ .Values.androidPushSettings.android_rn.serviceFileLocation }}"
               name: "common-secret"
-              subPath: "android-rn-service-file"
+              subPath: "{{ .Values.androidPushSettings.android_rn.serviceFileName }}"
             {{- end }}
           resources:
             {{ toYaml .Values.resources | nindent 12 }}
@@ -171,14 +162,8 @@ spec:
             items:
               - key: "apple_auth_key"
                 path: {{ .Values.applePushSettings.authKeyFileName }}
-              - key: "apple_cert"
-                path: "apple-push-cert.pem"
-              - key: "apple_rn_cert"
-                path: "apple-rn-push-cert.pem"
-              - key: "apple_rnbeta_cert"
-                path: "apple-rnbeta-push-cert.pem"
               - key: "android_serviceFile"
-                path: "android-service-file"
+                path: {{ .Values.androidPushSettings.android.serviceFileName }}
               - key: "android_rn_serviceFile"
-                path: "android-rn-service-file"
+                path: {{ .Values.androidPushSettings.android_rn.serviceFileName }}
 {{- end }}
