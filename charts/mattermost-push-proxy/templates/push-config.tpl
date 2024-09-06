@@ -35,7 +35,7 @@
         {{- else }}
             "ApplePushCertPrivate": "/certs/apple-rn-push-cert.pem",
         {{- end }}
-        {{- if eq .Values.applePushSettings.authKey "" }}
+        {{- if and (eq .Values.applePushSettings.authKey "") (eq .Values.externalSecrets.enabled false) }}
             "AppleAuthKeyFile":"",
             "AppleAuthKeyID":"",
             "AppleTeamID":"",
