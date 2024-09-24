@@ -139,21 +139,21 @@ spec:
             - key: "apple_rnbeta_cert"
               path: "apple-rnbeta-push-cert.pem"
         {{- end }}
-        {{- if .Values.androidPushSettings.android_serviceFile }}
+        {{- if .Values.androidPushSettings.android.serviceFile }}
         - name: "android-service-file"
           secret:
             secretName: {{ include "mattermost-push-proxy.fullname" . }}-android-service-files
             items:
             - key: "android_serviceFile"
-              path: {{ .Values.androidPushSettings.android_serviceFileName }}
+              path: {{ .Values.androidPushSettings.android.serviceFileName }}
         {{- end }}
-        {{- if .Values.androidPushSettings.android_rn_serviceFile }}
+        {{- if .Values.androidPushSettings.android_rn.serviceFile }}
         - name: "android-rn-service-file"
           secret:
             secretName: {{ include "mattermost-push-proxy.fullname" . }}-android-service-files
             items:
             - key: "android_rn_serviceFile"
-              path: {{ .Values.androidPushSettings.android_rn_serviceFileName }}
+              path: {{ .Values.androidPushSettings.android_rn.serviceFileName }}
         {{- end }}
         {{- else }}
         - name: "common-secret"
