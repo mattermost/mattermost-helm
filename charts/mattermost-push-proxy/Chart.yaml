@@ -2,8 +2,8 @@ apiVersion: v2
 description: Mattermost Push Proxy server
 name: mattermost-push-proxy
 type: application
-version: 0.13.2
-appVersion: 6.2.0
+version: 0.14.0
+appVersion: 6.3.0
 keywords:
   - mattermost
   - communication
@@ -25,5 +25,5 @@ sources:
 annotations:
   artifacthub.io/images: |
     - name: mattermost-push-proxy
-      image: mattermost/mattermost-push-proxy:6.2.0
+      image: mattermost/mattermost-push-proxy:6.3.0
   artifacthub.io/license: Apache-2.0

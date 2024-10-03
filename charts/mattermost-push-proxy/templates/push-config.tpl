@@ -6,6 +6,7 @@
     "ThrottleVaryByHeader":"X-Forwarded-For",
     "EnableMetrics": {{ .Values.enableMetrics }},
     "SendTimeoutSec": {{ .Values.sendTimeoutSec }},
+    "RetryTimeoutSec": {{ .Values.retryTimeoutSec }},
     "ApplePushSettings":[
         {
             "Type":"apple",

@@ -68,6 +68,7 @@ ingress:
 # You cannot specify both the authKey and privateCert methods.
 
 sendTimeoutSec: 30
+retryTimeoutSec: 8
 # To be phased out in favor of servicemonitors.monitoring.coreos.com
 enableMetrics: true
 
