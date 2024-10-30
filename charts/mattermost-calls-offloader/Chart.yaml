@@ -2,7 +2,7 @@ apiVersion: v2
 name: mattermost-calls-offloader
 description: A Helm chart for Kubernetes to deploy Mattermost's Calls Offloader service
 type: application
-version: 0.1.7
+version: 0.2.0
 appVersion: "0.8.0"
 keywords:
 - mattermost
