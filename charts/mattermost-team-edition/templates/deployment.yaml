@@ -41,9 +41,9 @@ spec:
       tolerations:
       {{- toYaml .Values.tolerations | nindent 6 }}
       {{- end }}
-      {{- if .Values.securityContext }}
+      {{- if .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.securityContext | nindent 8 }}
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- end }}
       {{- if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
@@ -107,9 +107,9 @@ spec:
         {{- end }}
         resources:
           {{- .Values.resources | toYaml | nindent 12 }}
-        {{- if .Values.podSecurityContext }}
+        {{- if .Values.securityContext }}
         securityContext:
-          {{- toYaml .Values.podSecurityContext | nindent 10 }}
+          {{- toYaml .Values.securityContext | nindent 10 }}
         {{- end }}
       volumes:
       {{- if .Values.extraVolumes -}}

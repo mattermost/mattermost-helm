@@ -210,6 +210,17 @@ affinity: {}
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 tolerations: []
 
+## Pod Security Context
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+podSecurityContext:
+  # fsGroup: 2000
+  # fsGroupChangePolicy: Always
+  # runAsGroup: 2000
+  # runAsNonRoot: true
+  # runAsUser: 2000
+  # seccompProfile:
+  #   type: RuntimeDefault
+
 ## Container Security Context
 ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 securityContext:
@@ -217,17 +228,6 @@ securityContext:
   # capabilities:
   #   drop:
   #   - ALL
-  # runAsGroup: 2000
-  # runAsNonRoot: true
-  # runAsUser: 2000
-  # seccompProfile:
-  #   type: RuntimeDefault
-
-## Pod Security Context
-## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-podSecurityContext:
-  # fsGroup: 2000
-  # fsGroupChangePolicy: Always
   # runAsGroup: 2000
   # runAsNonRoot: true
   # runAsUser: 2000
