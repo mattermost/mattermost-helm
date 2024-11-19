@@ -1,0 +1,9 @@
+{{- if .Values.volumeConfig.useEFS }}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.efsVolume.storageClassName }}
+provisioner: efs.csi.aws.com
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+{{- end }}

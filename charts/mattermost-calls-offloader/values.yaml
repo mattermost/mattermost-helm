@@ -83,3 +83,29 @@ config:
     value: "true"
   - name: LOGGER_CONSOLELEVEL
     value: "INFO"
+
+volumeConfig:
+  usePVC: false
+  useEFS: false
+  useNFS: false
+
+persistentVolume:
+  name: pvc-volume
+  claimName: my-pvc
+  mountPath: /data
+  storage: 100Gi  # Storage size for PVC
+
+efsVolume:
+  name: efs-volume
+  claimName: efs-pvc
+  mountPath: /efs-data
+  volumeHandle: "fs-12345678"  # EFS filesystem ID
+  storage: 100Gi  # Storage size for EFS
+
+nfsVolume:
+  name: nfs-volume
+  claimName: nfs-pvc
+  server: "nfs-server.example.com"  # NFS server address
+  path: "/nfs-share"
+  mountPath: /nfs-data
+  storage: 10Gi  # Storage size for NFS

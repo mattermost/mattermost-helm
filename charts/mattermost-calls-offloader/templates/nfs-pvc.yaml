@@ -1,0 +1,12 @@
+{{- if .Values.volumeConfig.useNFS }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.nfsVolume.storage }}
+{{- end }}
