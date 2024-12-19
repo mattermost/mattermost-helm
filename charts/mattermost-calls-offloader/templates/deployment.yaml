@@ -55,36 +55,6 @@ spec:
               port: offloader
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          volumeMounts:
-            {{- if .Values.volumeConfig.usePVC }}
-            - mountPath: {{ .Values.persistentVolume.mountPath }}
-              name: {{ .Values.persistentVolume.name }}
-            {{- end }}
-            {{- if .Values.volumeConfig.useEFS }}
-            - mountPath: {{ .Values.efsVolume.mountPath }}
-              name: {{ .Values.efsVolume.name }}
-            {{- end }}
-            {{- if .Values.volumeConfig.useNFS }}
-            - mountPath: {{ .Values.nfsVolume.mountPath }}
-              name: {{ .Values.nfsVolume.name }}
-            {{- end }}
-      volumes:
-        {{- if .Values.volumeConfig.usePVC }}
-        - name: {{ .Values.persistentVolume.name }}
-          persistentVolumeClaim:
-            claimName: {{ .Values.persistentVolume.claimName }}
-        {{- end }}
-        {{- if .Values.volumeConfig.useEFS }}
-        - name: {{ .Values.efsVolume.name }}
-          persistentVolumeClaim:
-            claimName: {{ .Values.efsVolume.claimName }}
-        {{- end }}
-        {{- if .Values.volumeConfig.useNFS }}
-        - name: {{ .Values.nfsVolume.name }}
-          nfs:
-            server: {{ .Values.nfsVolume.server }}
-            path: {{ .Values.nfsVolume.path }}
-        {{- end }}
 
       {{- with .Values.nodeSelector }}
       nodeSelector:

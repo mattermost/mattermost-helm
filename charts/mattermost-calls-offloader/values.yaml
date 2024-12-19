@@ -8,7 +8,7 @@ image:
   repository: mattermost/calls-offloader
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.8.0"
+  tag: "v0.9.0"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -83,6 +83,9 @@ config:
     value: "true"
   - name: LOGGER_CONSOLELEVEL
     value: "INFO"
+  # To be set in case a persistent volume is used.
+  # - name: JOBS_KUBERNETES_PERSISTENTVOLUMECLAIMNAME
+  #   value: "my-pvc"
 
 volumeConfig:
   usePVC: false
