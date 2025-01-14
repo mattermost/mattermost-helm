@@ -309,6 +309,7 @@ minio:
     tag: RELEASE.2019-05-14T23-57-45Z
     pullPolicy: IfNotPresent
   s3Url: "" # if not set it will use {{ .Release.Name }}-minio:9000
+  region: ""
   accessKey: "mattermostadmin"
   secretKey: "mattermostadmin"
 

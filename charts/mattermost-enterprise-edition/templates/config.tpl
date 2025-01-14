@@ -139,7 +139,7 @@
         "AmazonS3AccessKeyId": "{{ .Values.minio.accessKey }}",
         "AmazonS3SecretAccessKey": "{{ .Values.minio.secretKey }}",
         "AmazonS3Bucket": "{{ .Values.minio.defaultBucket.name }}",
-        "AmazonS3Region": "",
+        "AmazonS3Region": "{{ .Values.minio.region }}",
         {{- if .Values.minio.s3Url }}
         "AmazonS3Endpoint": "{{ .Values.minio.s3Url }}",
         {{- else }}
