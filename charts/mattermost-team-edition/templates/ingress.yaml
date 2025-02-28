@@ -37,7 +37,7 @@ spec:
             name: {{ $serviceName }}
             port:
               number: {{ $servicePort }}
-        pathType: Prefix
+        pathType: {{ $.Values.ingress.pathType }}
         {{- else }}
         backend:
           serviceName: {{ $serviceName }}
