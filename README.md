@@ -3,15 +3,19 @@
 
 This repository collects a set of [Helm](https://helm.sh) charts curated by [Mattermost](https://www.mattermost.com).
 
-Click on the following links to see installation instructions for each chart:
+## Charts
 
-- [focalboard](charts/focalboard/)
-- [mattermost-chaos-engine](charts/mattermost-chaos-engine/)
-- [mattermost-enterprise-edition](charts/mattermost-enterprise-edition/)
+If you are looking to deploy Mattermost, start with the official Mattermost Operator helm chart:
+
 - [mattermost-operator](charts/mattermost-operator/)
-- [mattermost-push-proxy](charts/mattermost-push-proxy/)
+
+Other charts are provided which support or extend existing deployments:
+
 - [mattermost-rtcd](charts/mattermost-rtcd/)
-- [mattermost-team-edition](charts/mattermost-team-edition/)
+- [mattermost-calls-offloader](charts/mattermost-calls-offloader/)
+- [mattermost-push-proxy](charts/mattermost-push-proxy/)
+- [mattermost-chaos-engine](charts/mattermost-chaos-engine/)
+- [focalboard](charts/focalboard/)
 
 ## Usage
 
