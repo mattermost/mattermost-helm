@@ -1,6 +1,6 @@
 # Mattermost Enterprise Edition Helm Chart
 
-> :warning: **For new Mattermost deployments, we strongly recommend our [mattermost-operator](charts/mattermost-operator/) helm chart.**
+> :warning: **For new Mattermost deployments, we strongly recommend our [mattermost-operator](../mattermost-operator/) helm chart.**
 
 This is the Helm chart for the Mattermost Enterprise Edition. It is subject to changes, but is used by Mattermost internally to run CI servers and our [community.mattermost.com](https://community.mattermost.com) server. To learn more about Helm charts, [see the Helm docs](https://helm.sh/docs/).
 
