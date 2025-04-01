@@ -212,10 +212,27 @@ tolerations: []
 
 ## Pod Security Context
 ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-securityContext:
+podSecurityContext:
   # fsGroup: 2000
+  # fsGroupChangePolicy: Always
   # runAsGroup: 2000
+  # runAsNonRoot: true
   # runAsUser: 2000
+  # seccompProfile:
+  #   type: RuntimeDefault
+
+## Container Security Context
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+securityContext:
+  # allowPrivilegeEscalation: false
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # runAsGroup: 2000
+  # runAsNonRoot: true
+  # runAsUser: 2000
+  # seccompProfile:
+  #   type: RuntimeDefault
 
 serviceAccount:
   create: false
