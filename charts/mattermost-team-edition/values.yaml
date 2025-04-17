@@ -224,7 +224,7 @@ serviceAccount:
 
 ## Configuration
 ## The config here will be injected as environment variables in the deployment
-## Please refer to https://docs.mattermost.com/administration/config-settings.html#configuration-in-database for more information
+## Please refer to https://docs.mattermost.com/configure/configuration-settings.html#configuration-in-database for more information
 ## You can add any config here, but need to respect the format: MM_<GROUPSECTION>_<SETTING>. ie: MM_SERVICESETTINGS_ENABLECOMMANDS: false
 config:
   MM_PLUGINSETTINGS_CLIENTDIRECTORY: "./client/plugins"
