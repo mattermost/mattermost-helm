@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "mattermost-rtcd.labels" . | nindent 4 }}
 spec:
-  {{- if or Values.configuration.hostNetwork.enabled (eq .Values.service.NodePort.enabled false) }}
+  {{- if or Values.configuration.hostNetwork (eq .Values.service.NodePort.enabled false) }}
   clusterIP: None
   {{- else }}
   type: NodePort
