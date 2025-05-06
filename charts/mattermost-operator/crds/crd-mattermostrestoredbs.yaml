@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.7.0
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.16.5
   name: mattermostrestoredbs.mattermost.com
 spec:
   group: mattermost.com
@@ -31,14 +30,19 @@ spec:
           API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -53,21 +57,24 @@ spec:
                   name.
                 type: string
               mattermostDBName:
-                description: MattermostDBName defines the database name. Need to set
-                  if different from `mattermost`.
+                description: |-
+                  MattermostDBName defines the database name.
+                  Need to set if different from `mattermost`.
                 type: string
               mattermostDBPassword:
-                description: MattermostDBPassword defines the user password to access
-                  the database. Need to set if the user is different from the one
-                  created by the operator.
+                description: |-
+                  MattermostDBPassword defines the user password to access the database.
+                  Need to set if the user is different from the one created by the operator.
                 type: string
               mattermostDBUser:
-                description: MattermostDBUser defines the user to access the database.
+                description: |-
+                  MattermostDBUser defines the user to access the database.
                   Need to set if the user is different from `mmuser`.
                 type: string
               restoreSecret:
-                description: RestoreSecret defines the secret that holds the credentials
-                  to MySQL Operator be able to download the DB backup file
+                description: |-
+                  RestoreSecret defines the secret that holds the credentials to
+                  MySQL Operator be able to download the DB backup file
                 type: string
             type: object
           status:
@@ -87,9 +94,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
