@@ -5,7 +5,11 @@ metadata:
   labels:
     {{- include "mattermost-rtcd.labels" . | nindent 4 }}
 spec:
+  {{- if or Values.configuration.hostNetwork.enabled (eq .Values.service.NodePort.enabled false) }}
   clusterIP: None
+  {{- else }}
+  type: NodePort
+  {{- end }}
   ports:
     - port: {{ .Values.service.APIport }}
       targetPort: api
@@ -15,6 +19,9 @@ spec:
       targetPort: rtc-udp
       protocol: UDP
       name: rtc-udp
+      {{- if and .Values.service.NodePort.enabled .Values.service.NodePort.udpNodePort }}
+      nodePort: {{ .Values.service.NodePort.udpNodePort }}
+      {{- end }}
     - port: {{ .Values.service.RTCport }}
       targetPort: rtc-tcp
       protocol: TCP

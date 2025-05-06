@@ -29,7 +29,9 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       dnsPolicy: ClusterFirstWithHostNet
+      {{- if .Values.configuration.hostNetwork }}
       hostNetwork: true
+      {{- end }}
       serviceAccountName: {{ include "mattermost-rtcd.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ .Values.configuration.terminationGracePeriod }}
       securityContext:
