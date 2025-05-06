@@ -64,11 +64,20 @@ configuration:
     #   readOnly: true
   ## Allows the specification of additional environment variables for Mattermost
 
+  # Set to false if you want to disable hostNetwork
+  hostNetwork: true
+
 service:
   # APIport is the port that websocket and API uses
   APIport: 8045
   # RTCport is the port (both UDP and TCP) that will serve calls related traffic (i.e. audio,video)
   RTCport: 8443
+
+  # NodePort configuration. If enabled, disables hostNetwork
+  NodePort:
+    enabled: false
+    # if left empty, NodePort port assignment will be random
+    udpNodePort: ""
 
 ingress:
   enabled: false
