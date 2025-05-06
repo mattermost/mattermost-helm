@@ -5620,6 +5620,24 @@ entries:
     version: 0.8.2
   mattermost-operator:
   - apiVersion: v2
+    appVersion: 1.23.0
+    created: "2025-05-06T17:20:12.602517656Z"
+    description: A Helm chart for Mattermost Operator
+    digest: 5cda11172c11d9050e4cca06a6abcc704de80ad32578e2f1fcca2202e9e9679f
+    keywords:
+    - mattermost
+    - operator
+    maintainers:
+    - name: stylianosrigas
+    - name: gabrieljackson
+    name: mattermost-operator
+    sources:
+    - https://github.com/mattermost/mattermost-helm/tree/master/charts/mattermost-operator
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-operator-1.0.3/mattermost-operator-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
     appVersion: 1.22.0
     created: "2024-07-16T14:14:51.552995534Z"
     description: A Helm chart for Mattermost Operator
@@ -10299,4 +10317,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2025-04-29T07:19:25.992637373Z"
+generated: "2025-05-06T17:20:12.800033276Z"
