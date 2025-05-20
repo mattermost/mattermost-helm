@@ -13,9 +13,9 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     helm.sh/chart:  {{ include "mattermost-push-proxy.chart" . }}
-    {{- with .Values.ingress.labels }}
-    {{- toYaml . | indent 4 }}
-    {{- end }}
+{{- with .Values.ingress.labels }}
+{{- toYaml . | nindent 4 }}
+{{- end }}
   annotations:
     {{- range $key, $value := .Values.ingress.annotations }}
       {{ $key }}: {{ $value | quote }}
