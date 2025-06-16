@@ -1,5 +1,6 @@
-Mattermost Enterprise Edition Helm Chart
-====================================================
+# Mattermost Enterprise Edition Helm Chart
+
+> :warning: **This helm chart is no longer supported.** For deploying Mattermost, use our Mattermost Operator [here](../mattermost-operator/). Additionally, we recommend migrating any existing Helm deployments to the Mattermost Operator to guarantee ongoing support and better management capabilities.
 
 This is the Helm chart for the Mattermost Enterprise Edition. It is subject to changes, but is used by Mattermost internally to run CI servers and our [community.mattermost.com](https://community.mattermost.com) server. To learn more about Helm charts, [see the Helm docs](https://helm.sh/docs/).
 

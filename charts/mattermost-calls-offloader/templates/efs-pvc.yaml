@@ -1,0 +1,13 @@
+{{- if .Values.volumeConfig.useEFS }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.efsVolume.claimName }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ .Values.efsVolume.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.efsVolume.storage }}
+{{- end }}

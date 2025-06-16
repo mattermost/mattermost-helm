@@ -1,5 +1,7 @@
 # Mattermost Team Edition
 
+> :warning: **This helm chart is no longer supported.** For deploying Mattermost, use our Mattermost Operator [here](../mattermost-operator/). Additionally, we recommend migrating any existing Helm deployments to the Mattermost Operator to guarantee ongoing support and better management capabilities.
+
 [Mattermost](https://mattermost.com/) is a hybrid cloud enterprise messaging workspace that brings your messaging and tools together to get more done, faster.
 
 ## TL;DR;
@@ -125,6 +127,7 @@ The following table lists the configurable parameters of the Mattermost Team Edi
 Parameter                             | Description                                                                                     | Default
 ---                                   | ---                                                                                             | ---
 `configJSON`                          | The `config.json` configuration to be used by the mattermost server. The values you provide will by using Helm's merging behavior override individual default values only. See the [example configuration](#example-configuration) and the [Mattermost documentation](https://docs.mattermost.com/administration/config-settings.html) for details. |  See `configJSON` in [values.yaml](https://github.com/helm/charts/blob/master/stable/mattermost-team-edition/values.yaml)
+`containerSecurityContext`            | Security context for the container                                                              | `null`
 `image.repository`                    | Container image repository                                                                      | `mattermost/mattermost-team-edition`
 `image.tag`                           | Container image tag                                                                             | `5.39.0`
 `image.imagePullPolicy`               | Container image pull policy                                                                     | `IfNotPresent`
@@ -146,6 +149,7 @@ Parameter                             | Description                             
 `extraPodAnnotations`                 | Extra pod annotations to be used in the deployments                                             | `[]`
 `extraEnvVars`                        | Extra environments variables to be used in the deployments                                      | `[]`
 `extraInitContainers`                 | Additional init containers                                                                      | `[]`
+`securityContext`                     | Security context for the pod                                                                    | `null`
 `service.annotations`                 | Service annotations                                                                             | `{}`
 `service.loadBalancerIP`              | A user-specified IP address for service type LoadBalancer to use as External IP (if supported)  | `nil`
 `service.loadBalancerSourceRanges`    | list of IP CIDRs allowed access to load balancer (if supported)                                 | `[]`

@@ -1,3 +1,9 @@
+{{- if or (and .Values.volumeConfig.usePVC .Values.volumeConfig.useEFS)
+            (and .Values.volumeConfig.usePVC .Values.volumeConfig.useNFS)
+            (and .Values.volumeConfig.useEFS .Values.volumeConfig.useNFS) }}
+{{- fail "Only one of usePVC, useEFS, or useNFS can be enabled at a time." }}
+{{- end }}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -49,6 +55,7 @@ spec:
               port: offloader
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

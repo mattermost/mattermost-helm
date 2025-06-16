@@ -37,6 +37,7 @@ service:
 
 ingress:
   enabled: false
+  labels: {}
   # ingressClassName: nginx
   annotations:
     {}
@@ -68,6 +69,7 @@ ingress:
 # You cannot specify both the authKey and privateCert methods.
 
 sendTimeoutSec: 30
+retryTimeoutSec: 8
 # To be phased out in favor of servicemonitors.monitoring.coreos.com
 enableMetrics: true
 
@@ -146,3 +148,10 @@ androidPushSettings:
     # When setting serviceFileLocation both serviceFile and serviceFileName needs to be set
     serviceFileLocation: ""
     serviceFileName: ""
+externalSecrets:
+  enabled: false
+  refreshInterval: 1h
+  secretStoreName: ""
+  secretStoreKind: ClusterSecretStore
+  # Data with base64 encoded format
+  data: {}

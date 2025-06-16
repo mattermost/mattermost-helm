@@ -6,6 +6,7 @@
     "ThrottleVaryByHeader":"X-Forwarded-For",
     "EnableMetrics": {{ .Values.enableMetrics }},
     "SendTimeoutSec": {{ .Values.sendTimeoutSec }},
+    "RetryTimeoutSec": {{ .Values.retryTimeoutSec }},
     "ApplePushSettings":[
         {
             "Type":"apple",
@@ -15,7 +16,7 @@
             {{- else }}
             "ApplePushCertPrivate": "/certs/apple-push-cert.pem",
 	    {{- end }}
-        {{- if eq .Values.applePushSettings.authKey "" }}
+        {{- if and (eq .Values.applePushSettings.authKey "") (eq .Values.externalSecrets.enabled false) }}
             "AppleAuthKeyFile":"",
             "AppleAuthKeyID":"",
             "AppleTeamID":"",
@@ -35,7 +36,7 @@
         {{- else }}
             "ApplePushCertPrivate": "/certs/apple-rn-push-cert.pem",
         {{- end }}
-        {{- if eq .Values.applePushSettings.authKey "" }}
+        {{- if and (eq .Values.applePushSettings.authKey "") (eq .Values.externalSecrets.enabled false) }}
             "AppleAuthKeyFile":"",
             "AppleAuthKeyID":"",
             "AppleTeamID":"",
@@ -55,7 +56,7 @@
         {{- else }}
             "ApplePushCertPrivate": "/certs/apple-rnbeta-push-cert.pem",
         {{- end }}
-        {{- if eq .Values.applePushSettings.authKey "" }}
+        {{- if and (eq .Values.applePushSettings.authKey "") (eq .Values.externalSecrets.enabled false) }}
             "AppleAuthKeyFile":"",
             "AppleAuthKeyID":"",
             "AppleTeamID":"",
