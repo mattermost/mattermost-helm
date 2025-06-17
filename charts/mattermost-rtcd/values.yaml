@@ -65,6 +65,10 @@ configuration:
     #   readOnly: true
   ## Allows the specification of additional environment variables for Mattermost
 
+  # Enables host networking. Having the RTCD pod share the networking stack and network interface of the node
+  # itself simplifies the generation of ICE candidates.
+  hostNetwork: true
+
 service:
   # APIport is the port that websocket and API uses
   APIport: 8045
