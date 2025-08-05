@@ -12,7 +12,7 @@ mattermostOperator:
     requeuOnLimitDelay: 20s
   image:
     repository: mattermost/mattermost-operator
-    tag: v1.23.0
+    tag: v1.24.0
     pullPolicy: IfNotPresent
   args:
     - --enable-leader-election
@@ -31,7 +31,7 @@ mattermostCR:
   enabled: true
   name: mattermost-example
   spec:
-    version: 10.6.1
+    version: 10.10.1
     replicas: 1
     ingress:
       enabled: true
