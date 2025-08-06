@@ -30,6 +30,9 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/component: {{ .Values.global.features.jobserver.name }}
         helm.sh/chart: {{ include "mattermost-enterprise-edition.chart" . }}
+        {{- if .Values.extraPodLabels }}
+        {{- .Values.extraPodLabels | toYaml | nindent 8 }}
+        {{- end }}
       annotations:
         {{- if .Values.mattermostApp.extraPodAnnotations }}
         {{- .Values.mattermostApp.extraPodAnnotations | toYaml | nindent 8 }}
