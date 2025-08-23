@@ -253,6 +253,8 @@ mattermostApp:
   envFrom: []
   ## Additional pod annotations
   extraPodAnnotations: {}
+  ## Additional pod labels
+  extraPodLabels: {}
 # MySQL HA Section. Use this to configure MySQL.
 # If you are using an external DB, disable this.
 mysqlha:
