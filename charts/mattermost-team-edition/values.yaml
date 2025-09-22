@@ -11,6 +11,10 @@ initContainerImage:
   tag: latest
   imagePullPolicy: IfNotPresent
 
+## Deployment replicas
+## Must be 0 or 1, to scale up Mattermost you must use the entreprise edition
+replicas: 1
+
 ## Deployment Strategy
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
 deploymentStrategy:
