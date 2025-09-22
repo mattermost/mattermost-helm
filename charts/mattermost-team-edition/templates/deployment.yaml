@@ -11,7 +11,7 @@ spec:
   {{- if gt .Values.replicas 1 }}
   {{- fail "replicas must be 0 or 1. To scale up Mattermost, you must use the entreprise edition" }}
   {{- end }}
-  replicas: {{ .Values.replicas | default 1 }}
+  replicas: {{ .Values.replicas }}
   strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
