@@ -2,8 +2,8 @@ apiVersion: v2
 description: Mattermost Team Edition server.
 type: application
 name: mattermost-team-edition
-version: 6.6.84
-appVersion: 10.12.0
+version: 6.6.85
+appVersion: 11.0.2
 keywords:
   - mattermost
   - communication
