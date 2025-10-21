@@ -37,6 +37,7 @@ service:
 
 ingress:
   enabled: false
+  labels: {}
   # ingressClassName: nginx
   annotations:
     {}

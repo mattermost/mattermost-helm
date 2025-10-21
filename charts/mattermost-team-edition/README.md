@@ -1,6 +1,6 @@
 # Mattermost Team Edition
 
-> :warning: **For new Mattermost deployments, we strongly recommend our [mattermost-operator](../mattermost-operator/) helm chart.**
+> :warning: **This helm chart is no longer supported.** For deploying Mattermost, use our Mattermost Operator [here](../mattermost-operator/). Additionally, we recommend migrating any existing Helm deployments to the Mattermost Operator to guarantee ongoing support and better management capabilities.
 
 [Mattermost](https://mattermost.com/) is a hybrid cloud enterprise messaging workspace that brings your messaging and tools together to get more done, faster.
 
