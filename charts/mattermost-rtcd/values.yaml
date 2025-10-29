@@ -49,6 +49,7 @@ configuration:
     # RTCD_LOGGER_ENABLEFILE: "\"false\""
     # RTCD_RTC_ICEPORTUDP: "\"8443\""
     # RTCD_RTC_ICEPORTTCP: "\"8443\""
+    # RTCD_RTC_ICEHOSTPORTOVERRIDE: "\"443\""
 
   maxUnavailable: 1     # Only used when updateStrategy is set to "RollingUpdate"
   updateStrategy: RollingUpdate
@@ -64,11 +65,17 @@ configuration:
     #   readOnly: true
   ## Allows the specification of additional environment variables for Mattermost
 
+  # Enables host networking. Having the RTCD pod share the networking stack and network interface of the node
+  # itself simplifies the generation of ICE candidates.
+  hostNetwork: true
+
 service:
   # APIport is the port that websocket and API uses
   APIport: 8045
   # RTCport is the port (both UDP and TCP) that will serve calls related traffic (i.e. audio,video)
   RTCport: 8443
+  # RTCTargetPort is the port (both UDP and TCP) that the service will be listening on internally (in container).
+  RTCTargetPort: 8443
 
 ingress:
   enabled: false
