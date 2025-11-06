@@ -58,6 +58,10 @@ spec:
       {{- if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       {{- end }}
+      {{- if .Values.mattermostApp.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml .Values.mattermostApp.imagePullSecrets | nindent 6 }}
+      {{- end }}
       {{- if .Values.mattermostApp.extraInitContainers }}
       initContainers:
       {{- .Values.mattermostApp.extraInitContainers | toYaml | nindent 6 }}

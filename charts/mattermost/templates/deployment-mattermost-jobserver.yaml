@@ -51,15 +51,10 @@ spec:
       securityContext:
         {{- toYaml .Values.mattermostApp.securityContext | nindent 8 }}
       {{- end }}
-      initContainers:
-      - name: "init-mattermost-app"
-        image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
-        imagePullPolicy: {{ .Values.initContainerImage.imagePullPolicy }}
-        command: [
-          "sh",
-          "-c",
-          "until curl --max-time 5 http://{{ include "mattermost.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.mattermostApp.service.internalPort }}/api/v4/system/ping ; do echo waiting for Mattermost App come up; sleep 5; done; echo init-mattermost-app finished"
-        ]
+      {{- if .Values.mattermostApp.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml .Values.mattermostApp.imagePullSecrets | nindent 6 }}
+      {{- end }}
       containers:
       - name: {{ include "mattermost.name" . }}-jobserver
         image: "{{ .Values.mattermostApp.image.repository }}:{{ .Values.mattermostApp.image.tag }}"
