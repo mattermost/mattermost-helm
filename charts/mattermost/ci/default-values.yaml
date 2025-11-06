@@ -1,0 +1,13 @@
+mattermostApp:
+  replicaCount: 1
+  persistence:
+    pluginsServer:
+      enabled: false
+    pluginsClient:
+      enabled: false
+    configApp:
+      enabled: false
+
+mysqlha:
+  mysqlha:
+    replicaCount: 1
