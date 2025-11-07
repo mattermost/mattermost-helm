@@ -17,10 +17,10 @@ service:
 ```
 
 **Use this when:**
-- ✅ Running on nodes with public IPs
-- ✅ Need optimal WebRTC performance and low latency
-- ✅ Want to avoid TURN relay infrastructure
-- ✅ Security policies allow hostNetwork
+- Running on nodes with public IPs
+- Need optimal WebRTC performance and low latency
+- Want to avoid TURN relay infrastructure
+- Security policies allow hostNetwork
 
 ---
 
@@ -47,10 +47,10 @@ service:
 ```
 
 **Requirements:**
-- ❌ Cloud provider with UDP LoadBalancer support (AWS NLB, GCP, Azure Standard)
-- ❌ TURN server infrastructure for NAT traversal
-- ❌ Higher latency and bandwidth costs
-- ❌ Additional RTCD configuration for ICE servers
+- Cloud provider with UDP LoadBalancer support (AWS NLB, GCP, Azure Standard)
+- TURN server infrastructure for NAT traversal
+- Higher latency and bandwidth costs
+- Additional RTCD configuration for ICE servers
 
 **RTCD Configuration needed:**
 
