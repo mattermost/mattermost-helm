@@ -74,13 +74,13 @@ configuration:
   ## Allows the specification of additional environment variables for Mattermost
 
 service:
-  # Service type: ClusterIP (with hostNetwork), LoadBalancer, or NodePort
-  # When networking.hostNetwork is false, use LoadBalancer or NodePort
+  # Service type: ClusterIP (with hostNetwork) or LoadBalancer
+  # When networking.hostNetwork is false, use LoadBalancer with UDP support
   type: ClusterIP
   # Set to None for headless service (default with hostNetwork)
   # Set to empty string "" for normal ClusterIP when using LoadBalancer
   clusterIP: "None"
-  # ExternalTrafficPolicy for LoadBalancer/NodePort services
+  # ExternalTrafficPolicy for LoadBalancer services
   # "Local" preserves source IP and reduces hops (recommended)
   externalTrafficPolicy: "Local"
   # Annotations for cloud-specific LoadBalancer configuration

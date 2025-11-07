@@ -65,29 +65,6 @@ configuration:
 
 ---
 
-## Alternative: NodePort Without hostNetwork
-
-For on-premises or environments without LoadBalancer support:
-
-```yaml
-networking:
-  hostNetwork: false
-  useHostPort: false
-
-service:
-  type: NodePort
-  externalTrafficPolicy: "Local"
-  # Optionally specify NodePorts (30000-32767 range)
-```
-
-**Requirements:**
-- ❌ Firewall rules to allow NodePort range
-- ❌ TURN server infrastructure
-- ❌ External load balancing solution
-- ❌ Clients connect to `<node-ip>:<node-port>`
-
----
-
 ## Security Considerations with hostNetwork
 
 If security is a concern but hostNetwork is needed, apply these mitigations:
@@ -114,6 +91,83 @@ podSecurityContext:
   fsGroup: 1000
   seccompProfile:
     type: RuntimeDefault
+```
+
+---
+
+## Mattermost Integration Configuration
+
+Regardless of networking approach, Mattermost needs to be configured to communicate with RTCD.
+
+### Configuration Location
+
+**Via System Console**: System Console → Plugins → Calls → RTCD Service URL
+
+**Via config.json**:
+```json
+{
+  "PluginSettings": {
+    "Plugins": {
+      "com.mattermost.calls": {
+        "rtcdserviceurl": "https://YOUR_RTCD_URL:PORT",
+        "rtcdenabled": true
+      }
+    }
+  }
+}
+```
+
+### URL Configuration by Deployment Type:
+
+#### With hostNetwork (Default - Internal Service)
+
+```json
+{
+  "rtcdserviceurl": "https://mattermost-rtcd.mattermost.svc.cluster.local:8045"
+}
+```
+
+**Pros:**
+- ✅ Uses Kubernetes internal DNS
+- ✅ No external dependencies
+- ✅ Automatic service discovery
+- ✅ Works across namespace if FQDN used
+
+**Note**: Clients still connect directly to node public IPs for WebRTC media. The Mattermost server uses internal service for API calls only.
+
+#### With hostNetwork (Using Node IPs Directly)
+
+```json
+{
+  "rtcdserviceurl": "https://rtcd-node-1.example.com:8045,https://rtcd-node-2.example.com:8045"
+}
+```
+
+**When to use**: If Mattermost is outside the Kubernetes cluster
+
+#### With Cloud LoadBalancer
+
+```json
+{
+  "rtcdserviceurl": "https://a1b2c3d4.us-east-1.elb.amazonaws.com:8045"
+}
+```
+
+**Important**: 
+- Get external IP: `kubectl get svc mattermost-rtcd -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'`
+- Update `RTCD_RTC_ICEHOSTOVERRIDE` with same address
+- Clients and Mattermost use same LoadBalancer endpoint
+
+### Health Check
+
+Verify RTCD connectivity from Mattermost:
+
+```bash
+# From within Mattermost pod
+curl https://mattermost-rtcd.mattermost.svc.cluster.local:8045/version
+
+# Expected response:
+{"version":"v0.x.x","buildHash":"...","buildDate":"..."}
 ```
 
 ---
@@ -198,11 +252,10 @@ service:
 
 ## Performance Comparison
 
-| Configuration | Bandwidth Cost | Complexity | TURN Required |
-|--------------|----------------|------------|---------------|
-| hostNetwork + Public IP | Low | Low | No |
-| LoadBalancer | High | Medium | Yes |
-| NodePort + External LB | High | High | Yes |
+| Configuration | Latency | Bandwidth Cost | Complexity | TURN Required |
+|--------------|---------|----------------|------------|---------------|
+| hostNetwork + Public IP | 5-20ms | Low | Low | No |
+| LoadBalancer | 50-150ms | High | Medium | Yes |
 
 ---
 
@@ -234,7 +287,7 @@ service:
 - Check cloud provider documentation for UDP support
 - Verify LoadBalancer quota
 - Consider using separate LoadBalancers for TCP and UDP
-- Or switch to NodePort
+- If UDP LoadBalancer is not available, use hostNetwork approach instead
 
 ---
 
