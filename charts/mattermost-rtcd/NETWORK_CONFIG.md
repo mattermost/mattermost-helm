@@ -83,8 +83,7 @@ securityContext:
   capabilities:
     drop:
       - ALL
-    add:
-      - NET_BIND_SERVICE  # Only if binding to ports < 1024
+
 
 podSecurityContext:
   fsGroup: 1000
@@ -127,22 +126,36 @@ Regardless of networking approach, Mattermost needs to be configured to communic
 ```
 
 **Pros:**
-- ✅ Uses Kubernetes internal DNS
-- ✅ No external dependencies
-- ✅ Automatic service discovery
-- ✅ Works across namespace if FQDN used
+- Uses Kubernetes internal DNS
+- No external dependencies
+- Automatic service discovery
+- Works across namespace if FQDN used
 
 **Note**: Clients still connect directly to node public IPs for WebRTC media. The Mattermost server uses internal service for API calls only.
 
-#### With hostNetwork (Using Node IPs Directly)
+#### With hostNetwork (Mattermost Outside Cluster)
+
+If Mattermost is running **outside** the Kubernetes cluster, you have two options:
+
+**Option A: Use Ingress/External Load Balancer (Recommended)**
 
 ```json
 {
-  "rtcdserviceurl": "https://rtcd-node-1.example.com:8045,https://rtcd-node-2.example.com:8045"
+  "rtcdserviceurl": "https://calls.example.com:8045"
 }
 ```
 
-**When to use**: If Mattermost is outside the Kubernetes cluster
+Deploy an Ingress or external load balancer in front of the RTCD service. This provides high availability and load distribution.
+
+**Option B: Use Single Node IP (Dev/Testing Only)**
+
+```json
+{
+  "rtcdserviceurl": "https://rtcd-node-1.example.com:8045"
+}
+```
+
+⚠️ **Not recommended for production**: If the pod reschedules to a different node, this URL will break. No automatic failover.
 
 #### With Cloud LoadBalancer
 
@@ -287,25 +300,3 @@ service:
 - Verify LoadBalancer quota
 - Consider using separate LoadBalancers for TCP and UDP
 - If UDP LoadBalancer is not available, use hostNetwork approach instead
-
----
-
-## Migration Guide
-
-### Migrating FROM hostNetwork TO LoadBalancer
-
-1. Deploy TURN infrastructure first
-2. Update values.yaml with LoadBalancer configuration
-3. Apply the changes (will cause brief downtime)
-4. Get LoadBalancer external IP: `kubectl get svc`
-5. Update RTCD environment variables with external IP
-6. Rolling restart pods
-
-### Migrating FROM LoadBalancer TO hostNetwork
-
-1. Ensure nodes have public IPs
-2. Update values.yaml with hostNetwork configuration
-3. Remove TURN server configurations
-4. Apply changes
-5. Pods will restart and bind to node IPs directly
-
