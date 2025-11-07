@@ -49,7 +49,6 @@ service:
 **Requirements:**
 - Cloud provider with UDP LoadBalancer support (AWS NLB, GCP, Azure Standard)
 - TURN server infrastructure for NAT traversal
-- Higher latency and bandwidth costs
 - Additional RTCD configuration for ICE servers
 
 **RTCD Configuration needed:**
