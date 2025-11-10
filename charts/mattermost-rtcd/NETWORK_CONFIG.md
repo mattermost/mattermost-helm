@@ -161,7 +161,9 @@ If Mattermost is running **outside** the Kubernetes cluster, you have two option
 }
 ```
 
-Deploy an Ingress or external load balancer in front of the RTCD service. This provides high availability and load distribution.
+Deploy an Ingress or external load balancer in front of the RTCD service for API access. 
+
+**Important**: The Ingress/LB is **only for API discovery** (Mattermost server querying which RTCD instances are available). WebRTC media traffic from clients will still go **directly to node public IPs**, bypassing the Ingress. Mattermost performs the load distribution by selecting the appropriate RTCD instance per call.
 
 **Option B: Use Single Node IP (Dev/Testing Only)**
 
