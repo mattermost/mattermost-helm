@@ -26,12 +26,28 @@ service:
 
 ## Alternative: LoadBalancer Without hostNetwork
 
+⚠️ **CRITICAL LIMITATION**: LoadBalancer mode **only supports a SINGLE RTCD instance**. Multiple instances behind a LoadBalancer will cause call failures.
+
+### Why Multiple Instances Don't Work:
+
+When a call starts, Mattermost selects **one specific RTCD instance** to host that call. All participants must connect to that same instance. With a LoadBalancer:
+- The LoadBalancer distributes connections across all RTCD backends
+- Different clients in the same call get routed to different RTCD instances
+- **Result**: Call participants cannot communicate with each other
+
+**Use LoadBalancer only if:**
+- Running a **single RTCD instance** (no scaling)
+- Development/testing environments
+
 For environments where `hostNetwork: true` is not permitted:
 
 ```yaml
 networking:
   hostNetwork: false   # Use standard pod networking
   useHostPort: false   # No host port binding
+
+configuration:
+  replicas: 1          # ⚠️ MUST be 1 - multiple instances don't work with LoadBalancer
 
 service:
   type: LoadBalancer
@@ -205,7 +221,9 @@ configuration:
   replicas: 2
 ```
 
-### Example 2: AWS with NLB
+### Example 2: AWS with NLB (Single Instance Only)
+
+⚠️ **Note**: This configuration only works with a single RTCD instance. For production scaling, use hostNetwork approach.
 
 ```yaml
 # values.yaml
@@ -224,6 +242,7 @@ service:
   RTCport: 8443
 
 configuration:
+  replicas: 1  # ⚠️ CRITICAL - must be 1 with LoadBalancer
   environmentVariables:
     RTCD_RTC_ICESERVERS: '[{"urls":["stun:stun.global.calls.mattermost.com:3478"]}]'
     # Set after LoadBalancer is created and external IP is assigned
@@ -264,10 +283,10 @@ service:
 
 ## Performance Comparison
 
-| Configuration | Latency | Bandwidth Cost | Complexity | TURN Required |
-|--------------|---------|----------------|------------|---------------|
-| hostNetwork + Public IP | 5-20ms | Low | Low | No |
-| LoadBalancer | 50-150ms | High | Medium | Yes |
+| Configuration | Latency | Bandwidth Cost | Complexity | TURN Required | Scaling |
+|--------------|---------|----------------|------------|---------------|---------|
+| hostNetwork + Public IP | 5-20ms | Low | Low | No | ✅ Multiple instances |
+| LoadBalancer | 50-150ms | High | Medium | Yes | ❌ Single instance only |
 
 ---
 
