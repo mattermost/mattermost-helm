@@ -12,22 +12,22 @@ global:
   features:
     database:
       # Database connection is required. Provide connection details below.
-      driver: "postgres"  # postgres
-      dataSource: ""  # Connection string - REQUIRED
-      dataSourceReplicas: []  # Optional read replicas
+      driver: "postgres" # postgres
+      dataSource: "" # Connection string - REQUIRED
+      dataSourceReplicas: [] # Optional read replicas
       # Use an existing secret for database credentials (see secret-mattermost-dbsecret.yaml for required fields)
       existingDatabaseSecret:
         name:
         key:
-    
+
     fileStore:
       # External file storage is required for production deployments
       # For testing, you can use "local" driver (not recommended for production)
-      driver: "amazons3"  # amazons3 (S3-compatible), local
+      driver: "amazons3" # amazons3 (S3-compatible), local
       # S3-compatible storage configuration (when driver is "amazons3")
-      url: ""  # S3 endpoint (leave empty for AWS S3)
-      bucket: ""  # Bucket name - REQUIRED
-      region: ""  # AWS region (e.g., us-east-1)
+      url: "" # S3 endpoint (leave empty for AWS S3)
+      bucket: "" # Bucket name - REQUIRED
+      region: "" # AWS region (e.g., us-east-1)
       # Option 1: Provide credentials directly (values.yaml)
       accessKeyId: ""
       secretAccessKey: ""
@@ -36,10 +36,10 @@ global:
       #   --from-literal=accessKeyId=YOUR_KEY \
       #   --from-literal=secretAccessKey=YOUR_SECRET
       existingSecret:
-        name: ""  # Name of the Kubernetes Secret (e.g., "mattermost-s3-creds")
-        accessKeyIdKey: "accessKeyId"  # Key in the secret containing access key ID
-        secretAccessKeyKey: "secretAccessKey"  # Key in the secret containing secret access key
-    
+        name: "" # Name of the Kubernetes Secret (e.g., "mattermost-s3-creds")
+        accessKeyIdKey: "accessKeyId" # Key in the secret containing access key ID
+        secretAccessKeyKey: "secretAccessKey" # Key in the secret containing secret access key
+
     jobserver:
       # Optional: Enable a dedicated job server for background tasks
       enabled: false
@@ -62,7 +62,7 @@ mattermostApp:
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
-    tag: 11.0.4@sha256:9397ce7d9c330cbdd3e06abd919dcfe6ef71f21cf2e3349a8d91c53549285584
+    tag: 11.1.1@sha256:b795441466ef1b3df0e8a6c5d4f177da7db5d792cba20072f947c693f36442e6
     pullPolicy: IfNotPresent
   # Image pull secrets for private registries
   imagePullSecrets: []
@@ -82,8 +82,8 @@ mattermostApp:
     externalPort: 8065
     internalPort: 8065
     metricsPort: 8067
-    clusterPort: 8075  # Required for cluster communication between replicas
-    gossipPort: 8074   # Required for gossip protocol between replicas
+    clusterPort: 8075 # Required for cluster communication between replicas
+    gossipPort: 8074 # Required for gossip protocol between replicas
     metricsName: mattermost-app-metrics
 
   ingress:
@@ -127,13 +127,13 @@ mattermostApp:
     # runAsUser: 2000
     # runAsNonRoot: true
 
-  resources: {}
-    # limits:
-    #   cpu: 100m
-    #   memory: 300Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 300Mi
+  resources:
+    limits:
+      cpu: 2
+      memory: 4Gi
+    requests:
+      cpu: 100m
+      memory: 300Mi
 
   extraInitContainers: []
   extraVolumes: []
