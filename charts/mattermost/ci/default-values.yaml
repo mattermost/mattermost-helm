@@ -7,7 +7,3 @@ mattermostApp:
       enabled: false
     configApp:
       enabled: false
-
-mysqlha:
-  mysqlha:
-    replicaCount: 1

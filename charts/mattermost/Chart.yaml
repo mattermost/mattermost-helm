@@ -3,7 +3,7 @@ description: Mattermost enterprise edition server deployment without Mattermost 
 name: mattermost
 type: application
 version: 2.7.0
-appVersion: 11.0.4
+appVersion: 11.1.1
 keywords:
 - mattermost
 - communication
@@ -14,10 +14,10 @@ icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
 maintainers:
   - name: jwilander
     email: joram@mattermost.com
-  - name: stylianosrigas
-    email: stylianos@mattermost.com
-  - name: spirosoik
-    email: spiros.economakis@mattermost.com
+  - name: DSchalla
+    email: daniel@mattermost.com
+  - name: andrleite
+    email: andre.leite@mattermost.com
 sources:
 - https://github.com/mattermost/mattermost-server
 - https://github.com/mattermost/mattermost-helm

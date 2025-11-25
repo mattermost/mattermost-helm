@@ -14,7 +14,7 @@ This Helm chart deploys Mattermost Enterprise Edition without the Mattermost Ope
 ## Key Features
 
 - **No ClusterRole required** - operates within namespace permissions only
-- **External dependencies** - requires external PostgreSQL/MySQL and S3-compatible storage
+- **External dependencies** - requires external PostgreSQL and S3-compatible storage
 - **Optional components**:
   - NGINX Ingress support (not mandatory)
   - Dedicated job server for background tasks (not mandatory)
@@ -29,7 +29,7 @@ To learn more about Helm charts, see the [Helm docs](https://helm.sh/docs/).
 
 Before deploying, you must have:
 
-1. **External Database**: PostgreSQL 11+ or MySQL 8.0+
+1. **External Database**: PostgreSQL 11+
    - Database and user created
    - Connection string ready
    
@@ -62,7 +62,7 @@ global:
   
   features:
     database:
-      driver: "postgres"  # or "mysql"
+      driver: "postgres"
       dataSource: "postgres://user:password@hostname:5432/mattermost?sslmode=require"
     
     fileStore:
@@ -97,7 +97,7 @@ mattermostApp:
 
 1. `global.siteUrl` - URL users will access Mattermost at
 2. `global.mattermostLicense` - Your Mattermost Enterprise license (optional, but recommended)
-3. `global.features.database.driver` - Database type: `postgres` or `mysql`
+3. `global.features.database.driver` - Database type: `postgres`
 4. `global.features.database.dataSource` - Database connection string
 5. `global.features.fileStore.driver` - File storage driver: `amazons3` or `local`
 6. `global.features.fileStore.bucket` - S3 bucket name (when using `amazons3`)
@@ -107,11 +107,6 @@ mattermostApp:
 **PostgreSQL connection string format:**
 ```
 postgres://username:password@hostname:5432/dbname?sslmode=require
-```
-
-**MySQL connection string format:**
-```
-username:password@tcp(hostname:3306)/dbname?charset=utf8mb4,utf8
 ```
 
 **Using a Kubernetes Secret for database credentials:**

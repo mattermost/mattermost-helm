@@ -2,7 +2,7 @@ Mattermost has been deployed!
 
 IMPORTANT: This is a minimal deployment requiring external database and file storage.
 Make sure you have configured:
-  - External database connection (PostgreSQL or MySQL)
+  - External database connection (PostgreSQL)
   - File storage via environment variables (S3, GCS, etc.)
 
 Get the application URL by running these commands:
