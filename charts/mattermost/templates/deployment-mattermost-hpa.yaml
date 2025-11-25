@@ -20,16 +20,35 @@ spec:
   minReplicas: {{ .Values.mattermostApp.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.mattermostApp.autoscaling.maxReplicas }}
   metrics:
-{{- with .Values.mattermostApp.autoscaling.targetMemoryUtilizationPercentage }}
+{{- if semverCompare ">= 1.25-0" .Capabilities.KubeVersion.Version }}
+  {{- with .Values.mattermostApp.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ . }}
+  {{- end }}
+  {{- with .Values.mattermostApp.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ . }}
+  {{- end }}
+{{- else }}
+  {{- with .Values.mattermostApp.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         targetAverageUtilization: {{ . }}
-{{- end }}
-{{- with .Values.mattermostApp.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- with .Values.mattermostApp.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
         targetAverageUtilization: {{ . }}
+  {{- end }}
 {{- end }}
 {{- end }}
