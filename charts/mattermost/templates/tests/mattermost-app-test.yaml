@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include  "mattermost.fullname" . }}-app-test-{{ randAlphaNum 5 | lower }}"
+  labels:
+    app.kubernetes.io/name: {{ include "mattermost.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "mattermost.chart" . }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+  - name: {{ .Release.Name }}-app-test
+    image: bats/bats:v1.1.0
+    imagePullPolicy: Always
+    command: ["/opt/bats/bin/bats", "-t", "/tests/run.sh"]
+    volumeMounts:
+    - mountPath: /tests
+      name: tests
+      readOnly: true
+    - mountPath: /tools
+      name: tools
+  volumes:
+  - name: tests
+    configMap:
+      name: {{ include  "mattermost.fullname" . }}-app-tests
+  - name: tools
+    emptyDir: {}
+  restartPolicy: Never

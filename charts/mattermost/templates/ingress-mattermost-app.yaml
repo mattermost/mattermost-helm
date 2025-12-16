@@ -1,0 +1,50 @@
+{{- if .Values.mattermostApp.ingress.enabled -}}
+{{- $serviceName := include "mattermost.fullname" . -}}
+{{- $servicePort := .Values.mattermostApp.service.externalPort -}}
+apiVersion: {{ include "mattermost.ingress.apiVersion" . }}
+kind: Ingress
+metadata:
+  name: {{ include "mattermost.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "mattermost.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart:  {{ include "mattermost.chart" . }}
+  annotations:
+    {{- if .Values.mattermostApp.ingress.annotations }}
+{{ toYaml .Values.mattermostApp.ingress.annotations | indent 4 }}
+    {{- end }}
+    {{- if .Values.mattermostApp.ingress.tls }}
+    kubernetes.io/tls-acme: 'true'
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    {{- else }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    {{- end }}
+spec:
+  {{- if .Values.mattermostApp.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.mattermostApp.ingress.ingressClassName }}
+  {{- end }}
+  rules:
+  {{- range $host := .Values.mattermostApp.ingress.hosts }}
+  - host: {{ $host }}
+    http:
+      paths:
+      - path: /
+        {{- if $.Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+        backend:
+          service:
+            name: {{ $serviceName }}
+            port:
+              number: {{ $servicePort }}
+        pathType: Prefix
+        {{- else }}
+        backend:
+          serviceName: {{ $serviceName }}
+          servicePort: {{ $servicePort }}
+        {{- end }}
+  {{- end -}}
+  {{- if .Values.mattermostApp.ingress.tls }}
+  tls:
+{{ toYaml .Values.mattermostApp.ingress.tls | indent 4 }}
+  {{- end -}}
+{{- end -}}

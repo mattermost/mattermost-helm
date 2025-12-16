@@ -1,0 +1,96 @@
+{{- if .Values.global.features.jobserver.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mattermost.jobserver.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "mattermost.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: {{ .Values.global.features.jobserver.name }}
+    helm.sh/chart:  {{ include "mattermost.chart" . }}
+spec:
+  replicas: {{ .Values.global.features.jobserver.replicaCount }}
+  {{- with .Values.global.features.jobserver.strategy }}
+  strategy:
+    {{- . | toYaml | nindent 4 }}
+  {{- end }}
+  revisionHistoryLimit: {{ .Values.global.features.jobserver.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "mattermost.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/managed-by: {{ .Release.Service }}
+      app.kubernetes.io/component: {{ .Values.global.features.jobserver.name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "mattermost.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/component: {{ .Values.global.features.jobserver.name }}
+        helm.sh/chart: {{ include "mattermost.chart" . }}
+      annotations:
+        {{- if .Values.mattermostApp.extraPodAnnotations }}
+        {{- .Values.mattermostApp.extraPodAnnotations | toYaml | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- if .Values.global.features.jobserver.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.global.features.jobserver.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.global.features.jobserver.affinity }}
+      affinity:
+        {{- toYaml .Values.global.features.jobserver.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.global.features.jobserver.tolerations }}
+      tolerations:
+      {{- toYaml .Values.global.features.jobserver.tolerations | nindent 6 }}
+      {{- end }}
+      {{- if .Values.mattermostApp.securityContext }}
+      securityContext:
+        {{- toYaml .Values.mattermostApp.securityContext | nindent 8 }}
+      {{- end }}
+      {{- if .Values.mattermostApp.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml .Values.mattermostApp.imagePullSecrets | nindent 6 }}
+      {{- end }}
+      containers:
+      - name: {{ include "mattermost.name" . }}-jobserver
+        image: "{{ .Values.mattermostApp.image.repository }}:{{ .Values.mattermostApp.image.tag }}"
+        imagePullPolicy: {{ .Values.mattermostApp.image.pullPolicy }}
+        command: ["mattermost", "jobserver"]
+        env:
+        - name: MM_CONFIG
+          valueFrom:
+            secretKeyRef:
+           {{- if .Values.global.features.database.existingDatabaseSecret }}
+              name: {{ .Values.global.features.database.existingDatabaseSecret.name }}
+              key: {{ .Values.global.features.database.existingDatabaseSecret.key }}
+           {{- else }}
+              name: {{ include "mattermost.fullname" . }}-mattermost-dbsecret
+              key: mattermost.dbsecret
+           {{- end }}
+        {{- with .Values.global.features.jobserver.extraEnv }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        volumeMounts:
+        {{- if .Values.global.existingLicenseSecret.name }}
+        - mountPath: /mattermost/{{.Values.global.existingLicenseSecret.key }}
+          name: mattermost-license
+          subPath: {{.Values.global.existingLicenseSecret.key }}
+        {{- else }}
+        - mountPath: /mattermost/mattermost.mattermost-license
+          name: mattermost-license
+          subPath: mattermost.mattermost-license
+        {{- end }}
+      volumes:
+      - name: mattermost-license
+        secret:
+          {{- if .Values.global.existingLicenseSecret.name }}
+          secretName: {{ .Values.global.existingLicenseSecret.name }}
+          {{- else }}
+          secretName: {{ include "mattermost.fullname" . }}-mattermost-license
+          {{- end }}
+
+{{- end -}}
