@@ -1,0 +1,152 @@
+# =========================================================
+# Mattermost on GDC - Helm values
+# Source: provided example (values preserved)
+# =========================================================
+
+global:
+  # REQUIRED: URL users will access Mattermost at
+  siteUrl: "https://your-mattermost-url.gdch.test"  # Update with your actual URL
+
+  # OPTIONAL: Mattermost Enterprise license
+  mattermostLicense: ""  # Or use existingLicenseSecret
+
+  # Option 2: Use an existing secret
+  existingLicenseSecret:
+    name: ""
+    key: ""
+
+  features:
+    # -------------------------------------------------------
+    # Database (external)
+    # Uses existing secret for DB connection string
+    # -------------------------------------------------------
+    database:
+      driver: "postgres"  # or "mysql" depending on your database
+      dataSource: ""  # Not used when existingDatabaseSecret is provided
+      dataSourceReplicas: []
+      existingDatabaseSecret:
+        name: "mattermost-db-secret"
+        key: "MM_CONFIG"
+
+    # -------------------------------------------------------
+    # File Store (GDC Object Storage, S3-compatible)
+    # -------------------------------------------------------
+    fileStore:
+      driver: "amazons3"
+      url: "objectstorage.org-1.zone1.google.gdch.test"  # GDC S3 endpoint
+      bucket: "aai2ns2-mattermost"
+      region: ""  # Leave empty for GDC
+
+      # Option 1: Create a secret for S3 credentials (recommended)
+      existingSecret:
+        name: "mattermost-s3-credentials"  # Create this secret
+        accessKeyIdKey: "accessKeyId"
+        secretAccessKeyKey: "secretAccessKey"
+
+      # Option 2: Provide credentials directly (not recommended - use secret above)
+      # accessKeyId: "########################################"
+      # secretAccessKey: "#####################################"
+
+    # -------------------------------------------------------
+    # Jobs Server
+    # -------------------------------------------------------
+    jobserver:
+      enabled: false
+
+# =========================================================
+# Mattermost deployment section
+# =========================================================
+mattermostApp:
+  replicaCount: 3  # Matches your deployment
+
+  image:
+    repository: user-haas-instance-user-project.org-1.zone1.google.gdch.test/mattermost/mattermost-enterprise-edition
+    tag: "11.0.2" # Update to the latest version uploaded to Harbor registry
+    pullPolicy: IfNotPresent
+
+  # Image pull secret for private registry
+  imagePullSecrets:
+    - name: harbor-secret
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+
+  revisionHistoryLimit: 2
+
+  service:
+    name: mattermost-app
+    type: ClusterIP
+    externalPort: 8065
+    internalPort: 8065
+    metricsPort: 8067
+    clusterPort: 8075
+    gossipPort: 8074
+    metricsName: mattermost-app-metrics
+
+  ingress:
+    enabled: false  # Set to true if you want to expose via ingress
+    hosts:
+      - your-mattermost-url.gdch.test
+    tls: []
+    annotations: {}
+    ingressClassName: ""
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetMemoryUtilizationPercentage: 70
+    targetCPUUtilizationPercentage: 70
+
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+
+  securityContext: {}
+
+  resources: {}
+    # limits:
+    #   cpu: 1000m
+    #   memory: 1Gi
+    # requests:
+    #   cpu: 500m
+    #   memory: 512Mi
+
+  extraInitContainers: []
+
+  # Custom volumes for CA certificate and data
+  extraVolumes:
+    - name: org-root-ca
+      configMap:
+        name: org-root-ca
+    - name: mattermost-data
+      emptyDir: {}
+
+  extraVolumeMounts:
+    - name: org-root-ca
+      mountPath: /etc/ssl/certs/org-root-ca.pem
+      subPath: org-root-ca.pem
+      readOnly: true
+    - name: mattermost-data
+      mountPath: /mattermost/data
+
+  # Custom environment variables for GDC CA certificates
+  extraEnv:
+    - name: SSL_CERT_FILE
+      value: /etc/ssl/certs/org-root-ca.pem
+    - name: AWS_CA_BUNDLE
+      value: /etc/ssl/certs/org-root-ca.pem
+
+  envFrom: []
+  extraPodAnnotations: {}
+
+# =========================================================
+# Service account settings
+# =========================================================
+serviceAccount:
+  create: false
+  name:
+  annotations: {}
