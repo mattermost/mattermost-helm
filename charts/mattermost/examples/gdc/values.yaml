@@ -1,6 +1,5 @@
 # =========================================================
-# Mattermost on GDC - Helm values
-# Source: provided example (values preserved)
+# Mattermost on GDC - Helm value example
 # =========================================================
 
 global:
