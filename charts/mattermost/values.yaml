@@ -1,0 +1,150 @@
+global:
+  # REQUIRED: URL users will access Mattermost at
+  siteUrl: "http://mattermost.example.com"
+  # OPTIONAL: Mattermost Enterprise license
+  # Option 1: Provide license content directly
+  mattermostLicense: ""
+  # Option 2: Use an existing secret
+  existingLicenseSecret:
+    name: ""
+    key: ""
+
+  features:
+    database:
+      # Database connection is required. Provide connection details below.
+      driver: "postgres" # postgres
+      dataSource: "" # Connection string - REQUIRED
+      dataSourceReplicas: [] # Optional read replicas
+      # Use an existing secret for database credentials (see secret-mattermost-dbsecret.yaml for required fields)
+      existingDatabaseSecret:
+        name:
+        key:
+
+    fileStore:
+      # External file storage is required for production deployments
+      # For testing, you can use "local" driver (not recommended for production)
+      driver: "amazons3" # amazons3 (S3-compatible), local
+      # S3-compatible storage configuration (when driver is "amazons3")
+      url: "" # S3 endpoint (leave empty for AWS S3)
+      bucket: "" # Bucket name - REQUIRED
+      region: "" # AWS region (e.g., us-east-1)
+      # Option 1: Provide credentials directly (values.yaml)
+      accessKeyId: ""
+      secretAccessKey: ""
+      # Option 2: Use an existing Kubernetes Secret (recommended)
+      # Example: kubectl create secret generic mattermost-s3-creds \
+      #   --from-literal=accessKeyId=YOUR_KEY \
+      #   --from-literal=secretAccessKey=YOUR_SECRET
+      existingSecret:
+        name: "" # Name of the Kubernetes Secret (e.g., "mattermost-s3-creds")
+        accessKeyIdKey: "accessKeyId" # Key in the secret containing access key ID
+        secretAccessKeyKey: "secretAccessKey" # Key in the secret containing secret access key
+
+    jobserver:
+      # Optional: Enable a dedicated job server for background tasks
+      enabled: false
+      name: jobserver
+      replicaCount: 1
+      strategy:
+        type: Recreate
+        rollingUpdate: null
+      revisionHistoryLimit: 2
+      service:
+        name: mattermost-app-jobserver
+        type: ClusterIP
+      nodeSelector: {}
+      affinity: {}
+      tolerations: []
+      extraEnv: []
+
+# Mattermost deployment section.
+mattermostApp:
+  replicaCount: 2
+  image:
+    repository: mattermost/mattermost-enterprise-edition
+    tag: 11.1.1@sha256:b795441466ef1b3df0e8a6c5d4f177da7db5d792cba20072f947c693f36442e6
+    pullPolicy: IfNotPresent
+  # Image pull secrets for private registries
+  imagePullSecrets: []
+    # - name: harbor-secret
+    # - name: registry-credentials
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  revisionHistoryLimit: 2
+
+  service:
+    name: mattermost-app
+    type: ClusterIP
+    externalPort: 8065
+    internalPort: 8065
+    metricsPort: 8067
+    clusterPort: 8075 # Required for cluster communication between replicas
+    gossipPort: 8074 # Required for gossip protocol between replicas
+    metricsName: mattermost-app-metrics
+
+  ingress:
+    enabled: false
+    hosts:
+      - mattermost.example.com
+    tls: []
+      # - secretName: mattermost-tls
+      #   hosts:
+      #     - mattermost.example.com
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # nginx.ingress.kubernetes.io/proxy-buffering: "on"
+      # nginx.ingress.kubernetes.io/proxy-body-size: 50m
+      # nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+      # nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+      # nginx.ingress.kubernetes.io/configuration-snippet: |
+      #   proxy_cache mattermost_cache;
+      #   proxy_cache_revalidate on;
+      #   proxy_cache_min_uses 2;
+      #   proxy_cache_use_stale timeout;
+      #   proxy_cache_lock on;
+    ingressClassName: ""
+
+  autoscaling:
+    # OPTIONAL: Horizontal Pod Autoscaler (HPA)
+    # REQUIRES: metrics-server installed in your cluster
+    # Check with: kubectl get apiservice v1beta1.metrics.k8s.io
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetMemoryUtilizationPercentage: 70
+    targetCPUUtilizationPercentage: 70
+
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+
+  securityContext: {}
+    # fsGroup: 2000
+    # runAsUser: 2000
+    # runAsNonRoot: true
+
+  resources:
+    limits:
+      cpu: 2
+      memory: 4Gi
+    requests:
+      cpu: 100m
+      memory: 300Mi
+
+  extraInitContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  ## Additional environment variables for advanced configuration
+  ## See: https://docs.mattermost.com/administration/config-settings.html
+  extraEnv: []
+  envFrom: []
+  extraPodAnnotations: {}
+
+serviceAccount:
+  create: false
+  name:
+  annotations: {}

@@ -1,0 +1,23 @@
+apiVersion: v2
+description: Mattermost enterprise edition server deployment without Mattermost Operator.
+name: mattermost
+type: application
+version: 2.7.0
+appVersion: 11.1.1
+keywords:
+- mattermost
+- communication
+- messaging
+- team collaboration
+home: https://mattermost.com
+icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+maintainers:
+  - name: jwilander
+    email: joram@mattermost.com
+  - name: DSchalla
+    email: daniel@mattermost.com
+  - name: andrleite
+    email: andre.leite@mattermost.com
+sources:
+- https://github.com/mattermost/mattermost-server
+- https://github.com/mattermost/mattermost-helm
