@@ -31,6 +31,35 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/focalboard-0.4.0/focalboard-0.4.0.tgz
     version: 0.4.0
+  mattermost:
+  - apiVersion: v2
+    appVersion: 11.1.1
+    created: "2026-01-06T17:03:31.341154726Z"
+    description: Mattermost enterprise edition server deployment without Mattermost
+      Operator.
+    digest: 1969fdf6c69498710f417edb75868f3ece9c60eb188f7fe54ed3c81a8258e2fe
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - messaging
+    - team collaboration
+    maintainers:
+    - email: joram@mattermost.com
+      name: jwilander
+    - email: daniel@mattermost.com
+      name: DSchalla
+    - email: andre.leite@mattermost.com
+      name: andrleite
+    name: mattermost
+    sources:
+    - https://github.com/mattermost/mattermost-server
+    - https://github.com/mattermost/mattermost-helm
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-2.7.0/mattermost-2.7.0.tgz
+    version: 2.7.0
   mattermost-calls-offloader:
   - apiVersion: v2
     appVersion: 0.9.0
@@ -11363,4 +11392,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2025-12-16T07:56:16.70540645Z"
+generated: "2026-01-06T17:03:32.12781218Z"
