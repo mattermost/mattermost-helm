@@ -27,6 +27,7 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      automountServiceAccountToken: {{ .Values.mattermostOperator.serviceAccount.automountToken | default true }}
       securityContext:
       {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
