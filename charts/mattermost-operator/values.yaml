@@ -5,6 +5,7 @@ mattermostOperator:
     create: true
   serviceAccount:
     create: true
+    automountToken: true
   env:
     maxReconcilingInstallations: 20
     maxReconcilingConcurrency: 10
