@@ -332,6 +332,13 @@ spec:
                     description: Defines the configuration of PVC backed storage (local).
                       This is NOT recommended for production environments.
                     properties:
+                      accessModes:
+                        description: |-
+                          Defines the access modes for the PVC. If not specified, defaults to ReadWriteMany for new installations.
+                          For backwards compatibility, existing PVCs with ReadWriteOnce will be preserved until explicitly changed.
+                        items:
+                          type: string
+                        type: array
                       enabled:
                         description: Set to use local (PVC) storage, require explicit
                           enabled to prevent accidental misconfiguration.
