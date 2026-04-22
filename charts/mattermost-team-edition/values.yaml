@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: mattermost/mattermost-team-edition
-  tag: 11.6.0@sha256:88565cb169f3ca5e6303db3f99c98297763b3fc606fa464f9382393b328ecdb9
+  tag: 11.6.1@sha256:425b1e065a3433f4a7b10d8091fe83b3459c008647cc1e3c3707974832d2ef30
   imagePullPolicy: IfNotPresent
 
 initContainerImage:
