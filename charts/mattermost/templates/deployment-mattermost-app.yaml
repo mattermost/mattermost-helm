@@ -10,7 +10,7 @@ metadata:
     helm.sh/chart:  {{ include "mattermost.chart" . }}
 spec:
   {{- if not .Values.mattermostApp.autoscaling.enabled }}
-  replicas: {{ .Values.mattermostApp.replicaCount }}
+  replicas: {{ include "mattermost.app.effectiveReplicas" . }}
   {{- end }}
   {{- with .Values.mattermostApp.strategy }}
   strategy:
@@ -62,9 +62,35 @@ spec:
       imagePullSecrets:
       {{- toYaml .Values.mattermostApp.imagePullSecrets | nindent 6 }}
       {{- end }}
-      {{- if .Values.mattermostApp.extraInitContainers }}
+      {{- if or .Values.mattermostApp.dbReadinessCheck.enabled .Values.mattermostApp.extraInitContainers }}
       initContainers:
+      {{- if .Values.mattermostApp.dbReadinessCheck.enabled }}
+      - name: init-check-database
+        image: {{ .Values.mattermostApp.dbReadinessCheck.image | quote }}
+        imagePullPolicy: {{ .Values.mattermostApp.dbReadinessCheck.imagePullPolicy }}
+        env:
+        - name: DB_CONNECTION_STRING
+          valueFrom:
+            secretKeyRef:
+            {{- if and .Values.global.features.database.existingDatabaseSecret .Values.global.features.database.existingDatabaseSecret.name }}
+              name: {{ .Values.global.features.database.existingDatabaseSecret.name }}
+              key: {{ .Values.global.features.database.existingDatabaseSecret.key }}
+            {{- else }}
+              name: {{ include "mattermost.fullname" . }}-mattermost-dbsecret
+              key: mattermost.dbsecret
+            {{- end }}
+        command:
+        - sh
+        - -c
+        - |
+          until pg_isready --timeout={{ .Values.mattermostApp.dbReadinessCheck.timeoutSeconds }} --dbname="$DB_CONNECTION_STRING"; do
+            echo "waiting for database";
+            sleep {{ .Values.mattermostApp.dbReadinessCheck.intervalSeconds }};
+          done
+      {{- end }}
+      {{- if .Values.mattermostApp.extraInitContainers }}
       {{- .Values.mattermostApp.extraInitContainers | toYaml | nindent 6 }}
+      {{- end }}
       {{- end }}
       containers:
       - name: {{ include "mattermost.name" . }}
@@ -172,7 +198,7 @@ spec:
 {{ toYaml .Values.mattermostApp.extraVolumeMounts | indent 8 }}
 {{- end }}
         resources:
-{{ toYaml .Values.mattermostApp.resources | indent 10 }}
+{{ include "mattermost.app.effectiveResources" . | indent 10 }}
       volumes:
       - name: mattermost-plugins
         emptyDir: {}

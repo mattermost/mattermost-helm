@@ -57,8 +57,18 @@ global:
       tolerations: []
       extraEnv: []
 
+
 # Mattermost deployment section.
 mattermostApp:
+  # OPTIONAL: Sizing preset that derives replicas + resource requests/limits
+  # for the Mattermost app pods. Mirrors the App row of the operator's Size
+  # presets (apis/mattermost/v1alpha1/clusterinstallation_sizes.go).
+  # Valid values: "" (default - use replicaCount + resources below),
+  # "100users", "1000users", "5000users", "10000users", "25000users".
+  # When set, the preset is AUTHORITATIVE and overrides replicaCount and
+  # resources below (matching the operator's behaviour). Leave empty if you
+  # want to size the deployment manually.
+  size: ""
   replicaCount: 2
   image:
     repository: mattermost/mattermost-enterprise-edition
@@ -134,6 +144,23 @@ mattermostApp:
     requests:
       cpu: 100m
       memory: 300Mi
+
+  # OPTIONAL: Database readiness init container.
+  # When enabled, an init container runs before the Mattermost app container
+  # starts and blocks until the database accepts connections. Mirrors the
+  # operator's behaviour for external databases.
+  #
+  # For PostgreSQL, the chart uses pg_isready against the connection string
+  # found in the database secret (key MM_CONFIG, or existingDatabaseSecret.key).
+  dbReadinessCheck:
+    enabled: false
+    # Image used for the readiness probe.
+    image: postgres:16-alpine
+    imagePullPolicy: IfNotPresent
+    # Optional: timeout (seconds) for each pg_isready attempt.
+    timeoutSeconds: 5
+    # Optional: sleep (seconds) between attempts.
+    intervalSeconds: 5
 
   extraInitContainers: []
   extraVolumes: []
