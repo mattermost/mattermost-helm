@@ -109,7 +109,7 @@ spec:
         - name: MM_CONFIG
           valueFrom:
             secretKeyRef:
-           {{- if .Values.global.features.database.existingDatabaseSecret }}
+           {{- if and .Values.global.features.database.existingDatabaseSecret .Values.global.features.database.existingDatabaseSecret.name }}
               name: {{ .Values.global.features.database.existingDatabaseSecret.name }}
               key: {{ .Values.global.features.database.existingDatabaseSecret.key }}
            {{- else }}
