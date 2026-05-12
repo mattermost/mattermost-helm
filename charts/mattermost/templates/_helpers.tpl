@@ -68,9 +68,12 @@ These mirror the App-row of the operator's `Size` table
 sizing UX in the chart as they do via the CRD. The chart only sizes the
 Mattermost app pods - database and object storage are external.
 
-If `mattermostApp.size` is set to one of the keys below, it derives both
-`replicas` and `resources` for the app deployment. Explicit values for
-`mattermostApp.replicaCount` and `mattermostApp.resources` always win.
+If `mattermostApp.size` is set to one of the keys below, the helpers
+`mattermost.app.effectiveReplicas` and `mattermost.app.effectiveResources`
+derive replicas and resources from the matching preset, and the preset is
+authoritative - it overrides `mattermostApp.replicaCount` and
+`mattermostApp.resources`. To size the deployment manually, leave
+`mattermostApp.size` empty.
 
 Supported keys: 100users, 1000users, 5000users, 10000users, 25000users.
 */}}
