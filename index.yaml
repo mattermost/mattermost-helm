@@ -34,6 +34,34 @@ entries:
   mattermost:
   - apiVersion: v2
     appVersion: 11.1.1
+    created: "2026-05-13T13:58:37.082852121Z"
+    description: Mattermost enterprise edition server deployment without Mattermost
+      Operator.
+    digest: dd13b6f4eeeb3726196c49613f7c697cac04e15ea0d087117b3861a37fa1c19c
+    home: https://mattermost.com
+    icon: http://www.mattermost.org/wp-content/uploads/2016/04/icon.png
+    keywords:
+    - mattermost
+    - communication
+    - messaging
+    - team collaboration
+    maintainers:
+    - email: joram@mattermost.com
+      name: jwilander
+    - email: daniel@mattermost.com
+      name: DSchalla
+    - email: andre.leite@mattermost.com
+      name: andrleite
+    name: mattermost
+    sources:
+    - https://github.com/mattermost/mattermost-server
+    - https://github.com/mattermost/mattermost-helm
+    type: application
+    urls:
+    - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-2.8.0/mattermost-2.8.0.tgz
+    version: 2.8.0
+  - apiVersion: v2
+    appVersion: 11.1.1
     created: "2026-01-06T17:03:31.341154726Z"
     description: Mattermost enterprise edition server deployment without Mattermost
       Operator.
@@ -11900,4 +11928,4 @@ entries:
     urls:
     - https://github.com/mattermost/mattermost-helm/releases/download/mattermost-team-edition-3.2.0/mattermost-team-edition-3.2.0.tgz
     version: 3.2.0
-generated: "2026-04-22T07:48:06.636843225Z"
+generated: "2026-05-13T13:58:37.777224657Z"
