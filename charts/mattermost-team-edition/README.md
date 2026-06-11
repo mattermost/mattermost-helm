@@ -138,6 +138,15 @@ Parameter                             | Description                             
 `ingress.enabled`                     | If `true`, an ingress is created                                                                | `false`
 `ingress.hosts`                       | A list of ingress hosts                                                                         | `[mattermost.example.com]`
 `ingress.tls`                         | A list of [ingress tls](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) items | `[]`
+`httproute.enabled`                   | If `true`, a Gateway API [HTTPRoute](https://gateway-api.sigs.k8s.io/api-types/httproute/) is created | `false`
+`httproute.parentRefs`                | References to the Gateways this HTTPRoute attaches to                                            | `[]`
+`httproute.hostnames`                 | A list of hostnames (templated) the HTTPRoute matches against                                   | `[]`
+`httproute.annotations`               | Annotations to attach to the HTTPRoute resource                                                 | `{}`
+`httproute.labels`                    | Labels to attach to the HTTPRoute resource                                                       | `{}`
+`httproute.httpsRedirect`             | If `true`, emits a single rule redirecting HTTP traffic to HTTPS (301)                          | `false`
+`httproute.additionalRules`           | Custom rules (templated) prepended to the route                                                 | `[]`
+`httproute.filters`                   | Filters applied to requests that match the route                                                | `[]`
+`httproute.matches`                   | Conditions used for matching the rule against incoming requests                                 | `[]`
 `mysql.enabled`                       | Enables deployment of a mysql server                                                            | `true`
 `mysql.mysqlRootPassword`             | Root Password for Mysql (Optional)                                                              | ""
 `mysql.mysqlUser`                     | Username for Mysql (Required)                                                                   | ""

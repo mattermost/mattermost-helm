@@ -84,6 +84,36 @@ ingress:
 route:
   enabled: false
 
+## A HTTPRoute (Gateway API) resource is an alternative to Ingress for routing
+## external HTTP traffic to the Mattermost Service.
+## ref: https://gateway-api.sigs.k8s.io/api-types/httproute/
+httproute:
+  enabled: false
+  ## apiVersion set by default to gateway.networking.k8s.io/v1
+  apiVersion: ""
+  ## kind set by default to HTTPRoute
+  kind: ""
+  ## Annotations to attach to the HTTPRoute resource
+  annotations: {}
+  ## Labels to attach to the HTTPRoute resource
+  labels: {}
+  ## ParentRefs references the resources (usually Gateways) this HTTPRoute attaches to
+  parentRefs: []
+    # - name: gateway
+    #   namespace: gateway-system
+    #   sectionName: http
+  ## Hostnames (templated) matched against the HTTP Host header to select this HTTPRoute
+  hostnames: []
+    # - mattermost.example.com
+  ## httpsRedirect, when true, emits a single rule that redirects HTTP traffic to HTTPS (301)
+  httpsRedirect: false
+  ## additionalRules (templated) allows prepending custom rules to the route
+  additionalRules: []
+  ## Filters applied to requests that match this route
+  filters: []
+  ## Matches define conditions used for matching the rule against incoming requests
+  matches: []
+
 ## If use this please disable the mysql chart by setting mysql.enable to false
 externalDB:
   enabled: false
