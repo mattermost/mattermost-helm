@@ -12,22 +12,26 @@ global:
   features:
     database:
       # Database connection is required. Provide connection details below.
-      driver: "postgres" # postgres
-      dataSource: "" # Connection string - REQUIRED
-      dataSourceReplicas: [] # Optional read replicas
+      driver: "postgres"  # postgres
+      dataSource: ""  # Connection string - REQUIRED
+      dataSourceReplicas: []  # Optional read replicas
       # Use an existing secret for database credentials (see secret-mattermost-dbsecret.yaml for required fields)
       existingDatabaseSecret:
         name:
         key:
 
     fileStore:
-      # External file storage is required for production deployments
-      # For testing, you can use "local" driver (not recommended for production)
-      driver: "amazons3" # amazons3 (S3-compatible), local
+      # File storage driver. Supported values:
+      #   "amazons3" - AWS S3 or any S3-compatible object store.
+      #   "local"    - PersistentVolumeClaim-backed local storage. The chart
+      #                does NOT provision the PVC; supply an existing one
+      #                via existingVolumeClaim below. Mirrors the operator's
+      #                Spec.FileStore.ExternalVolume behaviour.
+      driver: "amazons3"  # amazons3 (S3-compatible), local
       # S3-compatible storage configuration (when driver is "amazons3")
-      url: "" # S3 endpoint (leave empty for AWS S3)
-      bucket: "" # Bucket name - REQUIRED
-      region: "" # AWS region (e.g., us-east-1)
+      url: ""  # S3 endpoint (leave empty for AWS S3)
+      bucket: ""  # Bucket name - REQUIRED
+      region: ""  # AWS region (e.g., us-east-1)
       # Option 1: Provide credentials directly (values.yaml)
       accessKeyId: ""
       secretAccessKey: ""
@@ -36,9 +40,18 @@ global:
       #   --from-literal=accessKeyId=YOUR_KEY \
       #   --from-literal=secretAccessKey=YOUR_SECRET
       existingSecret:
-        name: "" # Name of the Kubernetes Secret (e.g., "mattermost-s3-creds")
-        accessKeyIdKey: "accessKeyId" # Key in the secret containing access key ID
-        secretAccessKeyKey: "secretAccessKey" # Key in the secret containing secret access key
+        name: ""  # Name of the Kubernetes Secret (e.g., "mattermost-s3-creds")
+        accessKeyIdKey: "accessKeyId"  # Key in the secret containing access key ID
+        secretAccessKeyKey: "secretAccessKey"  # Key in the secret containing secret access key
+      # Local (PVC) storage configuration (when driver is "local").
+      # Plug an existing PersistentVolumeClaim (NFS, Azure Files NFS, EFS,
+      # GDC / OCI File Storage, etc.) into the Mattermost data directory.
+      # The chart does NOT create the PVC - customers provision it
+      # out-of-band. For HA / multi-replica deployments the PVC MUST support
+      # ReadWriteMany.
+      existingVolumeClaim:
+        name: ""  # Name of the existing PVC - REQUIRED when driver is "local"
+        mountPath: "/mattermost/data"  # Where to mount the PVC inside the pod
 
     jobserver:
       # Optional: Enable a dedicated job server for background tasks
@@ -92,8 +105,8 @@ mattermostApp:
     externalPort: 8065
     internalPort: 8065
     metricsPort: 8067
-    clusterPort: 8075 # Required for cluster communication between replicas
-    gossipPort: 8074 # Required for gossip protocol between replicas
+    clusterPort: 8075  # Required for cluster communication between replicas
+    gossipPort: 8074  # Required for gossip protocol between replicas
     metricsName: mattermost-app-metrics
 
   ingress:

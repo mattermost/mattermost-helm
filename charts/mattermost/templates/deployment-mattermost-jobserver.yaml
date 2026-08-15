@@ -71,6 +71,13 @@ spec:
               name: {{ include "mattermost.fullname" . }}-mattermost-dbsecret
               key: mattermost.dbsecret
            {{- end }}
+        {{- if eq .Values.global.features.fileStore.driver "local" }}
+        {{- $_ := required "global.features.fileStore.existingVolumeClaim.name is required when global.features.fileStore.driver is \"local\"" .Values.global.features.fileStore.existingVolumeClaim.name }}
+        - name: MM_FILESETTINGS_DRIVERNAME
+          value: "local"
+        - name: MM_FILESETTINGS_DIRECTORY
+          value: "{{ include "mattermost.fileStore.localMountPath" . }}/"
+        {{- end }}
         {{- with .Values.global.features.jobserver.extraEnv }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -84,6 +91,10 @@ spec:
           name: mattermost-license
           subPath: mattermost.mattermost-license
         {{- end }}
+        {{- if eq .Values.global.features.fileStore.driver "local" }}
+        - mountPath: {{ include "mattermost.fileStore.localMountPath" . }}
+          name: mattermost-data
+        {{- end }}
       volumes:
       - name: mattermost-license
         secret:
@@ -92,5 +103,10 @@ spec:
           {{- else }}
           secretName: {{ include "mattermost.fullname" . }}-mattermost-license
           {{- end }}
+      {{- if eq .Values.global.features.fileStore.driver "local" }}
+      - name: mattermost-data
+        persistentVolumeClaim:
+          claimName: {{ required "global.features.fileStore.existingVolumeClaim.name is required when global.features.fileStore.driver is \"local\"" .Values.global.features.fileStore.existingVolumeClaim.name }}
+      {{- end }}
 
 {{- end -}}

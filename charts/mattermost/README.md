@@ -101,6 +101,7 @@ mattermostApp:
 4. `global.features.database.dataSource` - Database connection string
 5. `global.features.fileStore.driver` - File storage driver: `amazons3` or `local`
 6. `global.features.fileStore.bucket` - S3 bucket name (when using `amazons3`)
+7. `global.features.fileStore.existingVolumeClaim.name` - Existing PVC name (when using `local`)
 
 ## 2.2 Database Configuration
 
@@ -121,13 +122,62 @@ global:
 
 ## 2.3 File Storage Configuration
 
-Configure S3-compatible storage via environment variables in `mattermostApp.extraEnv`. Create a Kubernetes secret for credentials:
+The chart supports two file storage drivers, selected via
+`global.features.fileStore.driver`:
+
+| Driver | Backing store | Notes |
+|---|---|---|
+| `amazons3` | AWS S3 or any S3-compatible object store | Default driver. |
+| `local` | A pre-existing PersistentVolumeClaim (NFS, Azure Files NFS, AWS EFS, GCP Filestore, OCI File Storage, on-prem NFS / CephFS, etc.) | The chart does **not** provision the PVC - you create it out-of-band and pass its name in. |
+
+### 2.3.1 S3-compatible storage (`amazons3`)
+
+Create a Kubernetes secret with your credentials and reference it from values:
 
 ```bash
 kubectl create secret generic mattermost-s3-credentials \
-  --from-literal=access-key-id=YOUR_ACCESS_KEY \
-  --from-literal=secret-access-key=YOUR_SECRET_KEY
+  --from-literal=accessKeyId=YOUR_ACCESS_KEY \
+  --from-literal=secretAccessKey=YOUR_SECRET_KEY
 ```
+
+```yaml
+global:
+  features:
+    fileStore:
+      driver: "amazons3"
+      bucket: "my-mattermost-bucket"
+      region: "us-east-1"
+      existingSecret:
+        name: "mattermost-s3-credentials"
+        accessKeyIdKey: "accessKeyId"
+        secretAccessKeyKey: "secretAccessKey"
+```
+
+### 2.3.2 Using an existing PersistentVolumeClaim (NFS, Azure Files, EFS, etc.)
+
+When `driver` is `"local"`, the chart mounts a customer-provisioned PVC at
+the Mattermost data directory and sets
+`MM_FILESETTINGS_DRIVERNAME=local` /
+`MM_FILESETTINGS_DIRECTORY=<mountPath>/` automatically. Mirrors the
+operator's `Spec.FileStore.ExternalVolume.VolumeClaimName` behaviour.
+
+```yaml
+global:
+  features:
+    fileStore:
+      driver: "local"
+      existingVolumeClaim:
+        name: "mattermost-data-pvc"        # REQUIRED - PVC you provisioned
+        mountPath: "/mattermost/data"      # Optional, default shown
+```
+
+The chart does not create the PVC. Provision it (and any underlying
+StorageClass, file share, mount targets, etc.) yourself, then pass its
+name in `existingVolumeClaim.name`. If the PVC name is empty while
+`driver` is `"local"`, template rendering fails fast with a clear error.
+
+For HA / multi-replica deployments the PVC must support `ReadWriteMany`
+- see [section 5](#5-scaling) for details.
 
 ## 2.4 Ingress (Optional)
 
@@ -247,7 +297,7 @@ Or scale directly with kubectl:
 kubectl scale deployment mattermost --replicas=5
 ```
 
-**Note:** For multi-replica deployments, ensure your file storage is accessible from all pods (use S3-compatible storage, not local).
+**Note:** For multi-replica deployments, ensure your file storage is accessible from all pods. Either use S3-compatible storage (`driver: amazons3`), or use `driver: local` with an `existingVolumeClaim` whose PVC supports `ReadWriteMany` (Azure Files, EFS, GCP Filestore, NFS, CephFS, etc.).
 
 ## 5.2 Horizontal Pod Autoscaler (HPA) - Optional
 

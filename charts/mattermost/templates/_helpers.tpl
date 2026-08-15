@@ -171,3 +171,13 @@ leave `mattermostApp.size` empty and use `mattermostApp.resources`.
 {{- toYaml .Values.mattermostApp.resources -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Resolve the mount path for the local (PVC) filestore. Mirrors the operator's
+`mmv1beta.DefaultLocalFilePath` ("/mattermost/data") used by
+ExternalVolumeFileStore.
+*/}}
+{{- define "mattermost.fileStore.localMountPath" -}}
+{{- $claim := default (dict) .Values.global.features.fileStore.existingVolumeClaim -}}
+{{- default "/mattermost/data" $claim.mountPath -}}
+{{- end -}}
