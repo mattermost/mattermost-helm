@@ -60,7 +60,7 @@ mattermostApp:
 
   image:
     repository: user-haas-instance-user-project.org-1.zone1.google.gdch.test/mattermost/mattermost-enterprise-edition
-    tag: "11.0.2" # Update to the latest version uploaded to Harbor registry
+    tag: "11.7.9" # Update to the latest version uploaded to Harbor registry
     pullPolicy: IfNotPresent
 
   # Image pull secret for private registry
