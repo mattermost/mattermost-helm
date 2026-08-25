@@ -65,8 +65,11 @@ update_index() {
         exit 0
     fi
 
+    # Copy the index.yaml before switching branches
+    cp --force .cr-index/index.yaml ./new-index.yaml
     git checkout gh-pages
-    cp --force .cr-index/index.yaml index.yaml
+    cp --force ./new-index.yaml index.yaml
+    rm -f ./new-index.yaml
     git add index.yaml
     git commit --message="Update index.yaml" --signoff
     git push
