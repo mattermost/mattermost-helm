@@ -58,6 +58,7 @@ ingress:
   enabled: false
   className: ""
   path: /
+  labels: {}
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # certmanager.k8s.io/issuer:  your-issuer
