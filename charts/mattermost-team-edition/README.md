@@ -138,6 +138,8 @@ Parameter                             | Description                             
 `ingress.enabled`                     | If `true`, an ingress is created                                                                | `false`
 `ingress.hosts`                       | A list of ingress hosts                                                                         | `[mattermost.example.com]`
 `ingress.tls`                         | A list of [ingress tls](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) items | `[]`
+`ingress.path`                        | The ingress path                                                                                | `/`
+`ingress.pathType`                    | The ingress path type                                                                           | `Prefix`
 `mysql.enabled`                       | Enables deployment of a mysql server                                                            | `true`
 `mysql.mysqlRootPassword`             | Root Password for Mysql (Optional)                                                              | ""
 `mysql.mysqlUser`                     | Username for Mysql (Required)                                                                   | ""
