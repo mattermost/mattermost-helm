@@ -43,6 +43,8 @@ spec:
           value: "{{ .Values.mattermostOperator.env.maxReconcilingConcurrency }}"
         - name: REQUEUE_ON_LIMIT_DELAY
           value: "{{ .Values.mattermostOperator.env.requeuOnLimitDelay }}"
+        - name: OPERATOR_IMAGE
+          value: "{{ .Values.mattermostOperator.image.repository }}:{{ .Values.mattermostOperator.image.tag }}"
         {{- if .Values.mattermostOperator.extraEnv }}
         {{- toYaml .Values.mattermostOperator.extraEnv | nindent 8 }}
         {{- end }}
