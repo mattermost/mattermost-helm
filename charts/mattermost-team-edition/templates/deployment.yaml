@@ -8,7 +8,10 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     helm.sh/chart: {{ include "mattermost-team-edition.chart" . }}
 spec:
-  replicas: 1
+  {{- if gt .Values.replicas 1 }}
+  {{- fail "replicas must be 0 or 1. To scale up Mattermost, you must use the entreprise edition" }}
+  {{- end }}
+  replicas: {{ .Values.replicas }}
   strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
