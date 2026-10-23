@@ -31,6 +31,9 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/component: server
         helm.sh/chart: {{ include "mattermost-enterprise-edition.chart" . }}
+        {{- if .Values.extraPodLabels }}
+        {{- .Values.extraPodLabels | toYaml | nindent 8 }}
+        {{- end }}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "{{ .Values.mattermostApp.service.metricsPort }}"
