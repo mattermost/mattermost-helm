@@ -87,14 +87,17 @@ spec:
           httpGet:
             path: /healthz
             port: http
+            scheme: {{ .Values.probeScheme }}
         livenessProbe: {{- .Values.livenessProbe | toYaml | nindent 10 }}
           httpGet:
             path: /api/v4/system/ping
             port: http
+            scheme: {{ .Values.probeScheme }}
         readinessProbe: {{- .Values.readinessProbe | toYaml | nindent 10 }}
           httpGet:
             path: /api/v4/system/ping
             port: http
+            scheme: {{ .Values.probeScheme }}
         volumeMounts:
         - mountPath: /mattermost/config
           name: mattermost-config
