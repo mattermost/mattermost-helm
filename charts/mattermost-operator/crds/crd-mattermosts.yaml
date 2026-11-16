@@ -221,6 +221,38 @@ spec:
                           to use
                         type: string
                     type: object
+                  readinessCheck:
+                    description: |-
+                      ReadinessCheck configures *how* the readiness init container is built.
+                      When nil (default), the Operator uses the legacy "external" mode
+                      (postgres:13 / appropriate/curl images). Ignored when
+                      DisableReadinessCheck is true. Currently only consulted for the
+                      external-database path; operator-managed databases always use the
+                      legacy probe.
+                    properties:
+                      mode:
+                        description: |-
+                          Mode selects the readiness check implementation.
+                            "external" (default): use postgres:13 / appropriate/curl images
+                                                  and probe via pg_isready / curl. Current
+                                                  behavior; will be deprecated in a future
+                                                  release.
+                            "builtin":  reuse the main Mattermost image and run
+                                        `mattermost db ping --timeout=<Timeout>`. Requires
+                                        a Mattermost version that ships `mattermost db ping`.
+                        enum:
+                        - external
+                        - builtin
+                        type: string
+                      timeout:
+                        description: |-
+                          Timeout for the readiness check. When Mode=builtin this value is
+                          passed to `mattermost db ping --timeout`. Ignored when Mode=external
+                          (the legacy `until pg_isready ...; sleep 5; done` loop has no
+                          timeout). Defaults to 5m.
+                        pattern: ^([0-9]+(\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$
+                        type: string
+                    type: object
                 type: object
               deploymentTemplate:
                 description: DeploymentTemplate defines configuration for the template
@@ -516,7 +548,7 @@ spec:
                   dedicatedJobServer:
                     description: |-
                       Determines whether to create a dedicated Mattermost server deployment
-                      which is configured to run scheduled jobs. This deployment will recieve
+                      which is configured to run scheduled jobs. This deployment will receive
                       no user traffic and the primary Mattermost deployment will no longer be
                       configured to run jobs.
                     type: boolean
